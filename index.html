@@ -45,9 +45,9 @@
     <div class="dropdown-content">
         <h4 data-key="Account">Account</h4>
         <p id="user-status" data-key="Not Logged In">Not Logged In</p>
-        <button id="nav-auth-btn" onclick="openExclusiveView('auth-modal')" data-key="Sign Up / Log In">Sign Up / Log In</button>
+        <button id="nav-auth-btn" onclick="openExclusiveView('auth-modal')" data-key="Sign Up / Log In" style="background-color: #007bff;">Sign Up / Log In</button>
         <button id="nav-hist-btn" class="hidden" onclick="openExclusiveView('history-container')" style="background-color: #17a2b8; margin-top: 5px;" data-key="My History">My History</button>
-        <button id="nav-logout-btn" class="hidden" onclick="logout()" data-key="Log Out">Log Out</button>
+        <button id="nav-logout-btn" class="hidden" onclick="logout()" data-key="Log Out" style="background-color: #dc3545; margin-top: 5px;">Log Out</button>
         <hr>
         <h4 data-key="Settings">Settings</h4>
         <p class="setting-item" onclick="toggleTheme()" data-key="Toggle Dark/Light Mode">🌓 Toggle Dark/Light Mode</p>
@@ -152,7 +152,7 @@
     <input type="text" id="name" placeholder="Full Name (First time user)">
     <input type="email" id="email" placeholder="Active Email Address">
     <input type="password" id="password" placeholder="8-Digit Alpha-Numeric Password">
-    <button onclick="handleAuth()" data-key="Submit">Submit</button>
+    <button onclick="handleAuth()" data-key="Submit" style="background-color: #28a745; width: 90%; margin-top: 10px;">Submit</button>
     <p style="font-size: 13px; cursor: pointer; color: #007bff; text-decoration: underline; margin-top: 15px;" onclick="openExclusiveView('reset-modal')">Forgot Password?</p>
 </div>
 
