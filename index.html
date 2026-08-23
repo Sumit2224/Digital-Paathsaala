@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Paathsaala</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Starting Animation (Splash Screen) -->
+<div id="splash-screen">
+    <img src="logo.png" alt="Logo" id="splash-logo">
+    <h1 id="splash-text">Digital Paathsaala</h1>
+    <h3 id="splash-tagline">Key of Learning</h3>
+</div>
+
+<!-- Popup Image Overlay -->
+<div id="promo-popup" class="hidden">
+    <div class="popup-content" style="text-align: center; padding: 25px; max-width: 450px;">
+        <button class="popup-close-btn" onclick="closePopup()">✖</button>
+        
+        <!-- Your Popup Image -->
+        <img src="banner2.png" alt="Welcome to Digital Paathsaala" style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+        
+        <!-- Your New Text -->
+        <h2 style="color: #007bff; margin: 10px 0;">Unlock Your True Potential!</h2>
+        <div style="text-align: left; font-size: 0.95em; color: var(--text); line-height: 1.5;">
+            <p style="margin-bottom: 10px;"><strong>Why join Digital Paathsaala?</strong></p>
+            <ul style="padding-left: 20px; margin-bottom: 15px;">
+                <li>⏱️ <strong>Smart Tests:</strong> Time-bound quizzes for all subjects.</li>
+                <li>📚 <strong>Complete Material:</strong> Books, Solutions, and Notes.</li>
+                <li>🎥 <strong>Video Help:</strong> Step-by-step visual explanations.</li>
+                <li>🏆 <strong>Live Ranking:</strong> Track your progress instantly.</li>
+            </ul>
+        </div>
+        
+        <!-- A shiny button to encourage signing up -->
+        <button onclick="closePopup(); openExclusiveView('auth-modal')" style="background-color: #ff0000; width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px;">Create Your Account NOW!</button>
+    </div>
+</div>
+<!-- Left Corner Dropdown Menu -->
+<div class="menu-container">
+    <button class="menu-btn" data-key="Menu">☰ Menu</button>
+    <div class="dropdown-content">
+        <h4 data-key="Account">Account</h4>
+        <p id="user-status" data-key="Not Logged In">Not Logged In</p>
+        <button id="nav-auth-btn" onclick="openExclusiveView('auth-modal')" data-key="Sign Up / Log In">Sign Up / Log In</button>
+        <button id="nav-hist-btn" class="hidden" onclick="openExclusiveView('history-container')" style="background-color: #17a2b8; margin-top: 5px;" data-key="My History">My History</button>
+        <button id="nav-logout-btn" class="hidden" onclick="logout()" data-key="Log Out">Log Out</button>
+        <hr>
+        <h4 data-key="Settings">Settings</h4>
+        <p class="setting-item" onclick="toggleTheme()" data-key="Toggle Dark/Light Mode">🌓 Toggle Dark/Light Mode</p>
+        <p class="setting-item">
+            <span data-key="Language">🌐 Language:</span> 
+            <select id="lang-select" onchange="changeLanguage(this.value)">
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+            </select>
+        </p>
+        <p class="setting-item">
+            <span data-key="Font Size">Aa Font Size:</span> 
+            <select onchange="changeFontSize(this.value)">
+                <option value="14px" data-key="Small">Small</option>
+                <option value="16px" selected data-key="Medium">Medium</option>
+                <option value="20px" data-key="Large">Large</option>
+            </select>
+        </p>
+    </div>
+</div>
+
+<!-- Global Back Button -->
+<button id="global-back-btn" class="hidden" onclick="goBack()" style="position: absolute; top: 15px; left: 110px; z-index: 100; background: #6c757d; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;">⬅ Back</button>
+
+<!-- Homepage Dashboard -->
+<div id="main-dashboard" class="dashboard view-section">
+    
+    <!-- NEW: Top Banner and Title -->
+    <div class="banner-container">
+          <img src="banner3.png" alt="Digital Paathsaala Banner" id="homepage-banner">
+        <h1 id="homepage-title">Key of Learning</h1>
+    </div>
+
+    <!-- Beautiful Grid Layout for All Homepage Boxes -->
+    <div class="homepage-grid">
+        
+        <div class="category-box">
+            <img src="test-series.png" alt="Test Series" class="category-img">
+            <h3 data-key="Test Series">Test Series</h3>
+            <button class="top-nav-btn" onclick="openClassSelection('Test Series')">Select Class</button>
+        </div>
+
+        <div class="category-box">
+            <img src="quick-revision.png" alt="Quick Revision" class="category-img">
+            <h3>Quick Revision</h3>
+            <button class="top-nav-btn" onclick="openClassSelection('Quick Revision')">Select Class</button>
+        </div>
+
+        <div class="category-box">
+            <img src="books.png" alt="Books" class="category-img">
+            <h3>Books</h3>
+            <button class="top-nav-btn" onclick="openClassSelection('Books')">Select Class</button>
+        </div>
+
+        <div class="category-box">
+            <img src="solutions.png" alt="Solutions" class="category-img">
+            <h3>Solutions</h3>
+            <button class="top-nav-btn" onclick="openClassSelection('Solutions')">Select Class</button>
+        </div>
+
+        <div class="category-box">
+            <img src="video-explanation.png" alt="Video Explanation" class="category-img">
+            <h3>Video Explanation</h3>
+            <button class="top-nav-btn" onclick="openClassSelection('Video Explanation')">Select Class</button>
+        </div>
+
+    </div>
+    
+    <div style="text-align: center; margin-top: 50px; font-size: 12px; color: #888; padding-bottom: 20px;"> 
+        <span style="cursor:pointer;" onclick="ownerAccess()">© 2026 Digital Paathsaala - Admin/Owner Access</span> 
+    </div>
+</div>
+
+<!-- Vertical Class Selection Dashboard -->
+<div id="class-selection-dashboard" class="dashboard view-section hidden">
+    <h2 id="class-selection-title" style="text-align:center;">Select Class</h2>
+    <div class="category-box" style="display: flex; flex-direction: column; align-items: center; margin: 0 auto;">
+        <div class="class-slot vertical-slot" onclick="selectClass('Class 6')">Class 6</div>
+        <div class="class-slot vertical-slot" onclick="selectClass('Class 7')">Class 7</div>
+        <div class="class-slot vertical-slot" onclick="selectClass('Class 8')">Class 8</div>
+        <div class="class-slot vertical-slot" onclick="selectClass('Class 9')">Class 9</div>
+        <div class="class-slot vertical-slot" onclick="selectClass('Class 10')">Class 10</div>
+    </div>
+</div>
+
+<!-- Subject Selection Dashboard -->
+<div id="subject-dashboard" class="dashboard view-section hidden">
+    <h2 id="subject-title" style="text-align:center;">Subjects</h2>
+    <div class="category-box" style="margin: 0 auto;">
+        <h3 data-key="Select a Subject">Select a Subject</h3>
+        <div class="class-slot" onclick="startTest('SST')">SST</div>
+        <div class="class-slot" onclick="startTest('Science')">Science</div>
+        <div class="class-slot" onclick="startTest('Math')">Math</div>
+        <div class="class-slot" onclick="startTest('English')">English</div>
+        <div class="class-slot" onclick="startTest('Hindi')">Hindi</div>
+    </div>
+</div>
+
+<!-- Login/Signup View -->
+<div id="auth-modal" class="modal view-section hidden">
+    <h3 data-key="Create Account / Log In">Create Account / Log In</h3>
+    <input type="text" id="name" placeholder="Full Name (First time user)">
+    <input type="email" id="email" placeholder="Active Email Address">
+    <input type="password" id="password" placeholder="8-Digit Alpha-Numeric Password">
+    <button onclick="handleAuth()" data-key="Submit">Submit</button>
+    <p style="font-size: 13px; cursor: pointer; color: #007bff; text-decoration: underline; margin-top: 15px;" onclick="openExclusiveView('reset-modal')">Forgot Password?</p>
+</div>
+
+<!-- Forgot Password Reset View -->
+<div id="reset-modal" class="modal view-section hidden">
+    <h3 data-key="Reset Password">Reset Password</h3>
+    <p style="font-size: 14px; margin-bottom: 15px;">Verify your identity by entering your registered Email and Full Name.</p>
+    <input type="email" id="reset-email" placeholder="Registered Email Address">
+    <input type="text" id="reset-name" placeholder="Registered Full Name">
+    <input type="password" id="new-password" placeholder="New 8-Digit Alpha-Numeric Password">
+    <button onclick="handlePasswordReset()" style="background-color: #17a2b8;">Reset Password</button>
+</div>
+
+<!-- User History View -->
+<div id="history-container" class="dashboard view-section hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 80%; margin: auto;">
+        <h2 data-key="My Attempt History">My Attempt History</h2>
+    </div>
+    <div id="history-list" class="category-box" style="text-align: left; margin: 0 auto;"></div>
+</div>
+
+<!-- Owner Dashboard -->
+<div id="owner-modal" class="modal hidden">
+    <h3>Owner Dashboard</h3>
+    <p><em>Only you can see this. User details are saved forever in the browser.</em></p>
+    <div id="user-list-container" class="owner-box"></div>
+    <button class="close-btn" onclick="document.getElementById('owner-modal').classList.add('hidden')">Close</button>
+</div>
+
+<!-- Test Confirmation Modal -->
+<div id="confirmation-modal" class="modal view-section hidden">
+    <h3>Test Instructions</h3>
+    <div style="text-align: left; margin: 20px auto; width: 80%; line-height: 1.6; font-size: 1.1em; background: var(--bg); padding: 15px; border-radius: 8px;">
+        <p><strong>Subject:</strong> <span id="confirm-subject"></span></p>
+        <p><strong>Total Questions:</strong> <span id="confirm-questions"></span></p>
+        <p><strong>Total Time:</strong> <span id="confirm-time"></span></p>
+        <hr style="margin: 15px 0;">
+        <strong>Rules:</strong>
+        <ul style="padding-left: 20px; font-size: 0.9em; margin-top: 10px;">
+            <li>Do not refresh or close the browser during the test.</li>
+            <li>Use the <em>Save & Next</em> and <em>Previous</em> buttons to navigate.</li>
+            <li>You can pause the test, but the questions will be hidden to prevent cheating.</li>
+            <li>Ensure you have a stable internet connection.</li>
+        </ul>
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <button onclick="goBack()" style="background-color: #dc3545; flex: 1; margin-right: 10px;">Cancel</button>
+        <button onclick="confirmStartTest()" style="background-color: #28a745; flex: 2;">Start Test Now</button>
+    </div>
+</div>
+
+<!-- Test/Quiz Interface -->
+<div id="test-modal" class="modal view-section hidden" style="width: 70%; max-width: 800px; padding-top: 15px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <button id="prev-btn" onclick="prevQuestion()" style="background-color: transparent; color: #007bff; border: 1px solid #007bff; border-radius: 20px; padding: 5px 15px;">⬅ Prev Question</button>
+        <button id="pause-btn" onclick="togglePause()" style="background-color: #17a2b8; border-radius: 20px; padding: 5px 15px;">⏸ Pause</button>
+    </div>
+    
+    <h3 id="test-title" style="margin-top: 0;">Test</h3>
+    <p class="timer-text"><span data-key="Time Left:">Time Left:</span> <span id="timer">00:00</span></p>
+    
+    <div class="slider-viewport" style="overflow: hidden; width: 100%;">
+        <div id="question-container" class="slider-track" style="display: flex; transition: transform 0.4s ease-in-out;">
+            <!-- Questions injected here -->
+        </div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <button onclick="clearAnswer()" style="background-color: #dc3545; flex: 1; margin-right: 10px;">Clear</button>
+        <button id="next-btn" onclick="nextQuestion()" style="background-color: #007bff; flex: 2; margin-right: 10px;">Save & Next</button>
+        <button id="submit-btn" onclick="submitTest()" style="background-color: #28a745; flex: 2;" class="hidden" data-key="Submit Test">Submit Test</button>
+    </div>
+</div>
+
+<!-- Results Interface -->
+<div id="result-modal" class="modal view-section hidden">
+    <h3 data-key="Test Results">Test Results</h3>
+    <div class="result-summary">
+        <p><strong data-key="Overall Score:">Overall Score:</strong> <span id="score"></span></p>
+        <p><strong data-key="Dynamic Rank:">Dynamic Rank:</strong> <span id="rank"></span></p>
+    </div>
+    <details class="review-box correct-box">
+        <summary data-key="Correct Attempts">✅ Correct Attempts</summary>
+        <ul id="correct-list"></ul>
+    </details>
+    <details class="review-box wrong-box">
+        <summary data-key="Wrong Attempts">❌ Wrong Attempts</summary>
+        <ul id="wrong-list"></ul>
+    </details>
+    <button onclick="closeToHome()" style="margin-top: 20px;" data-key="Back to Home">Back to Home</button>
+</div>
+<!-- Video Explanation Dashboard -->
+<div id="video-dashboard" class="dashboard view-section hidden">
+    <h2 id="video-title" style="text-align:center; color: #007bff;">Video Explanations</h2>
+    <div class="category-box" style="margin: 0 auto; width: 90%; max-width: 800px; padding: 20px;">
+        <p style="text-align: left; margin-bottom: 15px; font-weight: bold;">Select a lesson to watch:</p>
+        
+        <!-- Videos will be magically injected here by JavaScript -->
+        <div id="video-container" style="display: flex; flex-direction: column; gap: 20px;">
+        </div>
+        
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
