@@ -164,7 +164,7 @@ function selectClass(className) {
         if (linkToOpen !== "" && linkToOpen !== "PASTE_CLASS_10_DRIVE_LINK_HERE") {
             window.open(linkToOpen, '_blank');
         } else {
-            alert('Links have not been added for ' + className + ' yet. Please check the code!');
+            alert('Links have not been added for ' + className + ' yet!');
         }
     } 
     else if (currentCategory === 'Quick Revision' ) {
@@ -181,7 +181,7 @@ function selectClass(className) {
         if (linkToOpen !== "" && linkToOpen !== "PASTE_CLASS_10_DRIVE_LINK_HERE") {
             window.open(linkToOpen, '_blank');
         } else {
-            alert('Links have not been added for ' + className + ' yet. Please check the code!');
+            alert('Links have not been added for ' + className + ' yet!');
         }
     }  
           else if (currentCategory === 'Solutions' ) {
@@ -198,7 +198,7 @@ function selectClass(className) {
         if (linkToOpen !== "" && linkToOpen !== "PASTE_CLASS_10_DRIVE_LINK_HERE") {
             window.open(linkToOpen, '_blank');
         } else {
-            alert('Links have not been added for ' + className + ' yet. Please check the code!');
+            alert('Links have not been added for ' + className + ' yet!');
         }
     } 
     else if (currentCategory === 'Video Explanation') {
@@ -268,8 +268,11 @@ function changeLanguage(lang) {
     if(currentClass) document.getElementById('subject-title').innerText = lang === 'Hindi' ? `${currentClass} के विषय` : `${currentClass} Subjects`;
 }
 
+// Apna Web App URL yahan daalein (Inverted commas ke andar)
+const WEB_APPURL = "https://script.google.com/macros/s/AKfycbw1E2tQUo2BUsYmygPdtO9VBBN8Pv06ureE0MiWo2zBzXr0vXO6fag51uWrC1Y8-jrI/exec";
+
 // --- AUTHENTICATION ---
-function handleAuth() {
+async function handleAuth() {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value;
@@ -283,26 +286,66 @@ function handleAuth() {
 
     if (existingUser) {
         if (existingUser.password === encryptedPass) {
-            localStorage.setItem('userName', existingUser.name);
-            localStorage.setItem('userEmail', existingUser.email);
-            alert(`Welcome back, ${existingUser.name}!`);
-            closeToHome();
-            checkLoginPopup();
-            location.reload(); 
-        } else alert("Incorrect password.");
+            alert("Checking authentication status from server...");
+            try {
+                let response = await fetch(WEB_APP_URL + "?email=" + email);
+                let result = await response.json();
+                
+                if (result.status === "Pending") {
+                    alert("Wait For Authentication. Your account is still under review.");
+                } 
+                else if (result.status === "Pay") {
+                    alert("Premium Account Required. Please subscribe to continue.");
+                } 
+                else if (result.status === "Free") {
+                    alert("Authentication Successful!");
+                    localStorage.setItem('userName', existingUser.name);
+                    localStorage.setItem('userEmail', existingUser.email);
+                    closeToHome();
+                    checkLoginPopup();
+                    location.reload(); 
+                } 
+                else {
+                    alert("Error: Account not found on server.");
+                }
+            } catch (error) {
+                alert("Network error! Please check your internet connection.");
+            }
+        } else {
+            alert("Incorrect password.");
+        }
     } else {
         if (!name) { alert("Please enter your Full Name to create a new account."); return; }
-        allUsers.push({ name: name, email: email, password: encryptedPass }); 
-        localStorage.setItem('websiteUsersDatabase', JSON.stringify(allUsers));
-        localStorage.setItem('userName', name);
-        localStorage.setItem('userEmail', email);
-        alert("Account created successfully!");
-        closeToHome();
-        checkLoginPopup();
-        location.reload(); 
+        
+        alert("Registering account, please wait...");
+        try {
+            let response = await fetch(WEB_APP_URL, {
+                method: "POST",
+                body: JSON.stringify({ name: name, email: email })
+            });
+            let result = await response.json();
+            
+            if(result.result === "success") {
+                allUsers.push({ name: name, email: email, password: encryptedPass }); 
+                localStorage.setItem('websiteUsersDatabase', JSON.stringify(allUsers));
+                
+                alert("Account created successfully! Wait For Authentication. Your account is under review by the administrator.");
+                closeToHome();
+                checkLoginPopup();
+            }
+        } catch (error) {
+            alert("Network error! Could not create account.");
+        }
     }
 }
-function logout() { localStorage.removeItem('userName'); localStorage.removeItem('userEmail'); location.reload(); }
+
+// --- BAAKI KE PURANE FUNCTIONS (RESTORED) ---
+function logout() { 
+    localStorage.removeItem('userName'); 
+    localStorage.removeItem('userEmail'); 
+    location.reload(); 
+}
+
 function handlePasswordReset() {
     const email = document.getElementById('reset-email').value.trim();
     const name = document.getElementById('reset-name').value.trim();
@@ -507,4 +550,57 @@ function submitTest() {
     document.getElementById('rank').innerText = `#${myRank} out of ${totalAttempts} attempts for this specific test`; 
     document.getElementById('correct-list').innerHTML = correctHTML || "<li>None</li>";
     document.getElementById('wrong-list').innerHTML = wrongHTML || "<li>None</li>";
+}
+// अपना Web App URL यहाँ डालें (Inverted commas के अंदर)
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw1E2tQUo2BUsYmygPdtO9VBBN8Pv06ureE0MiWo2zBzXr0vXO6fag51uWrC1Y8-jrI/exec";
+
+// 1. जब नया स्टूडेंट Sign Up करेगा
+async function registerUser(name, email) {
+    alert("Please wait, sending your request..."); // लोडिंग मैसेज
+    
+    try {
+        let response = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify({ name: name, email: email })
+        });
+        
+        let result = await response.json();
+        if(result.result === "success") {
+            // रिक्वेस्ट सेंड होने के बाद का पॉप-अप
+            alert("Wait For Authentication. Your account is under review by the administrator.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+    }
+}
+
+// 2. जब स्टूडेंट Log In करेगा
+async function checkUserStatus(email) {
+    alert("Checking your account status..."); // लोडिंग मैसेज
+    
+    try {
+        // GET रिक्वेस्ट से स्टेटस चेक करना
+        let response = await fetch(WEB_APP_URL + "?email=" + email);
+        let result = await response.json();
+
+        if (result.status === "Pending") {
+            alert("Wait For Authentication. Your account is still under review.");
+        } 
+        else if (result.status === "Free") {
+            alert("Authentication Successful!");
+            // यहाँ आप अपने मेन डैशबोर्ड को ओपन करने का कोड डाल सकते हैं
+            // उदाहरण: openDashboard();
+        } 
+        else if (result.status === "Pay") {
+            alert("Premium Account Required. Please subscribe to continue.");
+            // यहाँ आप अपने QR Code या सब्सक्रिप्शन वाले पेज को दिखा सकते हैं
+            // उदाहरण: showSubscriptionPage();
+        } 
+        else {
+            alert("Account not found. Please Sign Up first.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
 }
