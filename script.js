@@ -268,68 +268,56 @@ function changeLanguage(lang) {
     if(currentClass) document.getElementById('subject-title').innerText = lang === 'Hindi' ? `${currentClass} के विषय` : `${currentClass} Subjects`;
 }
 
-// Apna Web App URL yahan daalein (Inverted commas ke andar)
-const WEB_APPURL = "https://script.google.com/macros/s/AKfycbw1E2tQUo2BUsYmygPdtO9VBBN8Pv06ureE0MiWo2zBzXr0vXO6fag51uWrC1Y8-jrI/exec";
+// Apna NAYA Web App URL yahan daalein
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyeTKOl2634OfTh0ZQmoQU5ePaZZZkJe-gEjWgbkZ0V-DqpcMxxWGHL3es2UNZJBcJY/exec";
 
-// --- AUTHENTICATION ---
+// --- 100% CLOUD AUTHENTICATION ---
 async function handleAuth() {
-    const name = document.getElementById('name').value;
+    const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value;
     
     if (!email) { alert("Please enter a valid email address."); return; }
     if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/.test(pass)) { alert("Password must be exactly 8 alphanumeric characters."); return; }
     
-    let allUsers = JSON.parse(localStorage.getItem('websiteUsersDatabase')) || [];
-    let existingUser = allUsers.find(u => u.email === email);
     const encryptedPass = btoa(pass); 
 
-    if (existingUser) {
-        if (existingUser.password === encryptedPass) {
-            alert("Checking authentication status from server...");
-            try {
-                let response = await fetch(WEB_APP_URL + "?email=" + email);
-                let result = await response.json();
-                
+    if (name === "") {
+        alert("Logging in securely from cloud, please wait...");
+        try {
+            let response = await fetch(WEB_APP_URL + "?email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(encryptedPass));
+            let result = await response.json();
+            
+            if (result.success) {
                 if (result.status === "Pending") {
                     alert("Wait For Authentication. Your account is still under review.");
-                } 
-                else if (result.status === "Pay") {
+                } else if (result.status === "Pay") {
                     alert("Premium Account Required. Please subscribe to continue.");
-                } 
-                else if (result.status === "Free") {
+                } else if (result.status === "Free" || result.status === "Approved") {
                     alert("Authentication Successful!");
-                    localStorage.setItem('userName', existingUser.name);
-                    localStorage.setItem('userEmail', existingUser.email);
+                    localStorage.setItem('userName', result.name); 
+                    localStorage.setItem('userEmail', email);
                     closeToHome();
                     checkLoginPopup();
                     location.reload(); 
-                } 
-                else {
-                    alert("Error: Account not found on server.");
                 }
-            } catch (error) {
-                alert("Network error! Please check your internet connection.");
+            } else {
+                alert(result.message); 
             }
-        } else {
-            alert("Incorrect password.");
+        } catch (error) {
+            alert("Network error! Please check your internet connection.");
         }
     } else {
-        if (!name) { alert("Please enter your Full Name to create a new account."); return; }
-        
-        alert("Registering account, please wait...");
+        alert("Creating secure cloud account, please wait...");
         try {
             let response = await fetch(WEB_APP_URL, {
                 method: "POST",
-                body: JSON.stringify({ name: name, email: email })
+                body: JSON.stringify({ action: "signup", name: name, email: email, password: encryptedPass })
             });
             let result = await response.json();
             
             if(result.result === "success") {
-                allUsers.push({ name: name, email: email, password: encryptedPass }); 
-                localStorage.setItem('websiteUsersDatabase', JSON.stringify(allUsers));
-                
-                alert("Account created successfully! Wait For Authentication. Your account is under review by the administrator.");
+                alert("Account created successfully! Wait For Authentication by admin.");
                 closeToHome();
                 checkLoginPopup();
             }
@@ -339,29 +327,42 @@ async function handleAuth() {
     }
 }
 
-// --- BAAKI KE PURANE FUNCTIONS (RESTORED) ---
+// --- LOGOUT (Purana wala safe hai) ---
 function logout() { 
     localStorage.removeItem('userName'); 
     localStorage.removeItem('userEmail'); 
     location.reload(); 
 }
 
-function handlePasswordReset() {
+// --- CLOUD PASSWORD RESET ---
+async function handlePasswordReset() {
     const email = document.getElementById('reset-email').value.trim();
     const name = document.getElementById('reset-name').value.trim();
     const newPass = document.getElementById('new-password').value;
+    
     if (!email || !name) { alert("Please enter both your registered Email and Full Name."); return; }
     if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/.test(newPass)) { alert("Your new password must be exactly 8 alphanumeric characters."); return; }
-    let allUsers = JSON.parse(localStorage.getItem('websiteUsersDatabase')) || [];
-    let userIndex = allUsers.findIndex(u => u.email.toLowerCase() === email.toLowerCase() && u.name.toLowerCase() === name.toLowerCase());
-    if (userIndex !== -1) {
-        allUsers[userIndex].password = btoa(newPass);
-        localStorage.setItem('websiteUsersDatabase', JSON.stringify(allUsers));
-        alert("Success! Your password has been reset.");
-        goBack(); 
-    } else alert("Error: Account matching that Email and Full Name not found.");
+    
+    alert("Resetting password securely on server...");
+    try {
+        let response = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "reset", name: name, email: email, newPassword: btoa(newPass) })
+        });
+        let result = await response.json();
+        
+        if (result.result === "success") {
+            alert("Success! Your password has been reset in the cloud database.");
+            goBack(); 
+        } else {
+            alert("Error: Details do not match any cloud record.");
+        }
+    } catch (error) {
+        alert("Network error! Could not reset password.");
+    }
 }
 
+// --- RENDER HISTORY (Purana wala safe hai) ---
 function renderHistory() {
     const email = localStorage.getItem('userEmail');
     const name = localStorage.getItem('userName');
@@ -383,14 +384,28 @@ function renderHistory() {
     }
 }
 
-function ownerAccess() {
+// --- CLOUD OWNER DASHBOARD ---
+async function ownerAccess() {
     if (prompt("Master Password:") === "owner123") { 
-        document.getElementById('owner-modal').classList.remove('hidden');
-        let allUsers = JSON.parse(localStorage.getItem('websiteUsersDatabase')) || [];
-        let html = `<h4>Total Active Users: ${allUsers.length}</h4><hr>`;
-        allUsers.forEach((u, i) => html += `<p>${i+1}. ${u.name} (${u.email}) <br><em>Pass: [HIDDEN]</em></p><hr>`);
-        document.getElementById('user-list-container').innerHTML = html;
-    } else alert("Access Denied.");
+        alert("Fetching active users from cloud database...");
+        try {
+            let response = await fetch(WEB_APP_URL + "?action=get_users");
+            let result = await response.json();
+            
+            document.getElementById('owner-modal').classList.remove('hidden');
+            let html = `<h4>Total Active Users (Cloud): ${result.users.length - 1}</h4><hr>`;
+            
+            for(let i = 1; i < result.users.length; i++) {
+                let u = result.users[i];
+                html += `<p>${i}. ${u.name} (${u.email}) <br><em>Status: ${u.status}</em></p><hr>`;
+            }
+            document.getElementById('user-list-container').innerHTML = html;
+        } catch (error) {
+            alert("Failed to load users from cloud.");
+        }
+    } else {
+        alert("Access Denied.");
+    }
 }
 
 // --- SLIDER & QUESTION NAVIGATION ---
