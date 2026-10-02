@@ -36,7 +36,7 @@
         </div>
         
         <!-- A shiny button to encourage signing up -->
-        <button onclick="closePopup(); openExclusiveView('auth-modal')" style="background-color: #ff0000; width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px;">Create Your Account NOW!</button>
+        <button onclick="closePopup(); openExclusiveView('signup-modal')" style="background-color: #ff0000; width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px; color: white; font-weight: bold; border: none; cursor: pointer;">Create Your Account NOW!</button>
     </div>
 </div>
 <!-- Left Corner Dropdown Menu -->
@@ -45,7 +45,8 @@
     <div class="dropdown-content">
         <h4 data-key="Account">Account</h4>
         <p id="user-status" data-key="Not Logged In">Not Logged In</p>
-        <button id="nav-auth-btn" onclick="openExclusiveView('auth-modal')" data-key="Sign Up / Log In" style="background-color: #007bff;">Sign Up / Log In</button>
+        <button id="nav-login-btn" onclick="openExclusiveView('login-modal')" data-key="Log In" style="background-color: #007bff; width: 100%; margin-bottom: 8px; padding: 10px; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold;">Log In</button>
+        <button id="nav-signup-btn" onclick="openExclusiveView('signup-modal')" data-key="Sign Up" style="background-color: #28a745; width: 100%; padding: 10px; border: none; color: white; border-radius: 5px; cursor: pointer; font-weight: bold;">Sign Up</button>
         <button id="nav-hist-btn" class="hidden" onclick="openExclusiveView('history-container')" style="background-color: #17a2b8; margin-top: 5px;" data-key="My History">My History</button>
         <button id="nav-logout-btn" class="hidden" onclick="logout()" data-key="Log Out" style="background-color: #dc3545; margin-top: 5px;">Log Out</button>
         <hr>
@@ -146,14 +147,26 @@
     </div>
 </div>
 
-<!-- Login/Signup View -->
-<div id="auth-modal" class="modal view-section hidden">
-    <h3 data-key="Create Account / Log In">Create Account / Log In</h3>
-    <input type="text" id="name" placeholder="Full Name (First time user)">
-    <input type="email" id="email" placeholder="Active Email Address">
-    <input type="password" id="password" placeholder="8-Digit Alpha-Numeric Password">
-    <button onclick="handleAuth()" data-key="Submit" style="background-color: #28a745; width: 90%; margin-top: 10px;">Submit</button>
-    <p style="font-size: 13px; cursor: pointer; color: #007bff; text-decoration: underline; margin-top: 15px;" onclick="openExclusiveView('reset-modal')">Forgot Password?</p>
+<!-- Login Modal -->
+<div id="login-modal" class="modal view-section hidden">
+    <h3 data-key="Log In" style="color: #007bff; margin-bottom: 5px;">Log In</h3>
+    <p style="font-size: 13px; color: gray; margin-bottom: 15px;">Welcome back! Please enter your details.</p>
+    <input type="email" id="login-email" placeholder="Registered Email Address" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <input type="password" id="login-password" placeholder="8-Digit Password" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <button onclick="handleLogin()" data-key="Log In" style="background-color: #007bff; width: 90%; padding: 12px; margin-top: 10px; border: none; color: white; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">Secure Log In</button>
+    <p style="font-size: 13px; cursor: pointer; color: #dc3545; text-decoration: underline; margin-top: 15px;" onclick="openExclusiveView('reset-modal')">Forgot Password?</p>
+    <p style="font-size: 14px; margin-top: 15px;">New student? <span style="color: #28a745; cursor: pointer; font-weight: bold; text-decoration: underline;" onclick="openExclusiveView('signup-modal')">Sign Up Here</span></p>
+</div>
+
+<!-- Signup Modal -->
+<div id="signup-modal" class="modal view-section hidden">
+    <h3 data-key="Create Account" style="color: #28a745; margin-bottom: 5px;">Create Account</h3>
+    <p style="font-size: 13px; color: gray; margin-bottom: 15px;">Join Digital Paathsaala today!</p>
+    <input type="text" id="signup-name" placeholder="Full Name" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <input type="email" id="signup-email" placeholder="Active Email Address" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <input type="password" id="signup-password" placeholder="Create 8-Digit Password" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
+    <button onclick="handleSignUp()" data-key="Sign Up" style="background-color: #28a745; width: 90%; padding: 12px; margin-top: 10px; border: none; color: white; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">Sign Up Now</button>
+    <p style="font-size: 14px; margin-top: 15px;">Already have an account? <span style="color: #007bff; cursor: pointer; font-weight: bold; text-decoration: underline;" onclick="openExclusiveView('login-modal')">Log In Here</span></p>
 </div>
 
 <!-- Forgot Password Reset View -->
