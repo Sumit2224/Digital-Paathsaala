@@ -1,51 +1,4 @@
-// --- DATABASE & TRANSLATION ---
-const quizDatabase = {
-    'Class 6': {
-        'SST': [{ q: "What is the shape of the Earth?", options: ["Flat", "Spherical"], ans: 1 }],
-        'Science': [{ q: "Which part of the plant makes food?", options: ["Root", "Leaf"], ans: 1 }],
-        'Math': [{ q: "What is 5 x 6?", options: ["25", "30"], ans: 1 }],
-        'English': [{ q: "Which is a noun?", options: ["Run", "Apple"], ans: 1 }],
-        'Hindi': [{ q: "हिंदी वर्णमाला में कितने स्वर होते हैं?", options: ["11", "33"], ans: 0 }]
-    },
-    'Class 7': {
-        'SST': [{ q: "Who built the Taj Mahal?", options: ["Akbar", "Shah Jahan"], ans: 1 }],
-        'Science': [{ q: "What is the chemical symbol for Water?", options: ["H2O", "O2"], ans: 0 }],
-        'Math': [{ q: "What is 7²?", options: ["14", "49"], ans: 1 }],
-        'English': [{ q: "Antonym of 'Beautiful'?", options: ["Ugly", "Pretty"], ans: 0 }],
-        'Hindi': [{ q: "'सूर्य' का पर्यायवाची क्या है?", options: ["दिनकर", "निशाकर"], ans: 0 }]
-    },
-    'Class 8': {
-        'SST': [{ q: "When did India gain independence?", options: ["1947", "1950"], ans: 0 }],
-        'Science': [{ q: "Which gas do humans breathe out?", options: ["Oxygen", "Carbon Dioxide"], ans: 1 }],
-        'Math': [{ q: "Square root of 64?", options: ["6", "8"], ans: 1 }],
-        'English': [{ q: "Past tense of 'Go'?", options: ["Went", "Gone"], ans: 0 }],
-        'Hindi': [{ q: "जो कभी न मरे उसे क्या कहते हैं?", options: ["अमर", "अजर"], ans: 0 }]
-    },
-    'Class 9': {
-        'SST': [{ q: "French Revolution started in?", options: ["1789", "1800"], ans: 0 }],
-        'Science': [{ q: "What is the powerhouse of the cell?", options: ["Nucleus", "Mitochondria"], ans: 1 }],
-        'Math': [{ q: "Value of Pi (approx)?", options: ["3.14", "3.41"], ans: 0 }],
-        'English': [{ q: "Meaning of 'Abundant'?", options: ["Scarce", "Plentiful"], ans: 1 }],
-        'Hindi': [{ q: "'आग' का तत्सम रूप क्या है?", options: ["अग्नि", "अनल"], ans: 0 }]
-    },
-    'Class 10': {
-        'SST': [
-            { q: "Identify the correct soil: Heavy Rainfall + High Leaching, Useful for growing Coffee and Tea.", options: ["Alluvial soil", "Laterite soil", "Red soil", "Black soil"], ans: 1 },
-            { q: "Match the following: I. Primitive subsistence, II. Intensive subsistence, III. Commercial, IV. Plantation WITH a. Modern inputs, b. Single crop large scale, c. Slash and burn, d. Labour intensive.", options: ["I-c, II-a, III-d, IV-b", "I-a, II-b, III-d, IV-c", "I-c, II-d, III-a, IV-b", "I-d, II-c, III-b, IV-a"], ans: 2 },
-            { q: "Identify the state related with Chipko Movement?", options: ["Bihar", "Uttarakhand", "Madhya Pradesh", "Rajasthan"], ans: 1 },
-            { q: "Which of the following pairs is correctly matched?", options: ["Periyar - Madhya Pradesh", "Manas - Assam", "Bandhavgarh - Rajasthan", "Corbett - Uttar Pradesh"], ans: 1 },
-            { q: "In which Indian State is the 'bamboo drip irrigation' system used?", options: ["Himachal Pradesh", "Kerala", "Rajasthan", "Meghalaya"], ans: 3 },
-            { q: "Identify the plantation crop from the following:", options: ["Wheat", "Bajra", "Rice", "Rubber"], ans: 3 },
-            { q: "Match shifting cultivations: a) Roka, b) Milpa, c) Ladang, d) Kruwa WITH i) Jharkhand, ii) Indonesia, iii) Brazil, iv) Mexico", options: ["a-i, b-ii, c-iii, d-iv", "a-iii, b-iv, c-ii, d-i", "a-ii, b-iii, c-iv, d-i", "a-iii, b-iv, c-i, d-ii"], ans: 1 },
-            { q: "Match the Dams with States: a) Tilaiya, b) Mettur, c) Koyna, d) Tehri WITH i) Tamil Nadu, ii) Maharashtra, iii) Uttarakhand, iv) Jharkhand", options: ["a-iv, b-i, c-iii, d-ii", "a-iv, b-i, c-ii, d-iii", "a-ii, b-iii, c-iv, d-i", "a-iii, b-iv, c-i, d-ii"], ans: 1 },
-            { q: "Match Soils with Characteristics: a. Alluvial, b. Black, c. Laterite, d. Arid WITH i. Sandy/saline, ii. Very fertile, iii. Lava parent rocks, iv. Decrease in humus", options: ["a-ii, b-iii, c-i, d-iv", "a-iii, b-ii, c-iv, d-i", "a-iii, b-ii, c-i, d-iv", "a-ii, b-iii, c-iv, d-i"], ans: 3 }
-        ],
-        'Science': [{ q: "What is the SI unit of Work?", options: ["Joule", "Watt"], ans: 0 }],
-        'Math': [{ q: "Sum of angles in a triangle?", options: ["180°", "360°"], ans: 0 }],
-        'English': [{ q: "Antonym of 'Exodus'?", options: ["Arrival", "Departure"], ans: 0 }],
-        'Hindi': [{ q: "'कमल' का पर्यायवाची शब्द?", options: ["जलज", "नभ"], ans: 0 }]
-    }
-};
+
 
 const hindiTranslations = {
     "Menu": "मेन्यू", "Account": "खाता", "Not Logged In": "लॉग इन नहीं है",
@@ -63,7 +16,8 @@ let timerInterval;
 let currentClass = "";
 let currentSubject = "";
 let pendingSubject = "";
-let currentCategory = ""; 
+let currentCategory = "";
+let activeQuizData = []; 
 let isPaused = false;
 let timeLeft = 0;
 let currentQuestionIndex = 0;
@@ -109,7 +63,7 @@ function openExclusiveView(viewId, isBackAction = false) {
     }
     
     const backBtn = document.getElementById('global-back-btn');
-    if (viewId === 'main-dashboard' || viewId === 'result-modal') {
+    if (viewId === 'main-dashboard' ) {
         backBtn.classList.add('hidden');
     } else {
         backBtn.classList.remove('hidden');
@@ -444,21 +398,40 @@ function togglePause() {
     }
 }
 
-// --- TEST ENGINE (WITH CONFIRMATION) ---
-function startTest(subject) {
+// --- CLOUD TEST ENGINE ---
+async function startTest(subject) {
     pendingSubject = subject;
-    let activeQuiz = quizDatabase[currentClass][subject];
     
-    let secondsPerQuestion = 60; 
-    if (subject === 'Math') secondsPerQuestion = 240; 
-    else if (subject === 'Science') secondsPerQuestion = 180; 
-    let totalTime = activeQuiz.length * secondsPerQuestion;
-    
-    document.getElementById('confirm-subject').innerText = `${currentClass} - ${subject}`;
-    document.getElementById('confirm-questions').innerText = activeQuiz.length;
-    document.getElementById('confirm-time').innerText = formatTime(totalTime) + " (Minutes:Seconds)";
-    
+    // Loading State
+    document.getElementById('confirm-subject').innerText = "Loading test from server...";
+    document.getElementById('confirm-questions').innerText = "...";
+    document.getElementById('confirm-time').innerText = "...";
     openExclusiveView('confirmation-modal');
+    
+    try {
+        // Sheet se questions fetch karna
+        let response = await fetch(WEB_APP_URL + "?action=get_quiz&class=" + encodeURIComponent(currentClass) + "&subject=" + encodeURIComponent(subject));
+        let result = await response.json();
+        
+        if (result.success && result.quiz.length > 0) {
+            activeQuizData = result.quiz; // Data save kar liya
+            
+            let secondsPerQuestion = 60; 
+            if (subject === 'Math') secondsPerQuestion = 240; 
+            else if (subject === 'Science') secondsPerQuestion = 180; 
+            let totalTime = activeQuizData.length * secondsPerQuestion;
+            
+            document.getElementById('confirm-subject').innerText = `${currentClass} - ${subject}`;
+            document.getElementById('confirm-questions').innerText = activeQuizData.length;
+            document.getElementById('confirm-time').innerText = formatTime(totalTime) + " (Minutes:Seconds)";
+        } else {
+            alert("No questions found for this subject yet!");
+            goBack();
+        }
+    } catch (error) {
+        alert("Network error while loading test.");
+        goBack();
+    }
 }
 
 function confirmStartTest() {
@@ -475,11 +448,10 @@ function confirmStartTest() {
     openExclusiveView('test-modal');
     document.getElementById('test-title').innerText = `${currentClass} - ${subject} Test`;
     
-    let activeQuiz = quizDatabase[currentClass][subject];
-    totalQuestions = activeQuiz.length;
+    totalQuestions = activeQuizData.length;
     
     let qHTML = "";
-    activeQuiz.forEach((item, index) => {
+    activeQuizData.forEach((item, index) => {
         qHTML += `<div class="question-card">`;
         qHTML += `<p class="question-text">Q${index+1}. ${item.q}</p>`;
         item.options.forEach((opt, i) => {
@@ -495,7 +467,7 @@ function confirmStartTest() {
     if (subject === 'Math') secondsPerQuestion = 240; 
     else if (subject === 'Science') secondsPerQuestion = 180; 
 
-    timeLeft = activeQuiz.length * secondsPerQuestion;
+    timeLeft = activeQuizData.length * secondsPerQuestion;
     document.getElementById('timer').innerText = formatTime(timeLeft);
     
     clearInterval(timerInterval);
@@ -514,9 +486,8 @@ function confirmStartTest() {
 function submitTest() {
     clearInterval(timerInterval);
     let score = 0, correctHTML = "", wrongHTML = "";
-    let activeQuiz = quizDatabase[currentClass][currentSubject];
     
-    activeQuiz.forEach((item, index) => {
+    activeQuizData.forEach((item, index) => {
         const selected = document.querySelector(`input[name="q${index}"]:checked`);
         if (selected && parseInt(selected.value) === item.ans) {
             score++;
@@ -527,16 +498,33 @@ function submitTest() {
         }
     });
 
-    let allTests = JSON.parse(localStorage.getItem('testResultsDatabase')) || [];
     const userEmail = localStorage.getItem('userEmail');
+    const userName = localStorage.getItem('userName') || "Student";
     const testSignature = `${currentClass} - ${currentSubject}`;
-    
+    const currentDate = new Date().toLocaleString();
+
+    // 1. क्लाउड (Google Sheet) पर रिजल्ट भेजना (BACKGROUND PROCESS)
+    fetch(WEB_APP_URL, {
+        method: "POST",
+        body: JSON.stringify({ 
+            action: "save_result", 
+            name: userName, 
+            email: userEmail, 
+            subject: testSignature, 
+            score: score, 
+            maxScore: activeQuizData.length, 
+            date: currentDate 
+        })
+    }).catch(error => console.error("Cloud save failed:", error));
+
+    // 2. लोकल ब्राउज़र हिस्ट्री (My History के लिए)
+    let allTests = JSON.parse(localStorage.getItem('testResultsDatabase')) || [];
     allTests.push({ 
         email: userEmail, 
         subject: testSignature, 
         score: score, 
-        maxScore: activeQuiz.length,
-        date: new Date().toLocaleString()
+        maxScore: activeQuizData.length,
+        date: currentDate
     });
     localStorage.setItem('testResultsDatabase', JSON.stringify(allTests));
 
@@ -545,8 +533,12 @@ function submitTest() {
     let myRank = subjectResults.findIndex(t => t.email === userEmail && t.score === score) + 1;
     let totalAttempts = subjectResults.length;
 
+    // Back button ko wapas Subject Dashboard par bhejne ke liye (Aapka code surakshit hai)
+    viewHistoryStack = ['main-dashboard', 'subject-dashboard']; 
+    
+    // रिजल्ट स्क्रीन शो करना
     openExclusiveView('result-modal');
-    document.getElementById('score').innerText = `${score} / ${activeQuiz.length}`;
+    document.getElementById('score').innerText = `${score} / ${activeQuizData.length}`;
     document.getElementById('rank').innerText = `#${myRank} out of ${totalAttempts} attempts for this specific test`; 
     document.getElementById('correct-list').innerHTML = correctHTML || "<li>None</li>";
     document.getElementById('wrong-list').innerHTML = wrongHTML || "<li>None</li>";
