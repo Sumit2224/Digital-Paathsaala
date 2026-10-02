@@ -78,7 +78,6 @@ function formatTime(seconds) {
 
 // --- POPUP LOGIC ---
 function checkInitialPopup() {
-    // Temporarily forcing the popup to show every time for testing!
     document.getElementById('promo-popup').classList.remove('hidden');
 }
 function checkLoginPopup() { document.getElementById('promo-popup').classList.remove('hidden'); }
@@ -93,7 +92,8 @@ window.onload = () => {
 
     if (localStorage.getItem('userEmail')) {
         document.getElementById('user-status').innerText = "Logged in as: " + localStorage.getItem('userName');
-        document.getElementById('nav-auth-btn').classList.add('hidden');
+        document.getElementById('nav-login-btn').classList.add('hidden'); 
+        document.getElementById('nav-signup-btn').classList.add('hidden'); 
         document.getElementById('nav-logout-btn').classList.remove('hidden');
         document.getElementById('nav-hist-btn').classList.remove('hidden');
     }
@@ -138,7 +138,6 @@ function closeToHome() {
     openExclusiveView('main-dashboard', true);
 }
 
-// Routes clicking a homepage box to the vertical class list
 function openClassSelection(title) {
     currentCategory = title; 
     document.getElementById('class-selection-title').innerText = title + " - Select Class";
@@ -151,10 +150,7 @@ function selectClass(className) {
         showSubjects(className);
     } 
     else if (currentCategory === 'Books' ) {
-        
         let linkToOpen = "";
-        
-        // REPLACE THESE PLACEHOLDER LINKS WITH YOUR ACTUAL GOOGLE DRIVE LINKS
         if (className === 'Class 6') { linkToOpen = ""; }
         else if (className === 'Class 7') { linkToOpen = ""; }
         else if (className === 'Class 8') { linkToOpen = "https://drive.google.com/drive/folders/1t25mEnxxmk4zYNbYME5M2ibxrIw3ngZW?usp=drive_link"; }
@@ -168,10 +164,7 @@ function selectClass(className) {
         }
     } 
     else if (currentCategory === 'Quick Revision' ) {
-        
         let linkToOpen = "";
-        
-        // REPLACE THESE PLACEHOLDER LINKS WITH YOUR ACTUAL GOOGLE DRIVE LINKS
         if (className === 'Class 6') { linkToOpen = "https://drive.google.com/drive/folders/1Q1ms3CcxdYq3Sry1aNBpwJ18NOJBMsg0?usp=drive_link"; }
         else if (className === 'Class 7') { linkToOpen = "https://drive.google.com/drive/folders/100hNOJA0tuP6nfa4e1cGcqD7mlMlB8N1?usp=drive_link"; }
         else if (className === 'Class 8') { linkToOpen = "https://drive.google.com/drive/folders/1t25mEnxxmk4zYNbYME5M2ibxrIw3ngZW?usp=drive_link"; }
@@ -184,11 +177,8 @@ function selectClass(className) {
             alert('Links have not been added for ' + className + ' yet!');
         }
     }  
-          else if (currentCategory === 'Solutions' ) {
-        
+    else if (currentCategory === 'Solutions' ) {
         let linkToOpen = "";
-        
-        // REPLACE THESE PLACEHOLDER LINKS WITH YOUR ACTUAL GOOGLE DRIVE LINKS
         if (className === 'Class 6') { linkToOpen = ""; }
         else if (className === 'Class 7') { linkToOpen = ""; }
         else if (className === 'Class 8') { linkToOpen = "https://drive.google.com/drive/folders/1t25mEnxxmk4zYNbYME5M2ibxrIw3ngZW?usp=drive_link"; }
@@ -202,44 +192,28 @@ function selectClass(className) {
         }
     } 
     else if (currentCategory === 'Video Explanation') {
-        // 1. Update the title of the video screen
         document.getElementById('video-title').innerText = className + " - Video Explanations";
-        
         let videoHTML = "";
         
-        // 2. Paste your YouTube Iframe codes here for each class!
-        // You can add multiple iframes inside the backticks ( ` ) if a class has more than one video.
-        
         if (className === 'Class 6') { 
-            videoHTML = `
-                <!-- Replace this iframe with your Class 6 video -->
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
-            `; 
+            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
         }
         else if (className === 'Class 7') { 
-            videoHTML = `
-                <!-- Replace this iframe with your Class 7 video -->
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
-            `; 
+            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
         }
         else if (className === 'Class 8') { 
-            videoHTML = `
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
-            `; 
+            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
         }
         else if (className === 'Class 9') { 
-            videoHTML = `
-                <iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
-            `; 
+            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
         }
         else if (className === 'Class 10') { 
             videoHTML = `
               <h4 style="text-align: left; margin-bottom: 5px;">Test Video: Chapter 1 Chemical Reactions</h4>  
-              <iframe width="891" height="501" src="https://www.youtube.com/embed/1wQqGFebxyA" title="Intro to Chemical reactions | Chemical equation and reactions | Chemistry | Khan Academy" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <iframe width="891" height="501" src="https://www.youtube.com/embed/1wQqGFebxyA" title="Intro to Chemical reactions" frameborder="0" allowfullscreen></iframe>
             `; 
         }
 
-        // 3. Push the video to the screen and open it
         if (videoHTML.includes("YOUR_VIDEO_ID")) {
             alert('Please paste your real YouTube embed codes in script.js for ' + className);
         } else {
@@ -269,65 +243,76 @@ function changeLanguage(lang) {
 }
 
 // Apna NAYA Web App URL yahan daalein
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyeTKOl2634OfTh0ZQmoQU5ePaZZZkJe-gEjWgbkZ0V-DqpcMxxWGHL3es2UNZJBcJY/exec";
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbyeTKOl2634OfTh0ZQmoQU5ePaZZZkJe-gEjWgbkZ0V-DqpcMxxWGHL3es2UNZJBcJY/exec";
 
 // --- 100% CLOUD AUTHENTICATION ---
-async function handleAuth() {
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const pass = document.getElementById('password').value;
+// --- 100% CLOUD LOG IN ---
+async function handleLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-password').value;
     
+    if (!email) { alert("Please enter your registered email address."); return; }
+    if (!pass) { alert("Please enter your password."); return; }
+    
+    const encryptedPass = btoa(pass); 
+    alert("Logging in securely from cloud, please wait...");
+    
+    try {
+        let response = await fetch(WEB_APP_URL + "?email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(encryptedPass));
+        let result = await response.json();
+        
+        if (result.success) {
+            if (result.status === "Pending") {
+                alert("Wait For Authentication. Your account is still under review.");
+            } else if (result.status === "Pay") {
+                alert("Premium Account Required. Please subscribe to continue.");
+            } else if (result.status === "Free" || result.status === "Approved") {
+                alert("Authentication Successful!");
+                localStorage.setItem('userName', result.name); 
+                localStorage.setItem('userEmail', email);
+                closeToHome();
+                checkLoginPopup();
+                location.reload(); 
+            }
+        } else {
+            alert(result.message); 
+        }
+    } catch (error) {
+        alert("Network error! Please check your internet connection.");
+    }
+}
+
+// --- 100% CLOUD SIGN UP ---
+async function handleSignUp() {
+    const name = document.getElementById('signup-name').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const pass = document.getElementById('signup-password').value;
+    
+    if (!name) { alert("Please enter your Full Name."); return; }
     if (!email) { alert("Please enter a valid email address."); return; }
     if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/.test(pass)) { alert("Password must be exactly 8 alphanumeric characters."); return; }
     
     const encryptedPass = btoa(pass); 
-
-    if (name === "") {
-        alert("Logging in securely from cloud, please wait...");
-        try {
-            let response = await fetch(WEB_APP_URL + "?email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(encryptedPass));
-            let result = await response.json();
-            
-            if (result.success) {
-                if (result.status === "Pending") {
-                    alert("Wait For Authentication. Your account is still under review.");
-                } else if (result.status === "Pay") {
-                    alert("Premium Account Required. Please subscribe to continue.");
-                } else if (result.status === "Free" || result.status === "Approved") {
-                    alert("Authentication Successful!");
-                    localStorage.setItem('userName', result.name); 
-                    localStorage.setItem('userEmail', email);
-                    closeToHome();
-                    checkLoginPopup();
-                    location.reload(); 
-                }
-            } else {
-                alert(result.message); 
-            }
-        } catch (error) {
-            alert("Network error! Please check your internet connection.");
+    alert("Creating secure cloud account, please wait...");
+    
+    try {
+        let response = await fetch(WEB_APP_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "signup", name: name, email: email, password: encryptedPass })
+        });
+        let result = await response.json();
+        
+        if(result.result === "success") {
+            alert("Account created successfully! Wait For Authentication by admin.");
+            closeToHome();
+            checkLoginPopup();
         }
-    } else {
-        alert("Creating secure cloud account, please wait...");
-        try {
-            let response = await fetch(WEB_APP_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "signup", name: name, email: email, password: encryptedPass })
-            });
-            let result = await response.json();
-            
-            if(result.result === "success") {
-                alert("Account created successfully! Wait For Authentication by admin.");
-                closeToHome();
-                checkLoginPopup();
-            }
-        } catch (error) {
-            alert("Network error! Could not create account.");
-        }
+    } catch (error) {
+        alert("Network error! Could not create account.");
     }
 }
 
-// --- LOGOUT (Purana wala safe hai) ---
+// --- LOGOUT ---
 function logout() { 
     localStorage.removeItem('userName'); 
     localStorage.removeItem('userEmail'); 
@@ -362,7 +347,7 @@ async function handlePasswordReset() {
     }
 }
 
-// --- RENDER HISTORY (Purana wala safe hai) ---
+// --- RENDER HISTORY ---
 function renderHistory() {
     const email = localStorage.getItem('userEmail');
     const name = localStorage.getItem('userName');
@@ -565,57 +550,4 @@ function submitTest() {
     document.getElementById('rank').innerText = `#${myRank} out of ${totalAttempts} attempts for this specific test`; 
     document.getElementById('correct-list').innerHTML = correctHTML || "<li>None</li>";
     document.getElementById('wrong-list').innerHTML = wrongHTML || "<li>None</li>";
-}
-// अपना Web App URL यहाँ डालें (Inverted commas के अंदर)
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw1E2tQUo2BUsYmygPdtO9VBBN8Pv06ureE0MiWo2zBzXr0vXO6fag51uWrC1Y8-jrI/exec";
-
-// 1. जब नया स्टूडेंट Sign Up करेगा
-async function registerUser(name, email) {
-    alert("Please wait, sending your request..."); // लोडिंग मैसेज
-    
-    try {
-        let response = await fetch(WEB_APP_URL, {
-            method: "POST",
-            body: JSON.stringify({ name: name, email: email })
-        });
-        
-        let result = await response.json();
-        if(result.result === "success") {
-            // रिक्वेस्ट सेंड होने के बाद का पॉप-अप
-            alert("Wait For Authentication. Your account is under review by the administrator.");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Something went wrong. Please try again.");
-    }
-}
-
-// 2. जब स्टूडेंट Log In करेगा
-async function checkUserStatus(email) {
-    alert("Checking your account status..."); // लोडिंग मैसेज
-    
-    try {
-        // GET रिक्वेस्ट से स्टेटस चेक करना
-        let response = await fetch(WEB_APP_URL + "?email=" + email);
-        let result = await response.json();
-
-        if (result.status === "Pending") {
-            alert("Wait For Authentication. Your account is still under review.");
-        } 
-        else if (result.status === "Free") {
-            alert("Authentication Successful!");
-            // यहाँ आप अपने मेन डैशबोर्ड को ओपन करने का कोड डाल सकते हैं
-            // उदाहरण: openDashboard();
-        } 
-        else if (result.status === "Pay") {
-            alert("Premium Account Required. Please subscribe to continue.");
-            // यहाँ आप अपने QR Code या सब्सक्रिप्शन वाले पेज को दिखा सकते हैं
-            // उदाहरण: showSubscriptionPage();
-        } 
-        else {
-            alert("Account not found. Please Sign Up first.");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-    }
 }
