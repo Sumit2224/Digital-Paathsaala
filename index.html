@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Paathsaala</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#007bff">
+<!-- social bar and popunder ad 11 line -->
+<script src="https://mausoleumpoetrywrench.com/a4/15/c2/a415c2eb1591482e31f9e1642f54caed.js"></script>
 </head>
 <body>
 
@@ -82,6 +86,13 @@
         <h1 id="homepage-title">Key of Learning</h1>
     </div>
 
+<!-- === ADSTERRA NATIVE BANNER YAHAN AAYEGA === -->
+    <div style="width: 90%; max-width: 800px; margin: 20px auto; text-align: center;">
+        <script async="async" data-cfasync="false" src="https://mausoleumpoetrywrench.com/ba81f7e9bacf34253d389c0287746373/invoke.js"></script>
+<div id="container-ba81f7e9bacf34253d389c0287746373"></div>
+    </div>
+    <!-- ============================================ -->
+
     <!-- Beautiful Grid Layout for All Homepage Boxes -->
     <div class="homepage-grid">
         
@@ -116,7 +127,22 @@
         </div>
 
     </div>
-    
+
+    <!-- === ADSTERRA BANNER 300x250 YAHAN AAYEGA === -->
+    <div style="text-align: center; margin: 30px auto; width: 100%; max-width: 300px;">
+        <script>
+  atOptions = {
+    'key' : '228ae1cfb07752a159b7560842a839f4',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://mausoleumpoetrywrench.com/228ae1cfb07752a159b7560842a839f4/invoke.js"></script> 
+    </div>
+    <!-- ============================================ -->
+
     <div style="text-align: center; margin-top: 50px; font-size: 12px; color: #888; padding-bottom: 20px;"> 
         <span style="cursor:pointer;" onclick="ownerAccess()">© 2026 Digital Paathsaala - Admin/Owner Access</span> 
     </div>
@@ -139,11 +165,11 @@
     <h2 id="subject-title" style="text-align:center;">Subjects</h2>
     <div class="category-box" style="margin: 0 auto;">
         <h3 data-key="Select a Subject">Select a Subject</h3>
-        <div class="class-slot" onclick="startTest('SST')">SST</div>
-        <div class="class-slot" onclick="startTest('Science')">Science</div>
-        <div class="class-slot" onclick="startTest('Math')">Math</div>
-        <div class="class-slot" onclick="startTest('English')">English</div>
-        <div class="class-slot" onclick="startTest('Hindi')">Hindi</div>
+        <div class="class-slot" onclick="handleSubjectSelection('SST')">SST</div>
+        <div class="class-slot" onclick="handleSubjectSelection('Science')">Science</div>
+        <div class="class-slot" onclick="handleSubjectSelection('Math')">Math</div>
+        <div class="class-slot" onclick="handleSubjectSelection('English')">English</div>
+        <div class="class-slot" onclick="handleSubjectSelection('Hindi')">Hindi</div>
     </div>
 </div>
 
@@ -240,6 +266,55 @@
     </div>
 </div>
 
+<!-- === CHAPTER SELECTION DASHBOARD === -->
+<div id="chapter-dashboard" class="view-section hidden">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h2 id="chapter-title" style="color: #333;">Select Chapter</h2>
+        <p style="color: #666;">Choose a chapter to read</p>
+    </div>
+    <!-- === 320x50 BANNER (CHAPTERS KE UPAR) === -->
+    <div style="text-align: center; margin-bottom: 20px; width: 100%;">
+       <script>
+  atOptions = {
+    'key' : '56bef5353b7031ea574d0833cbeacfd5',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://mausoleumpoetrywrench.com/56bef5353b7031ea574d0833cbeacfd5/invoke.js"></script>
+    </div>
+    <!-- ====================================== -->
+    <!-- Chapters ke buttons yahan automatically aayenge -->
+    <div id="chapter-list" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
+    </div>
+</div>
+
+<!-- === PDF VIEWER MODAL === -->
+<div id="pdf-viewer-modal" class="view-section hidden">
+    <h2 id="pdf-title" style="color: #007bff; text-align: center; margin-bottom: 15px;">PDF Document</h2>
+    
+    <div class="pdf-container">
+        <!-- Google Drive iframe -->
+        <iframe id="pdf-iframe" src="" width="100%" height="100%" frameborder="0" allow="autoplay" loading="lazy"></iframe>
+    </div>
+    <!-- === 320x50 BANNER (PDF KE NICHE) === -->
+    <div style="text-align: center; margin-top: 15px; width: 100%;">
+        <script>
+  atOptions = {
+    'key' : '56bef5353b7031ea574d0833cbeacfd5',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://mausoleumpoetrywrench.com/56bef5353b7031ea574d0833cbeacfd5/invoke.js"></script>
+    </div>
+    <!-- ================================== -->
+</div>
+
 <!-- Results Interface -->
 <div id="result-modal" class="modal view-section hidden">
     <h3 data-key="Test Results">Test Results</h3>
@@ -270,5 +345,51 @@
     </div>
 </div>
 <script src="script.js?v=2"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log("PWA Service Worker Registered!"));
+  }
+</script>
+
+
+<!-- === CUSTOM POPUNDER CONTROLLER (Max 2 times/day) === -->
+<script>
+    function loadAdsterraPopunder() {
+        let today = new Date().toDateString();
+        // LocalStorage se student ka purana record nikalo
+        let popData = JSON.parse(localStorage.getItem('student_popunder_status')) || { count: 0, date: today };
+
+        // Agar naya din shuru ho gaya hai (date change), to count 0 kar do
+        if (popData.date !== today) {
+            popData = { count: 0, date: today };
+        }
+
+        // Agar aaj 3 baar se kam ad chala hai, tabhi Adsterra ki script load karo
+        if (popData.count < 3) {
+            
+            // === YAHAN ADSTERRA WALI SCRIPT BANEGI ===
+            let adScript = document.createElement('script');
+            adScript.type = 'text/javascript';
+            
+            // NICHE WALI LINE MEIN 'src' KE ANDAR APNE ADSTERRA POPUNDER KA LINK DAALEIN
+            // Example: adScript.src = '//pl234567.pubrevenuegate.com/ab/cd/ef.js';
+            adScript.src = 'https://mausoleumpoetrywrench.com/4d/15/73/4d157332aaf7080a8ea18881f22dee38.js'; 
+            
+            document.body.appendChild(adScript);
+            // =========================================
+
+            // Ad load hone ke baad count badha kar wapas browser mein save kar do
+            popData.count += 1;
+            localStorage.setItem('student_popunder_status', JSON.stringify(popData));
+        }
+    }
+    
+    // Page load hone par ye check chalega
+    window.onload = function() {
+        loadAdsterraPopunder();
+    };
+</script>
+<!-- ==================================================== -->
 </body>
 </html>
