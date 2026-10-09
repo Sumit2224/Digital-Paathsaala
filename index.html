@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#007bff">
-<!-- social bar and popunder ad 11 line -->
-<script src="https://mausoleumpoetrywrench.com/a4/15/c2/a415c2eb1591482e31f9e1642f54caed.js"></script>
+<!-- === ADSTERRA SOCIAL BAR CODE YAHAN AAYEGA === -->
+    
+    <!-- ============================================== -->
+
 </head>
 <body>
 
@@ -353,43 +355,6 @@
 </script>
 
 
-<!-- === CUSTOM POPUNDER CONTROLLER (Max 2 times/day) === -->
-<script>
-    function loadAdsterraPopunder() {
-        let today = new Date().toDateString();
-        // LocalStorage se student ka purana record nikalo
-        let popData = JSON.parse(localStorage.getItem('student_popunder_status')) || { count: 0, date: today };
 
-        // Agar naya din shuru ho gaya hai (date change), to count 0 kar do
-        if (popData.date !== today) {
-            popData = { count: 0, date: today };
-        }
-
-        // Agar aaj 3 baar se kam ad chala hai, tabhi Adsterra ki script load karo
-        if (popData.count < 3) {
-            
-            // === YAHAN ADSTERRA WALI SCRIPT BANEGI ===
-            let adScript = document.createElement('script');
-            adScript.type = 'text/javascript';
-            
-            // NICHE WALI LINE MEIN 'src' KE ANDAR APNE ADSTERRA POPUNDER KA LINK DAALEIN
-            // Example: adScript.src = '//pl234567.pubrevenuegate.com/ab/cd/ef.js';
-            adScript.src = 'https://mausoleumpoetrywrench.com/4d/15/73/4d157332aaf7080a8ea18881f22dee38.js'; 
-            
-            document.body.appendChild(adScript);
-            // =========================================
-
-            // Ad load hone ke baad count badha kar wapas browser mein save kar do
-            popData.count += 1;
-            localStorage.setItem('student_popunder_status', JSON.stringify(popData));
-        }
-    }
-    
-    // Page load hone par ye check chalega
-    window.onload = function() {
-        loadAdsterraPopunder();
-    };
-</script>
-<!-- ==================================================== -->
 </body>
 </html>
