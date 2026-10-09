@@ -89,10 +89,10 @@ body.dark-mode #homepage-title { color: #4dabf7; }
 .category-box { 
     padding: 25px; 
     border-radius: 12px; 
-    background-color: var(--box-bg); 
+    background-color: #f2f3ef; 
     width: 100%;
     max-width: 350px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 15px rgba(192, 30, 30, 0.945);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,3 +146,49 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
 .wrong-box summary { color: #dc3545; font-weight: bold; cursor: pointer; }
 .review-box ul { padding-left: 20px; font-size: 0.9em; margin: 10px 0; line-height: 1.6; }
 .history-item { border-bottom: 1px solid #ccc; padding: 10px 0; margin-bottom: 10px; }
+
+/* --- CHAPTER SELECTION BUTTONS (Mobile & PC Friendly) --- */
+.chapter-btn {
+    background-color: #ffffff; /* White background jisse text clear dikhe */
+    color: #333333; /* Dark grey text for high contrast */
+    border: 2px solid #007bff; /* Blue outline */
+    border-radius: 8px; /* Gol kinare */
+    padding: 16px 20px; /* Mobile par touch karne ke liye bada size */
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%; /* Mobile screen ke hisaab se khud adjust hoga */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Halki si shadow 3D look ke liye */
+    transition: all 0.3s ease; /* Hover karne par smooth effect */
+    text-align: left; /* Text left me rahega padhne me aasan */
+}
+
+/* Jab PC par mouse upar aayega ya mobile par touch karenge */
+.chapter-btn:hover, .chapter-btn:active {
+    background-color: #007bff; /* Background blue ho jayega */
+    color: #ffffff; /* Text white ho jayega */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* --- PDF VIEWER STYLES (Mobile & PC Friendly) --- */
+.pdf-container {
+    width: 100%;
+    height: 75vh; /* PC aur Laptop ke liye height */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-color: #f4f6f9; /* Jab tak PDF load na ho, ek light color dikhe */
+}
+
+/* Mobile screens ke liye special settings */
+@media (max-width: 600px) {
+    .pdf-container {
+        height: 85vh; /* Mobile par PDF ko aur zyada height milegi */
+        border-radius: 4px; /* Mobile par kinare thode kam gol honge */
+    }
+    #pdf-title {
+        font-size: 1.2rem; /* Mobile par title ka size adjust ho jayega */
+        margin-bottom: 10px;
+    }
+}
