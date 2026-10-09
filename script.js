@@ -11,6 +11,37 @@ const hindiTranslations = {
     "Time Left:": "बचा हुआ समय:", "Submit Test": "टेस्ट जमा करें", "Test Results": "टेस्ट परिणाम", 
     "Overall Score:": "कुल स्कोर:", "Dynamic Rank:": "रैंक:", "Correct Attempts": "सही प्रयास", "Wrong Attempts": "गलत प्रयास"
 };
+// --- PDF DATABASE ---
+// Isme aap kabhi bhi naye chapters add ya remove kar sakte hain
+const pdfDatabase = {
+"Quick Revision": {
+  "Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
+                           { name: "Chapter 2: Acids, Bases and Salts", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+                           ],
+             "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+                      ],
+             "SST": [ {name: "History|Chapter 1: Nationalism", link: "" }],
+             "English": [{name: "Grammer: Tense", link:"https://drive.google.com/file/d/1dvfUZiI1xNfBfyeSahZq1C9cMpYVwbZy/preview"}]       
+        },
+  "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+            ]
+        }
+    },
+"Books": // Books ke links yahan aayenge
+   {"Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
+                           { name: "Chapter 2: Acids, Bases and Salts", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+                           ],
+         "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+            ]
+        },
+  "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+            ]
+        }
+        },
+    "Solutions": // Solutions ke links yahan aayenge
+    {
+    }
+};
 
 let timerInterval;
 let currentClass = "";
@@ -100,51 +131,18 @@ function openClassSelection(title) {
 
 // --- NEW GOOGLE DRIVE ROUTING LOGIC ---
 function selectClass(className) {
-    if (currentCategory === 'Test Series') {
-        showSubjects(className);
-    } 
-    else if (currentCategory === 'Books' ) {
-        let linkToOpen = "";
-        if (className === 'Class 6') { linkToOpen = ""; }
-        else if (className === 'Class 7') { linkToOpen = ""; }
-        else if (className === 'Class 8') { linkToOpen = "https://drive.google.com/drive/folders/1t25mEnxxmk4zYNbYME5M2ibxrIw3ngZW?usp=drive_link"; }
-        else if (className === 'Class 9') { linkToOpen = "https://drive.google.com/drive/folders/1cHZuKzCqRO_gKIuss6ARTN5bK8QTbdur?usp=sharing"; }
-        else if (className === 'Class 10') { linkToOpen = "https://drive.google.com/drive/folders/1iPV4oj-tDQFLvGoHocgDWqlqPyqI4Tpf?usp=sharing"; }
-        
-        if (linkToOpen !== "" && linkToOpen !== "PASTE_CLASS_10_DRIVE_LINK_HERE") {
-            window.open(linkToOpen, '_blank');
-        } else {
-            alert('Links have not been added for ' + className + ' yet!');
-        }
-    } 
-    else if (currentCategory === 'Quick Revision' ) {
-        let linkToOpen = "";
-        if (className === 'Class 6') { linkToOpen = "https://drive.google.com/drive/folders/1Q1ms3CcxdYq3Sry1aNBpwJ18NOJBMsg0?usp=drive_link"; }
-        else if (className === 'Class 7') { linkToOpen = "https://drive.google.com/drive/folders/100hNOJA0tuP6nfa4e1cGcqD7mlMlB8N1?usp=drive_link"; }
-        else if (className === 'Class 8') { linkToOpen = "https://drive.google.com/drive/folders/1t25mEnxxmk4zYNbYME5M2ibxrIw3ngZW?usp=drive_link"; }
-        else if (className === 'Class 9') { linkToOpen = "https://drive.google.com/drive/folders/14c97WPMDFqKmc2m_LwaGs5H9Cr6vB1QO?usp=drive_link"; }
-        else if (className === 'Class 10') { linkToOpen = "https://drive.google.com/drive/folders/1Uizr19qlhmC6XFulsXDL6iRSN1qIt11r"; }
-        
-        if (linkToOpen !== "" && linkToOpen !== "PASTE_CLASS_10_DRIVE_LINK_HERE") {
-            window.open(linkToOpen, '_blank');
-        } else {
-            alert('Links have not been added for ' + className + ' yet!');
-        }
-    }  
-    else if (currentCategory === 'Solutions' ) {
-        let linkToOpen = "";
-        if (className === 'Class 6') { linkToOpen = ""; }
-        else if (className === 'Class 7') { linkToOpen = ""; }
-        else if (className === 'Class 8') { linkToOpen = "https://drive.google.com/drive/folders/1t25mEnxxmk4zYNbYME5M2ibxrIw3ngZW?usp=drive_link"; }
-        else if (className === 'Class 9') { linkToOpen = "https://drive.google.com/drive/folders/1cHZuKzCqRO_gKIuss6ARTN5bK8QTbdur?usp=sharing"; }
-        else if (className === 'Class 10') { linkToOpen = "https://drive.google.com/drive/folders/1iPV4oj-tDQFLvGoHocgDWqlqPyqI4Tpf?usp=sharing"; }
-        
-        if (linkToOpen !== "" && linkToOpen !== "PASTE_CLASS_10_DRIVE_LINK_HERE") {
-            window.open(linkToOpen, '_blank');
-        } else {
-            alert('Links have not been added for ' + className + ' yet!');
-        }
-    } 
+    currentClass = className;
+
+    // 1. Agar category Video nahi hai, toh sidha Subject Dashboard kholo
+    if (currentCategory !== 'Video Explanation') {
+        document.getElementById('subject-title').innerText = currentClass + " Subjects";
+        viewHistoryStack = ['main-dashboard', 'class-selection-dashboard'];
+        openExclusiveView('subject-dashboard');
+        return; 
+    }
+
+    // 2. --- YAHAN SE NICHE AAPKA PURANA VIDEO EXPLANATION WALA CODE RAHEGA ---
+    // (Aapki line 174 wali: if (currentCategory === 'Video Explanation') wala block waisa hi chhod dein) 
     else if (currentCategory === 'Video Explanation') {
         document.getElementById('video-title').innerText = className + " - Video Explanations";
         let videoHTML = "";
@@ -542,4 +540,56 @@ function submitTest() {
     document.getElementById('rank').innerText = `#${myRank} out of ${totalAttempts} attempts for this specific test`; 
     document.getElementById('correct-list').innerHTML = correctHTML || "<li>None</li>";
     document.getElementById('wrong-list').innerHTML = wrongHTML || "<li>None</li>";
+}
+// --- SUBJECT & CHAPTER LOGIC ---
+
+// 1. Jab koi Subject par click karega:
+function handleSubjectSelection(subject) {
+    currentSubject = subject;
+    
+    if (currentCategory === 'Test Series') {
+        // Test Series ko bilkul nahi chheda, ye pehle jaisa chalega
+        startTest(subject); 
+    } else {
+        // Baaki sabke liye Chapters dikhayega
+        showChapters(subject); 
+    }
+}
+
+// 2. Chapters ke buttons automatically banana:
+function showChapters(subject) {
+    let chapterContainer = document.getElementById('chapter-list');
+    chapterContainer.innerHTML = ""; // Purane buttons clear karein
+    
+    document.getElementById('chapter-title').innerText = `${currentClass} - ${subject} (${currentCategory})`;
+
+    let categoryData = pdfDatabase[currentCategory];
+    
+    // Check karna ki is class aur subject ke chapters database me hain ya nahi
+    if (categoryData && categoryData[currentClass] && categoryData[currentClass][subject]) {
+        let chapters = categoryData[currentClass][subject];
+        
+        chapters.forEach(ch => {
+            let btn = document.createElement('button');
+            btn.className = "chapter-btn"; // Naya aur saaf design class
+            // Inline CSS hata diya taaki loading fast ho
+            btn.innerText = ch.name;
+            btn.onclick = () => openPDFViewer(ch.name, ch.link);
+            chapterContainer.appendChild(btn);
+        });
+    } else {
+        chapterContainer.innerHTML = "<p style='text-align:center; color: red;'>Chapters coming soon!</p>";
+    }
+
+    viewHistoryStack = ['main-dashboard', 'subject-dashboard']; 
+    openExclusiveView('chapter-dashboard');
+}
+
+// 3. PDF ko Website ke andar Modal mein kholna:
+function openPDFViewer(chapterName, pdfUrl) {
+    document.getElementById('pdf-title').innerText = chapterName;
+    document.getElementById('pdf-iframe').src = pdfUrl;
+    
+    viewHistoryStack = ['main-dashboard', 'subject-dashboard', 'chapter-dashboard'];
+    openExclusiveView('pdf-viewer-modal');
 }
