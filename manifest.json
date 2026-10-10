@@ -2,7 +2,7 @@
   "name": "Digital Paathsaala",
   "short_name": "Paathsaala",
   "description": "Key of Learning - Your EdTech Platform",
-  "start_url": "/",
+  "start_url": "/Digital-Paathsaala/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#007bff",
