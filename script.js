@@ -663,36 +663,68 @@ function closeVideoPlayer() {
     document.getElementById('video-dashboard').classList.remove('hidden');
 }
 /* =======================================================
-   DEVICE HARDWARE BACK BUTTON SYNC (MOBILE & PC)
+   ADVANCED HARDWARE BACK BUTTON SYNC (MOBILE & PC)
    ======================================================= */
 
-// 1. जब ऐप खुले, तो ब्राउज़र की हिस्ट्री में एक बेस (Home) स्टेट सेव कर दें
-window.history.pushState({ state: 'home' }, "", "");
+// 1. जब ऐप लोड हो, तो उसे 'Home' स्टेट पर सेट करें
+window.history.replaceState({ step: 'home' }, "", "");
+let ignorePop = false;
 
-// 2. जब यूजर डिवाइस का बैक बटन (या मोबाइल का बैक जेस्चर) यूज़ करे
-window.addEventListener('popstate', function (event) {
+// यह फंक्शन चेक करता है कि स्क्रीन पर अभी क्या-क्या टेक्स्ट/हेडिंग दिख रही है
+function getCurrentAppState() {
+    return Array.from(document.querySelectorAll('h1, h2, h3, h4, summary'))
+        .filter(el => el.offsetParent !== null)
+        .map(el => el.innerText).join('|');
+}
+
+// 2. जब भी यूजर स्क्रीन पर कहीं भी क्लिक करे
+document.addEventListener('click', function (e) {
+    let btn = e.target.closest('button');
+    let isBackButton = btn && btn.innerText.toLowerCase().includes('back');
     
-    // स्क्रीन पर दिख रहे आपके HTML वाले "Back" बटन को ढूंढें
-    let backButton = Array.from(document.querySelectorAll('button')).find(
+    // A. अगर यूजर ने अपनी उंगली/माउस से सीधा आपका '<- Back' बटन दबाया है
+    if (isBackButton && e.isTrusted) {
+        ignorePop = true; // ब्राउज़र को बताएं कि वो बैकग्राउंड क्लिक को इग्नोर करे
+        window.history.back(); // ब्राउज़र की हिस्ट्री को भी एक कदम पीछे खिसकाएं (Sync करने के लिए)
+        return;
+    }
+
+    // B. अगर यूजर ने किसी और चीज़ (Class, Subject, Chapter, Card) पर क्लिक किया है
+    let isMenuButton = btn && btn.innerText.toLowerCase().includes('menu');
+    if (!isBackButton && !isMenuButton) {
+        
+        let oldState = getCurrentAppState(); // क्लिक से पहले का स्क्रीन डिज़ाइन
+
+        // 150ms रुक कर चेक करें कि क्या नया पेज/सेक्शन खुला है
+        setTimeout(() => {
+            let newState = getCurrentAppState();
+            let backBtnVisible = Array.from(document.querySelectorAll('button')).find(
+                b => b.innerText.toLowerCase().includes('back') && b.offsetParent !== null
+            );
+
+            // अगर स्क्रीन का डिज़ाइन बदला है और '<- Back' बटन दिखाई दे रहा है, तो हिस्ट्री बढ़ा दें
+            if (backBtnVisible && oldState !== newState) {
+                window.history.pushState({ step: 'inner' }, "", "");
+            }
+        }, 150);
+    }
+});
+
+// 3. जब यूजर मोबाइल या पीसी का असली (Hardware) बैक बटन दबाए
+window.addEventListener('popstate', function (event) {
+    // अगर बैक बटन हिस्ट्री को Sync करने के लिए चला था, तो कुछ ना करें
+    if (ignorePop) {
+        ignorePop = false;
+        return;
+    }
+
+    // वर्ना स्क्रीन पर मौजूद '<- Back' बटन को ऑटो-क्लिक करवा दें
+    let backBtn = Array.from(document.querySelectorAll('button')).find(
         btn => btn.innerText.toLowerCase().includes('back') && btn.offsetParent !== null
     );
 
-    if (backButton) {
-        // अगर स्क्रीन पर आपका Back बटन मौजूद है, तो उसे बैकग्राउंड में ऑटो-क्लिक करवा दें
-        backButton.click();
-        
-        // ब्राउज़र को ऐप से बाहर निकलने से रोकने के लिए हिस्ट्री में वापस एक स्टेट डाल दें
-        window.history.pushState({ state: 'inner' }, "", "");
-    } 
-    // अगर स्क्रीन पर Back बटन नहीं है (यानी यूजर होम स्क्रीन पर है), तो ऐप नार्मल तरीके से क्लोज हो जाएगा।
-});
-
-// 3. जब भी यूजर आगे बढ़े (किसी Class/Subject/Video पर क्लिक करे), तो हिस्ट्री में एक पॉइंट जोड़ें
-document.addEventListener('click', function (e) {
-    let btn = e.target.closest('button'); // क्लिक किये गए बटन को पकड़े
-    
-    // अगर क्लिक किया गया बटन "Back" या "Menu" नहीं है, तो हिस्ट्री अपडेट करें
-    if (btn && !btn.innerText.toLowerCase().includes('back') && !btn.innerText.toLowerCase().includes('menu')) {
-        window.history.pushState({ state: 'inner' }, "", "");
+    if (backBtn) {
+        backBtn.click(); 
     }
 });
+/* ======================================================= */
