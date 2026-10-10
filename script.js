@@ -662,3 +662,37 @@ function closeVideoPlayer() {
     // वापस चैप्टर्स का डैशबोर्ड दिखाएं
     document.getElementById('video-dashboard').classList.remove('hidden');
 }
+/* =======================================================
+   DEVICE HARDWARE BACK BUTTON SYNC (MOBILE & PC)
+   ======================================================= */
+
+// 1. जब ऐप खुले, तो ब्राउज़र की हिस्ट्री में एक बेस (Home) स्टेट सेव कर दें
+window.history.pushState({ state: 'home' }, "", "");
+
+// 2. जब यूजर डिवाइस का बैक बटन (या मोबाइल का बैक जेस्चर) यूज़ करे
+window.addEventListener('popstate', function (event) {
+    
+    // स्क्रीन पर दिख रहे आपके HTML वाले "Back" बटन को ढूंढें
+    let backButton = Array.from(document.querySelectorAll('button')).find(
+        btn => btn.innerText.toLowerCase().includes('back') && btn.offsetParent !== null
+    );
+
+    if (backButton) {
+        // अगर स्क्रीन पर आपका Back बटन मौजूद है, तो उसे बैकग्राउंड में ऑटो-क्लिक करवा दें
+        backButton.click();
+        
+        // ब्राउज़र को ऐप से बाहर निकलने से रोकने के लिए हिस्ट्री में वापस एक स्टेट डाल दें
+        window.history.pushState({ state: 'inner' }, "", "");
+    } 
+    // अगर स्क्रीन पर Back बटन नहीं है (यानी यूजर होम स्क्रीन पर है), तो ऐप नार्मल तरीके से क्लोज हो जाएगा।
+});
+
+// 3. जब भी यूजर आगे बढ़े (किसी Class/Subject/Video पर क्लिक करे), तो हिस्ट्री में एक पॉइंट जोड़ें
+document.addEventListener('click', function (e) {
+    let btn = e.target.closest('button'); // क्लिक किये गए बटन को पकड़े
+    
+    // अगर क्लिक किया गया बटन "Back" या "Menu" नहीं है, तो हिस्ट्री अपडेट करें
+    if (btn && !btn.innerText.toLowerCase().includes('back') && !btn.innerText.toLowerCase().includes('menu')) {
+        window.history.pushState({ state: 'inner' }, "", "");
+    }
+});
