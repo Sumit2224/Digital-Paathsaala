@@ -192,3 +192,59 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
         margin-bottom: 10px;
     }
 }
+/* === RESPONSIVE VIDEO VIEWER === */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* यह वीडियो को हर स्क्रीन पर परफेक्ट YouTube साइज़ में रखेगा */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-top: 15px;
+    background-color: #000;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* === VIDEO CHAPTER BUTTON (YouTube Style) === */
+.video-chapter-btn {
+    display: flex;
+    justify-content: space-between; /* टेक्स्ट लेफ्ट में, लोगो राइट में */
+    align-items: center;
+    background-color: #ffffff;
+    color: #333333;
+    border: 2px solid #ff0000; /* YouTube Red Border */
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.video-chapter-btn:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+.yt-badge {
+    color: #ff0000;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.video-chapter-btn:hover .yt-badge {
+    color: #ffffff;
+}
