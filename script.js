@@ -141,37 +141,10 @@ function selectClass(className) {
         return; 
     }
 
-    // 2. --- YAHAN SE NICHE AAPKA PURANA VIDEO EXPLANATION WALA CODE RAHEGA ---
-    // (Aapki line 174 wali: if (currentCategory === 'Video Explanation') wala block waisa hi chhod dein) 
-    else if (currentCategory === 'Video Explanation') {
-        document.getElementById('video-title').innerText = className + " - Video Explanations";
-        let videoHTML = "";
-        
-        if (className === 'Class 6') { 
-            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
-        }
-        else if (className === 'Class 7') { 
-            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
-        }
-        else if (className === 'Class 8') { 
-            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
-        }
-        else if (className === 'Class 9') { 
-            videoHTML = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>`; 
-        }
-        else if (className === 'Class 10') { 
-            videoHTML = `
-              <h4 style="text-align: left; margin-bottom: 5px;">Test Video: Chapter 1 Chemical Reactions</h4>  
-              <iframe width="891" height="501" src="https://www.youtube.com/embed/1wQqGFebxyA" title="Intro to Chemical reactions" frameborder="0" allowfullscreen></iframe>
-            `; 
-        }
-
-        if (videoHTML.includes("YOUR_VIDEO_ID")) {
-            alert('Please paste your real YouTube embed codes in script.js for ' + className);
-        } else {
-            document.getElementById('video-container').innerHTML = videoHTML;
-            openExclusiveView('video-dashboard');
-        }
+else if (currentCategory === 'Video Explanation') {
+        // यह नया फंक्शन सीधा Class के हिसाब से Subjects दिखाएगा
+        showVideoSubjects(className);
+        openExclusiveView('video-dashboard');
     }
 }
 
@@ -592,4 +565,100 @@ function openPDFViewer(chapterName, pdfUrl) {
     
     viewHistoryStack = ['main-dashboard', 'subject-dashboard', 'chapter-dashboard'];
     openExclusiveView('pdf-viewer-modal');
+}
+/* ==========================================
+   VIDEO DATABASE (Class -> Subject -> Chapters)
+   ========================================== */
+const videoDatabase = {
+    "Class 10": {
+        "Science": [
+            { name: "Chapter 1: Chemical Reactions and Equations", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID_1" },
+            { name: "Chapter 3: Metals and Non-Metals", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID_2" },
+            { name: "Chapter 11: Electricity", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID_3" }
+        ],
+        "Maths": [
+            { name: "Chapter 1: Real Numbers", link: "https://www.youtube.com/embed/YOUR_MATHS_VIDEO_ID" }
+        ]
+    },
+    "Class 9": {
+        "Science": [
+            { name: "Matter in Our Surroundings", link: "https://www.youtube.com/embed/VIDEO_ID" }
+        ]
+    }
+    // ऐसे ही आप और Classes और Subjects जोड़ सकते हैं
+};
+
+
+/* ==========================================
+   VIDEO FLOW FUNCTIONS
+   ========================================== */
+
+// 1. Class सेलेक्ट करने के बाद Subjects दिखाना
+function showVideoSubjects(className) {
+    let container = document.getElementById('video-container');
+    container.innerHTML = ""; // पुराना डेटा साफ़ करें
+    document.getElementById('video-title').innerText = className + " - Select Subject";
+
+    // अगर डेटाबेस में उस क्लास का डेटा है
+    if(videoDatabase[className]) {
+        let subjects = Object.keys(videoDatabase[className]);
+        
+        subjects.forEach(sub => {
+            let btn = document.createElement('button');
+            btn.className = "chapter-btn"; // PDF वाले सेक्शन की CSS क्लास ही यूज़ की है
+            btn.innerText = sub;
+            btn.onclick = () => showVideoChapters(className, sub);
+            container.appendChild(btn);
+        });
+    } else {
+        container.innerHTML = "<p style='text-align:center;'>Videos coming soon!</p>";
+    }
+}
+
+// 2. Subject सेलेक्ट करने के बाद Chapters (YouTube Logo के साथ) दिखाना
+function showVideoChapters(className, subjectName) {
+    let container = document.getElementById('video-container');
+    container.innerHTML = ""; 
+    document.getElementById('video-title').innerText = className + " - " + subjectName;
+
+    let chapters = videoDatabase[className][subjectName];
+
+    chapters.forEach(ch => {
+        let btn = document.createElement('button');
+        btn.className = "video-chapter-btn"; // हमारी नई YouTube स्टाइल वाली क्लास
+        
+        // बटन के अंदर दांयी तरफ "▶ Video" बैज लगाना
+        btn.innerHTML = `
+            <span>${ch.name}</span> 
+            <span class="yt-badge">▶ Video</span>
+        `;
+        
+        btn.onclick = () => playVideo(ch.name, ch.link);
+        container.appendChild(btn);
+    });
+}
+
+// 3. वीडियो प्ले करना (Modal ओपन करना)
+function playVideo(chapterName, videoUrl) {
+    // डैशबोर्ड छुपाएं
+    document.getElementById('video-dashboard').classList.add('hidden');
+    
+    // टाइटल और वीडियो लिंक सेट करें
+    document.getElementById('playing-video-title').innerText = chapterName;
+    document.getElementById('video-iframe').src = videoUrl;
+    
+    // प्लेयर वाला सेक्शन दिखाएं
+    document.getElementById('video-viewer-modal').classList.remove('hidden');
+}
+
+// 4. बैक बटन (वीडियो बंद करके वापस चैप्टर्स पर जाना)
+function closeVideoPlayer() {
+    // iframe का src खाली करना ज़रूरी है ताकि बैकग्राउंड में वीडियो की आवाज़ न आती रहे
+    document.getElementById('video-iframe').src = "";
+    
+    // प्लेयर छुपाएं
+    document.getElementById('video-viewer-modal').classList.add('hidden');
+    
+    // वापस चैप्टर्स का डैशबोर्ड दिखाएं
+    document.getElementById('video-dashboard').classList.remove('hidden');
 }
