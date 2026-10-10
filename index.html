@@ -343,17 +343,33 @@
     </details>
     <button onclick="closeToHome()" style="margin-top: 20px;" data-key="Back to Home">Back to Home</button>
 </div>
-<!-- Video Explanation Dashboard -->
+<!-- === 1. Video Explanation Dashboard (Chapters ke buttons yahan aayenge) === -->
 <div id="video-dashboard" class="dashboard view-section hidden">
     <h2 id="video-title" style="text-align:center; color: #007bff;">Video Explanations</h2>
     <div class="category-box" style="margin: 0 auto; width: 90%; max-width: 800px; padding: 20px;">
         <p style="text-align: left; margin-bottom: 15px; font-weight: bold;">Select a lesson to watch:</p>
         
-        <!-- Videos will be magically injected here by JavaScript -->
-        <div id="video-container" style="display: flex; flex-direction: column; gap: 20px;">
+        <!-- Yahan iframes ki jagah JavaScript naye YouTube style Buttons daalega -->
+        <div id="video-container" style="display: flex; flex-direction: column; gap: 10px;">
         </div>
-        
     </div>
+</div>
+
+<!-- === 2. NAYA: VIDEO VIEWER MODAL (Responsive Player) === -->
+<div id="video-viewer-modal" class="view-section hidden">
+    <h2 id="playing-video-title" style="color: #ff0000; text-align: center; margin-bottom: 15px;">Now Playing</h2>
+    
+    <!-- Yeh wrapper video ko PC aur Mobile dono par perfectly fit karega -->
+    <div style="width: 90%; max-width: 800px; margin: 0 auto;">
+        <div class="video-wrapper">
+            <iframe id="video-iframe" src="" allowfullscreen loading="lazy"></iframe>
+        </div>
+    </div>
+    
+    <!-- Video dekhne ke baad wapas chapters par jane ka button -->
+    <button onclick="closeVideoPlayer()" style="display: block; margin: 25px auto; padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+        ⬅ Back to Chapters
+    </button>
 </div>
 <script src="script.js?v=2"></script>
 <script>
