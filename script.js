@@ -663,68 +663,74 @@ function closeVideoPlayer() {
     document.getElementById('video-dashboard').classList.remove('hidden');
 }
 /* =======================================================
-   ADVANCED HARDWARE BACK BUTTON SYNC (MOBILE & PC)
+   UNIVERSAL HARDWARE BACK BUTTON (WORKS IN ALL SECTIONS)
    ======================================================= */
 
-// 1. जब ऐप लोड हो, तो उसे 'Home' स्टेट पर सेट करें
-window.history.replaceState({ step: 'home' }, "", "");
-let ignorePop = false;
+let isAppBackBtnClicked = false;
+let currentScreenTitle = "";
 
-// यह फंक्शन चेक करता है कि स्क्रीन पर अभी क्या-क्या टेक्स्ट/हेडिंग दिख रही है
-function getCurrentAppState() {
-    return Array.from(document.querySelectorAll('h1, h2, h3, h4, summary'))
+// Helper function: Screen par dikh rahi headings ko check karne ke liye
+function getVisibleHeadings() {
+    return Array.from(document.querySelectorAll('h1, h2, h3, h4'))
         .filter(el => el.offsetParent !== null)
-        .map(el => el.innerText).join('|');
+        .map(el => el.innerText)
+        .join('|');
 }
 
-// 2. जब भी यूजर स्क्रीन पर कहीं भी क्लिक करे
+// 1. App start hote hi pehli history save karein
+window.history.replaceState({ step: 0 }, "");
+currentScreenTitle = getVisibleHeadings();
+
+// 2. Screen par kahin bhi click hone par ye chalega
 document.addEventListener('click', function (e) {
     let btn = e.target.closest('button');
-    let isBackButton = btn && btn.innerText.toLowerCase().includes('back');
+    let isBackBtn = btn && btn.innerText.toLowerCase().includes('back');
+    let isMenuBtn = btn && btn.innerText.toLowerCase().includes('menu');
     
-    // A. अगर यूजर ने अपनी उंगली/माउस से सीधा आपका '<- Back' बटन दबाया है
-    if (isBackButton && e.isTrusted) {
-        ignorePop = true; // ब्राउज़र को बताएं कि वो बैकग्राउंड क्लिक को इग्नोर करे
-        window.history.back(); // ब्राउज़र की हिस्ट्री को भी एक कदम पीछे खिसकाएं (Sync करने के लिए)
-        return;
-    }
-
-    // B. अगर यूजर ने किसी और चीज़ (Class, Subject, Chapter, Card) पर क्लिक किया है
-    let isMenuButton = btn && btn.innerText.toLowerCase().includes('menu');
-    if (!isBackButton && !isMenuButton) {
+    // Case A: Agar app ka apna "<- Back" button dabaya gaya hai
+    if (isBackBtn && e.isTrusted) {
+        isAppBackBtnClicked = true;
+        window.history.back(); // Browser ko bhi back karein
         
-        let oldState = getCurrentAppState(); // क्लिक से पहले का स्क्रीन डिज़ाइन
-
-        // 150ms रुक कर चेक करें कि क्या नया पेज/सेक्शन खुला है
+        // Back aane ke thodi der baad naya title save kar lein
+        setTimeout(() => { currentScreenTitle = getVisibleHeadings(); }, 150);
+        return;
+    } 
+    
+    // Case B: Agar app mein kisi bhi (Class/Subject/Video/Test) par click kiya hai
+    if (!isBackBtn && !isMenuBtn && e.isTrusted) {
+        // 300ms ruk kar check karein ki kya UI badla hai
         setTimeout(() => {
-            let newState = getCurrentAppState();
-            let backBtnVisible = Array.from(document.querySelectorAll('button')).find(
+            let newScreenTitle = getVisibleHeadings();
+            let backVisible = Array.from(document.querySelectorAll('button')).some(
                 b => b.innerText.toLowerCase().includes('back') && b.offsetParent !== null
             );
-
-            // अगर स्क्रीन का डिज़ाइन बदला है और '<- Back' बटन दिखाई दे रहा है, तो हिस्ट्री बढ़ा दें
-            if (backBtnVisible && oldState !== newState) {
-                window.history.pushState({ step: 'inner' }, "", "");
+            
+            // Agar heading badal gayi aur Back button dikh raha hai = Naya Page open hua hai
+            if (backVisible && currentScreenTitle !== newScreenTitle) {
+                window.history.pushState({ step: Date.now() }, "");
+                currentScreenTitle = newScreenTitle; // Naye page ka title save kar lein
             }
-        }, 150);
+        }, 300);
     }
 });
 
-// 3. जब यूजर मोबाइल या पीसी का असली (Hardware) बैक बटन दबाए
+// 3. Jab mobile ya PC ka asal Back button dabaya jaye
 window.addEventListener('popstate', function (event) {
-    // अगर बैक बटन हिस्ट्री को Sync करने के लिए चला था, तो कुछ ना करें
-    if (ignorePop) {
-        ignorePop = false;
+    // Agar click hamare code se hua tha, to double back hone se rokein
+    if (isAppBackBtnClicked) {
+        isAppBackBtnClicked = false;
         return;
     }
 
-    // वर्ना स्क्रीन पर मौजूद '<- Back' बटन को ऑटो-क्लिक करवा दें
-    let backBtn = Array.from(document.querySelectorAll('button')).find(
-        btn => btn.innerText.toLowerCase().includes('back') && btn.offsetParent !== null
+    // Screen par dikh rahe "<- Back" button ko dhundh kar click karwayein
+    let visibleBackBtn = Array.from(document.querySelectorAll('button')).find(
+        b => b.innerText.toLowerCase().includes('back') && b.offsetParent !== null
     );
 
-    if (backBtn) {
-        backBtn.click(); 
+    if (visibleBackBtn) {
+        visibleBackBtn.click();
+        setTimeout(() => { currentScreenTitle = getVisibleHeadings(); }, 150);
     }
 });
 /* ======================================================= */
