@@ -248,3 +248,19 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
 .video-chapter-btn:hover .yt-badge {
     color: #ffffff;
 }
+/* === MOBILE FIX: TITLE OVERLAP ISSUE === */
+@media screen and (max-width: 768px) {
+    /* Ye sirf Mobile (768px se kam width) par chalega */
+    .view-section {
+        /* Menu aur Back button ki height ke barabar ka gap de rahe hain */
+        padding-top: 70px !important; 
+    }
+    
+    /* Titles ko aur clear dikhane ke liye thoda extra margin */
+    .view-section h2, 
+    #video-title, 
+    #playing-video-title {
+        margin-top: 15px !important;
+        line-height: 1.4; /* Line ke beech thoda gap taaki text mix na ho */
+    }
+}
