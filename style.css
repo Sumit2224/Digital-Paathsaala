@@ -264,45 +264,55 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
         line-height: 1.4; /* Line ke beech thoda gap taaki text mix na ho */
     }
 }
-/* === HOME PAGE GRID LAYOUT UPDATE (PC: 3 Boxes, Mobile: 2 Boxes) === */
+/* === 100% RESPONSIVE GRID (PC & MOBILE OVERLAP FIX) === */
 
 .homepage-grid { 
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important; /* 3 boxes per row on PC */
-    gap: 30px !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* PC: 3 boxes per row */
+    gap: 25px !important; /* Box ke beech ka gap thoda badhaya taaki wo chipke nahi */
     width: 100% !important;
-    max-width: 1200px !important; /* Prevents boxes from stretching too much on PC screens */
+    max-width: 1000px !important; /* Container ko 1200px se 1000px kiya jisse box ka size thoda kam ho gaya */
+    margin: 0 auto !important;
+    padding: 20px !important; /* Kinaron se jagah chhodne ke liye */
+    box-sizing: border-box !important;
+}
+
+/* Box ko flexible banane ka asli logic */
+.homepage-grid .category-box {
+    width: 100% !important;
+    min-width: 0 !important; /* Ye line overlap ko 100% rokegi */
+    max-width: 300px !important; /* Box isse zyada bada nahi hoga */
+    margin: 0 auto !important; 
+    box-sizing: border-box !important; /* Padding ko bahar nahi nikalne dega */
+    overflow: hidden !important;
+}
+
+/* Image ko box ke andar fix rakhne ke liye */
+.homepage-grid .category-box img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
     margin: 0 auto !important;
 }
+
 /* === MOBILE VIEW FIX === */
 @media screen and (max-width: 768px) {
     .homepage-grid {
-        grid-template-columns: repeat(2, 1fr) !important; /* 2 boxes per row on Mobile */
-        gap: 10px !important; /* Gap further adjusted to fit boxes perfectly */
+        grid-template-columns: repeat(2, 1fr) !important; /* Mobile: 2 boxes per row */
+        gap: 12px !important; 
         padding: 10px !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important; /* Extra scroll ya overlap rokne ke liye */
     }
     
-    /* Box overlapping issue fixed */
     .homepage-grid .category-box {
-        width: 100% !important;
-        min-width: 0 !important; /* Overrides any old fixed width */
-        margin: 0 !important; 
-        box-sizing: border-box !important;
-        padding: 12px 8px !important; /* Adjusted inner spacing */
-    }
-
-    /* Ensuring images don't stretch the box */
-    .homepage-grid .category-box img {
-        max-width: 100% !important;
-        height: auto !important;
+        padding: 12px 8px !important; 
+        max-width: 100% !important; /* Mobile par width adjust karne ke liye */
     }
     
     .homepage-grid .category-box h3 {
         font-size: 14px !important; 
         margin: 8px 0 !important;
-        white-space: normal !important; /* Text ko wrap karne ke liye */
+        white-space: normal !important; /* Text ko agli line mein bhejne ke liye */
+        word-wrap: break-word !important;
     }
     
     .homepage-grid .category-box button {
