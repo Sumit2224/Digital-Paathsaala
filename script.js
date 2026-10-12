@@ -673,14 +673,17 @@ function toggleFullScreen() {
 }
 
 /* =======================================================
-   TEST SERIES LOGIN SECURITY GUARD
+   TEST SERIES LOGIN SECURITY GUARD (FIXED)
    ======================================================= */
 function checkTestAuth(categoryName) {
-    let isUserLoggedIn = localStorage.getItem('isLoggedIn'); 
+    // Fix: Ab ye sahi data (userEmail) check karega jo login hone par save hota hai
+    let userEmail = localStorage.getItem('userEmail'); 
     
-    if (isUserLoggedIn === 'true') {
+    if (userEmail) {
+        // Agar login hai (email memory mein hai), to aage badhne do
         openClassSelection(categoryName); 
     } else {
+        // Agar login NAHI hai, to alert dikhao aur login form par bhejo
         alert("⚠️ Access Denied! Please Login or Register first to access the Test Series.");
         openExclusiveView('login-modal'); 
     }
@@ -689,30 +692,44 @@ function checkTestAuth(categoryName) {
 /* =======================================================
    CONTINUE LEARNING (SMART AUTO-DETECT LOGIC)
    ======================================================= */
+/* =======================================================
+   CONTINUE LEARNING (SMART FILTERED TRACKER)
+   ======================================================= */
 document.addEventListener('click', function(e) {
     let clickedItem = e.target.closest('li, .chapter-btn, .video-card, button, .class-slot'); 
     
     if (clickedItem) {
         let topicText = clickedItem.innerText.trim();
+        let textLower = topicText.toLowerCase();
         let itemAction = clickedItem.getAttribute('onclick'); 
         
         if (itemAction) {
+            // Yahan par humne saare UI, Menu, aur Login/Signup ke functions ko ignore list mein daal diya hai
             let isIgnoredAction = itemAction.includes('openClassSelection') || 
                                   itemAction.includes('handleSubjectSelection') || 
                                   itemAction.includes('selectClass') ||
                                   itemAction.includes('goBack') ||
                                   itemAction.includes('toggle') ||
                                   itemAction.includes('checkTestAuth') ||
-                                  itemAction.includes('openExclusiveView');
+                                  itemAction.includes('openExclusiveView') ||
+                                  itemAction.includes('handleLogin') ||
+                                  itemAction.includes('handleSignUp') ||
+                                  itemAction.includes('handlePasswordReset') ||
+                                  itemAction.includes('logout');
             
-            if (!isIgnoredAction && topicText !== "") {
+            // Text ke basis par bhi check karega ki koi auth button to nahi hai
+            let isAuthText = textLower.includes('log in') || textLower.includes('sign up') || textLower.includes('password') || textLower.includes('menu');
+            
+            if (!isIgnoredAction && !isAuthText && topicText !== "") {
+                // "▶ Video" text ko clean karne ke liye
+                topicText = topicText.replace('▶ Video', '').trim();
+                
                 localStorage.setItem('dp_lastStudiedTopic', topicText);
                 localStorage.setItem('dp_lastAction', itemAction); 
             }
         }
     }
 });
-
 function showContinueLearningCard() {
     let lastTopic = localStorage.getItem('dp_lastStudiedTopic');
     let lastAction = localStorage.getItem('dp_lastAction'); 
