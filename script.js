@@ -817,15 +817,8 @@ function showContinueLearningCard() {
         `;
         section.style.display = 'block';
         
-        // Card par click karte hi direct PDF ya Video khulega
-        document.getElementById('resume-card-btn').onclick = function() {
-            try {
-                let runAction = new Function(lastAction);
-                runAction();
-            } catch(error) {
-                console.log("Error opening chapter:", error);
-            }
-        };
+        // Yahan par naya foolproof logic lagaya hai (Direct HTML onclick set karega)
+        document.getElementById('resume-card-btn').setAttribute('onclick', lastAction);
     }
 }
 
