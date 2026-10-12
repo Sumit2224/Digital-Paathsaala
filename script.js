@@ -548,7 +548,10 @@ function showChapters(subject) {
             let btn = document.createElement('button');
             btn.className = "chapter-btn"; 
             btn.innerText = ch.name;
-            btn.onclick = () => openPDFViewer(ch.name, ch.link);
+            
+            // FIX YAHAN HAI: Ab tracker is action ko aasani se read kar payega
+            btn.setAttribute("onclick", `openPDFViewer("${ch.name}", "${ch.link}")`);
+            
             chapterContainer.appendChild(btn);
         });
     } else {
@@ -627,7 +630,9 @@ function showVideoChapters(className, subjectName) {
             <span class="yt-badge">▶ Video</span>
         `;
         
-        btn.onclick = () => playVideo(ch.name, ch.link);
+        // FIX YAHAN HAI: Video ke liye bhi tracker friendly action
+        btn.setAttribute("onclick", `playVideo("${ch.name}", "${ch.link}")`);
+        
         container.appendChild(btn);
     });
 }
