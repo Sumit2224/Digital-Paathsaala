@@ -1,5 +1,3 @@
-
-
 const hindiTranslations = {
     "Menu": "मेन्यू", "Account": "खाता", "Not Logged In": "लॉग इन नहीं है",
     "Sign Up / Log In": "साइन अप / लॉग इन", "My History": "मेरा इतिहास", "Log Out": "लॉग आउट",
@@ -11,8 +9,8 @@ const hindiTranslations = {
     "Time Left:": "बचा हुआ समय:", "Submit Test": "टेस्ट जमा करें", "Test Results": "टेस्ट परिणाम", 
     "Overall Score:": "कुल स्कोर:", "Dynamic Rank:": "रैंक:", "Correct Attempts": "सही प्रयास", "Wrong Attempts": "गलत प्रयास"
 };
+
 // --- PDF DATABASE ---
-// Isme aap kabhi bhi naye chapters add ya remove kar sakte hain
 const pdfDatabase = {
 "Quick Revision": {
   "Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
@@ -27,7 +25,7 @@ const pdfDatabase = {
             ]
         }
     },
-"Books": // Books ke links yahan aayenge
+"Books": 
    {"Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                            { name: "Chapter 2: Acids, Bases and Salts", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
                            ],
@@ -38,7 +36,7 @@ const pdfDatabase = {
             ]
         }
         },
-    "Solutions": // Solutions ke links yahan aayenge
+    "Solutions": 
     {
     }
 };
@@ -84,13 +82,17 @@ window.onload = () => {
     }
 };
 
-// --- VIEW MANAGEMENT & GLOBAL BACK ---
+// --- VIEW MANAGEMENT & GLOBAL BACK (100% SYNCED NEW LOGIC) ---
+window.history.replaceState({ viewId: 'main-dashboard' }, "");
+
 function openExclusiveView(viewId, isBackAction = false) {
     document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
     document.getElementById(viewId).classList.remove('hidden');
     
+    // Agar bacha naye page par gaya hai, toh history mein add karo
     if (!isBackAction && viewHistoryStack[viewHistoryStack.length - 1] !== viewId) {
         viewHistoryStack.push(viewId);
+        window.history.pushState({ viewId: viewId }, ""); 
     }
     
     const backBtn = document.getElementById('global-back-btn');
@@ -103,25 +105,46 @@ function openExclusiveView(viewId, isBackAction = false) {
     if(viewId === 'history-container') renderHistory();
 }
 
+// Jab user aapka inline '⬅ Back' button dabaye
 function goBack() {
+    let currentView = viewHistoryStack[viewHistoryStack.length - 1];
+    if (currentView === 'test-modal') {
+        if (!confirm("Are you sure you want to exit? Your test progress will be lost.")) return;
+        clearInterval(timerInterval);
+    }
+    // Browser ko seedha peeche jaane ka command
+    window.history.back(); 
+}
+
+// Jab user PC ka Arrow ya Mobile ka Back Swipe kare (MAGIC YAHAN HAI)
+window.addEventListener('popstate', function(event) {
     if (viewHistoryStack.length > 1) {
         let currentView = viewHistoryStack[viewHistoryStack.length - 1];
         
         if (currentView === 'test-modal') {
-            if (!confirm("Are you sure you want to exit? Your test progress will be lost.")) return;
+            if (!confirm("Are you sure you want to exit? Your test progress will be lost.")) {
+                window.history.pushState({ viewId: 'test-modal' }, "");
+                return;
+            }
             clearInterval(timerInterval);
         }
         
+        if (currentView === 'video-viewer-modal') {
+            document.getElementById('video-iframe').src = "";
+        }
+
         viewHistoryStack.pop(); 
         let prevView = viewHistoryStack[viewHistoryStack.length - 1];
         openExclusiveView(prevView, true);
-    }
-}
+    } 
+});
 
 function closeToHome() {
     viewHistoryStack = ['main-dashboard'];
+    window.history.pushState({ viewId: 'main-dashboard' }, ""); 
     openExclusiveView('main-dashboard', true);
 }
+
 
 function openClassSelection(title) {
     currentCategory = title; 
@@ -133,16 +156,12 @@ function openClassSelection(title) {
 function selectClass(className) {
     currentClass = className;
 
-    // 1. Agar category Video nahi hai, toh sidha Subject Dashboard kholo
     if (currentCategory !== 'Video Explanation') {
         document.getElementById('subject-title').innerText = currentClass + " Subjects";
         viewHistoryStack = ['main-dashboard', 'class-selection-dashboard'];
         openExclusiveView('subject-dashboard');
         return; 
-    }
-
-else if (currentCategory === 'Video Explanation') {
-        // यह नया फंक्शन सीधा Class के हिसाब से Subjects दिखाएगा
+    } else if (currentCategory === 'Video Explanation') {
         showVideoSubjects(className);
         openExclusiveView('video-dashboard');
     }
@@ -171,7 +190,6 @@ function changeLanguage(lang) {
 const WEB_APP_URL="https://script.google.com/macros/s/AKfycbyeTKOl2634OfTh0ZQmoQU5ePaZZZkJe-gEjWgbkZ0V-DqpcMxxWGHL3es2UNZJBcJY/exec";
 
 // --- 100% CLOUD AUTHENTICATION ---
-// --- 100% CLOUD LOG IN ---
 async function handleLogin() {
     const email = document.getElementById('login-email').value.trim();
     const pass = document.getElementById('login-password').value;
@@ -207,7 +225,6 @@ async function handleLogin() {
     }
 }
 
-// --- 100% CLOUD SIGN UP ---
 async function handleSignUp() {
     const name = document.getElementById('signup-name').value.trim();
     const email = document.getElementById('signup-email').value.trim();
@@ -237,14 +254,12 @@ async function handleSignUp() {
     }
 }
 
-// --- LOGOUT ---
 function logout() { 
     localStorage.removeItem('userName'); 
     localStorage.removeItem('userEmail'); 
     location.reload(); 
 }
 
-// --- CLOUD PASSWORD RESET ---
 async function handlePasswordReset() {
     const email = document.getElementById('reset-email').value.trim();
     const name = document.getElementById('reset-name').value.trim();
@@ -272,7 +287,6 @@ async function handlePasswordReset() {
     }
 }
 
-// --- RENDER HISTORY ---
 function renderHistory() {
     const email = localStorage.getItem('userEmail');
     const name = localStorage.getItem('userName');
@@ -294,7 +308,6 @@ function renderHistory() {
     }
 }
 
-// --- CLOUD OWNER DASHBOARD ---
 async function ownerAccess() {
     if (prompt("Master Password:") === "owner123") { 
         alert("Fetching active users from cloud database...");
@@ -373,19 +386,17 @@ function togglePause() {
 async function startTest(subject) {
     pendingSubject = subject;
     
-    // Loading State
     document.getElementById('confirm-subject').innerText = "Loading test from server...";
     document.getElementById('confirm-questions').innerText = "...";
     document.getElementById('confirm-time').innerText = "...";
     openExclusiveView('confirmation-modal');
     
     try {
-        // Sheet se questions fetch karna
         let response = await fetch(WEB_APP_URL + "?action=get_quiz&class=" + encodeURIComponent(currentClass) + "&subject=" + encodeURIComponent(subject));
         let result = await response.json();
         
         if (result.success && result.quiz.length > 0) {
-            activeQuizData = result.quiz; // Data save kar liya
+            activeQuizData = result.quiz; 
             
             let secondsPerQuestion = 60; 
             if (subject === 'Math') secondsPerQuestion = 240; 
@@ -474,7 +485,6 @@ function submitTest() {
     const testSignature = `${currentClass} - ${currentSubject}`;
     const currentDate = new Date().toLocaleString();
 
-    // 1. क्लाउड (Google Sheet) पर रिजल्ट भेजना (BACKGROUND PROCESS)
     fetch(WEB_APP_URL, {
         method: "POST",
         body: JSON.stringify({ 
@@ -488,7 +498,6 @@ function submitTest() {
         })
     }).catch(error => console.error("Cloud save failed:", error));
 
-    // 2. लोकल ब्राउज़र हिस्ट्री (My History के लिए)
     let allTests = JSON.parse(localStorage.getItem('testResultsDatabase')) || [];
     allTests.push({ 
         email: userEmail, 
@@ -504,48 +513,40 @@ function submitTest() {
     let myRank = subjectResults.findIndex(t => t.email === userEmail && t.score === score) + 1;
     let totalAttempts = subjectResults.length;
 
-    // Back button ko wapas Subject Dashboard par bhejne ke liye (Aapka code surakshit hai)
     viewHistoryStack = ['main-dashboard', 'subject-dashboard']; 
     
-    // रिजल्ट स्क्रीन शो करना
     openExclusiveView('result-modal');
     document.getElementById('score').innerText = `${score} / ${activeQuizData.length}`;
     document.getElementById('rank').innerText = `#${myRank} out of ${totalAttempts} attempts for this specific test`; 
     document.getElementById('correct-list').innerHTML = correctHTML || "<li>None</li>";
     document.getElementById('wrong-list').innerHTML = wrongHTML || "<li>None</li>";
 }
-// --- SUBJECT & CHAPTER LOGIC ---
 
-// 1. Jab koi Subject par click karega:
+// --- SUBJECT & CHAPTER LOGIC ---
 function handleSubjectSelection(subject) {
     currentSubject = subject;
     
     if (currentCategory === 'Test Series') {
-        // Test Series ko bilkul nahi chheda, ye pehle jaisa chalega
         startTest(subject); 
     } else {
-        // Baaki sabke liye Chapters dikhayega
         showChapters(subject); 
     }
 }
 
-// 2. Chapters ke buttons automatically banana:
 function showChapters(subject) {
     let chapterContainer = document.getElementById('chapter-list');
-    chapterContainer.innerHTML = ""; // Purane buttons clear karein
+    chapterContainer.innerHTML = ""; 
     
     document.getElementById('chapter-title').innerText = `${currentClass} - ${subject} (${currentCategory})`;
 
     let categoryData = pdfDatabase[currentCategory];
     
-    // Check karna ki is class aur subject ke chapters database me hain ya nahi
     if (categoryData && categoryData[currentClass] && categoryData[currentClass][subject]) {
         let chapters = categoryData[currentClass][subject];
         
         chapters.forEach(ch => {
             let btn = document.createElement('button');
-            btn.className = "chapter-btn"; // Naya aur saaf design class
-            // Inline CSS hata diya taaki loading fast ho
+            btn.className = "chapter-btn"; 
             btn.innerText = ch.name;
             btn.onclick = () => openPDFViewer(ch.name, ch.link);
             chapterContainer.appendChild(btn);
@@ -558,7 +559,6 @@ function showChapters(subject) {
     openExclusiveView('chapter-dashboard');
 }
 
-// 3. PDF ko Website ke andar Modal mein kholna:
 function openPDFViewer(chapterName, pdfUrl) {
     document.getElementById('pdf-title').innerText = chapterName;
     document.getElementById('pdf-iframe').src = pdfUrl;
@@ -566,6 +566,7 @@ function openPDFViewer(chapterName, pdfUrl) {
     viewHistoryStack = ['main-dashboard', 'subject-dashboard', 'chapter-dashboard'];
     openExclusiveView('pdf-viewer-modal');
 }
+
 /* ==========================================
    VIDEO DATABASE (Class -> Subject -> Chapters)
    ========================================== */
@@ -585,27 +586,22 @@ const videoDatabase = {
             { name: "Matter in Our Surroundings", link: "https://www.youtube.com/embed/VIDEO_ID" }
         ]
     }
-    // ऐसे ही आप और Classes और Subjects जोड़ सकते हैं
 };
 
-
 /* ==========================================
-   VIDEO FLOW FUNCTIONS
+   VIDEO FLOW FUNCTIONS (UPDATED FOR BACK LOGIC)
    ========================================== */
-
-// 1. Class सेलेक्ट करने के बाद Subjects दिखाना
 function showVideoSubjects(className) {
     let container = document.getElementById('video-container');
-    container.innerHTML = ""; // पुराना डेटा साफ़ करें
+    container.innerHTML = ""; 
     document.getElementById('video-title').innerText = className + " - Select Subject";
 
-    // अगर डेटाबेस में उस क्लास का डेटा है
     if(videoDatabase[className]) {
         let subjects = Object.keys(videoDatabase[className]);
         
         subjects.forEach(sub => {
             let btn = document.createElement('button');
-            btn.className = "chapter-btn"; // PDF वाले सेक्शन की CSS क्लास ही यूज़ की है
+            btn.className = "chapter-btn"; 
             btn.innerText = sub;
             btn.onclick = () => showVideoChapters(className, sub);
             container.appendChild(btn);
@@ -615,7 +611,6 @@ function showVideoSubjects(className) {
     }
 }
 
-// 2. Subject सेलेक्ट करने के बाद Chapters (YouTube Logo के साथ) दिखाना
 function showVideoChapters(className, subjectName) {
     let container = document.getElementById('video-container');
     container.innerHTML = ""; 
@@ -625,9 +620,8 @@ function showVideoChapters(className, subjectName) {
 
     chapters.forEach(ch => {
         let btn = document.createElement('button');
-        btn.className = "video-chapter-btn"; // हमारी नई YouTube स्टाइल वाली क्लास
+        btn.className = "video-chapter-btn"; 
         
-        // बटन के अंदर दांयी तरफ "▶ Video" बैज लगाना
         btn.innerHTML = `
             <span>${ch.name}</span> 
             <span class="yt-badge">▶ Video</span>
@@ -638,141 +632,58 @@ function showVideoChapters(className, subjectName) {
     });
 }
 
-// 3. वीडियो प्ले करना (Modal ओपन करना)
+// 3. वीडियो प्ले करना (Modal ओपन करना) - NEW
 function playVideo(chapterName, videoUrl) {
-    // डैशबोर्ड छुपाएं
-    document.getElementById('video-dashboard').classList.add('hidden');
-    
-    // टाइटल और वीडियो लिंक सेट करें
     document.getElementById('playing-video-title').innerText = chapterName;
     document.getElementById('video-iframe').src = videoUrl;
-    
-    // प्लेयर वाला सेक्शन दिखाएं
-    document.getElementById('video-viewer-modal').classList.remove('hidden');
+    openExclusiveView('video-viewer-modal');
 }
 
-// 4. बैक बटन (वीडियो बंद करके वापस चैप्टर्स पर जाना)
+// 4. बैक बटन (वीडियो बंद करके वापस चैप्टर्स पर जाना) - NEW
 function closeVideoPlayer() {
-    // iframe का src खाली करना ज़रूरी है ताकि बैकग्राउंड में वीडियो की आवाज़ न आती रहे
     document.getElementById('video-iframe').src = "";
-    
-    // प्लेयर छुपाएं
-    document.getElementById('video-viewer-modal').classList.add('hidden');
-    
-    // वापस चैप्टर्स का डैशबोर्ड दिखाएं
-    document.getElementById('video-dashboard').classList.remove('hidden');
-}
-/* =======================================================
-   ADVANCED HARDWARE BACK BUTTON SYNC (MOBILE & PC)
-   ======================================================= */
-
-// 1. जब ऐप लोड हो, तो उसे 'Home' स्टेट पर सेट करें
-window.history.replaceState({ step: 'home' }, "", "");
-let ignorePop = false;
-
-// यह फंक्शन चेक करता है कि स्क्रीन पर अभी क्या-क्या टेक्स्ट/हेडिंग दिख रही है
-function getCurrentAppState() {
-    return Array.from(document.querySelectorAll('h1, h2, h3, h4, summary'))
-        .filter(el => el.offsetParent !== null)
-        .map(el => el.innerText).join('|');
+    goBack(); 
 }
 
-// 2. जब भी यूजर स्क्रीन पर कहीं भी क्लिक करे
-document.addEventListener('click', function (e) {
-    let btn = e.target.closest('button');
-    let isBackButton = btn && btn.innerText.toLowerCase().includes('back');
-    
-    // A. अगर यूजर ने अपनी उंगली/माउस से सीधा आपका '<- Back' बटन दबाया है
-    if (isBackButton && e.isTrusted) {
-        ignorePop = true; // ब्राउज़र को बताएं कि वो बैकग्राउंड क्लिक को इग्नोर करे
-        window.history.back(); // ब्राउज़र की हिस्ट्री को भी एक कदम पीछे खिसकाएं (Sync करने के लिए)
-        return;
-    }
-
-    // B. अगर यूजर ने किसी और चीज़ (Class, Subject, Chapter, Card) पर क्लिक किया है
-    let isMenuButton = btn && btn.innerText.toLowerCase().includes('menu');
-    if (!isBackButton && !isMenuButton) {
-        
-        let oldState = getCurrentAppState(); // क्लिक से पहले का स्क्रीन डिज़ाइन
-
-        // 150ms रुक कर चेक करें कि क्या नया पेज/सेक्शन खुला है
-        setTimeout(() => {
-            let newState = getCurrentAppState();
-            let backBtnVisible = Array.from(document.querySelectorAll('button')).find(
-                b => b.innerText.toLowerCase().includes('back') && b.offsetParent !== null
-            );
-
-            // अगर स्क्रीन का डिज़ाइन बदला है और '<- Back' बटन दिखाई दे रहा है, तो हिस्ट्री बढ़ा दें
-            if (backBtnVisible && oldState !== newState) {
-                window.history.pushState({ step: 'inner' }, "", "");
-            }
-        }, 150);
-    }
-});
-
-// 3. जब यूजर मोबाइल या पीसी का असली (Hardware) बैक बटन दबाए
-window.addEventListener('popstate', function (event) {
-    // अगर बैक बटन हिस्ट्री को Sync करने के लिए चला था, तो कुछ ना करें
-    if (ignorePop) {
-        ignorePop = false;
-        return;
-    }
-
-    // वर्ना स्क्रीन पर मौजूद '<- Back' बटन को ऑटो-क्लिक करवा दें
-    let backBtn = Array.from(document.querySelectorAll('button')).find(
-        btn => btn.innerText.toLowerCase().includes('back') && btn.offsetParent !== null
-    );
-
-    if (backBtn) {
-        backBtn.click(); 
-    }
-});
 /* ======================================================= */
 // PDF ko Fullscreen karne ka logic
 function toggleFullScreen() {
     let container = document.getElementById("pdf-container");
     
     if (!document.fullscreenElement) {
-        // Agar fullscreen nahi hai, to fullscreen karo
         if (container.requestFullscreen) {
             container.requestFullscreen();
-        } else if (container.webkitRequestFullscreen) { /* Safari */
+        } else if (container.webkitRequestFullscreen) {
             container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) { /* IE11 */
+        } else if (container.msRequestFullscreen) {
             container.msRequestFullscreen();
         }
         document.getElementById("fullscreen-btn").innerText = "✖ Exit Fullscreen";
     } else {
-        // Agar pehle se fullscreen hai, to bahar aao
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
         document.getElementById("fullscreen-btn").innerText = "⛶ Fullscreen";
     }
 }
+
 /* =======================================================
    TEST SERIES LOGIN SECURITY GUARD
    ======================================================= */
 function checkTestAuth(categoryName) {
-    // Check if the user is logged in
     let isUserLoggedIn = localStorage.getItem('isLoggedIn'); 
     
     if (isUserLoggedIn === 'true') {
-        // Agar login hai, to normal tarike se class selection open karo
         openClassSelection(categoryName); 
     } else {
-        // Agar login NAHI hai, to alert dikhao
         alert("⚠️ Access Denied! Please Login or Register first to access the Test Series.");
-        
-        // Bacche ko directly Login modal par bhej do
         openExclusiveView('login-modal'); 
     }
 }
+
 /* =======================================================
    CONTINUE LEARNING (SMART AUTO-DETECT LOGIC)
    ======================================================= */
-
-// 1. Smart Tracker: Jo sirf asli Chapter/PDF/Video ko save karega
 document.addEventListener('click', function(e) {
     let clickedItem = e.target.closest('li, .chapter-btn, .video-card, button, .class-slot'); 
     
@@ -781,7 +692,6 @@ document.addEventListener('click', function(e) {
         let itemAction = clickedItem.getAttribute('onclick'); 
         
         if (itemAction) {
-            // Un functions ki list jinhe tracker IGNORE karega (Classes, Subjects, UI Buttons)
             let isIgnoredAction = itemAction.includes('openClassSelection') || 
                                   itemAction.includes('handleSubjectSelection') || 
                                   itemAction.includes('selectClass') ||
@@ -790,7 +700,6 @@ document.addEventListener('click', function(e) {
                                   itemAction.includes('checkTestAuth') ||
                                   itemAction.includes('openExclusiveView');
             
-            // Agar click kiya gaya button ignore list mein NAHI hai, tabhi save karo
             if (!isIgnoredAction && topicText !== "") {
                 localStorage.setItem('dp_lastStudiedTopic', topicText);
                 localStorage.setItem('dp_lastAction', itemAction); 
@@ -799,7 +708,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// 2. Home Page par Card dikhana aur Direct Open karna
 function showContinueLearningCard() {
     let lastTopic = localStorage.getItem('dp_lastStudiedTopic');
     let lastAction = localStorage.getItem('dp_lastAction'); 
@@ -817,10 +725,8 @@ function showContinueLearningCard() {
         `;
         section.style.display = 'block';
         
-        // Yahan par naya foolproof logic lagaya hai (Direct HTML onclick set karega)
         document.getElementById('resume-card-btn').setAttribute('onclick', lastAction);
     }
 }
 
-// App start hote hi check karo
 window.addEventListener('load', showContinueLearningCard);
