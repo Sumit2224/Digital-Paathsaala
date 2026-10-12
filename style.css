@@ -264,3 +264,38 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
         line-height: 1.4; /* Line ke beech thoda gap taaki text mix na ho */
     }
 }
+/* === HOME PAGE GRID LAYOUT UPDATE (PC: 3 Boxes, Mobile: 2 Boxes) === */
+
+.homepage-grid { 
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* 3 boxes per row on PC */
+    gap: 30px !important;
+    width: 100% !important;
+    max-width: 1200px !important; /* Prevents boxes from stretching too much on PC screens */
+    margin: 0 auto !important;
+}
+
+/* === MOBILE VIEW FIX === */
+@media screen and (max-width: 768px) {
+    .homepage-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* 2 boxes per row on Mobile */
+        gap: 12px !important; /* Reduced gap on mobile for better box visibility */
+        padding: 10px !important;
+    }
+    
+    /* Adjusting font and button sizes for smaller boxes on mobile */
+    .homepage-grid .category-box {
+        padding: 15px 10px !important; /* Adjusted inner spacing of the box */
+    }
+    
+    .homepage-grid .category-box h3 {
+        font-size: 15px !important; /* Optimized heading size for mobile */
+        margin: 10px 0 !important;
+    }
+    
+    .homepage-grid .category-box button {
+        font-size: 13px !important; /* Adjusted button text size */
+        padding: 8px 12px !important;
+        width: 100% !important;
+    }
+}
