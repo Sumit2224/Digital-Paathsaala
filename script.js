@@ -663,74 +663,150 @@ function closeVideoPlayer() {
     document.getElementById('video-dashboard').classList.remove('hidden');
 }
 /* =======================================================
-   UNIVERSAL HARDWARE BACK BUTTON (WORKS IN ALL SECTIONS)
+   ADVANCED HARDWARE BACK BUTTON SYNC (MOBILE & PC)
    ======================================================= */
 
-let isAppBackBtnClicked = false;
-let currentScreenTitle = "";
+// 1. जब ऐप लोड हो, तो उसे 'Home' स्टेट पर सेट करें
+window.history.replaceState({ step: 'home' }, "", "");
+let ignorePop = false;
 
-// Helper function: Screen par dikh rahi headings ko check karne ke liye
-function getVisibleHeadings() {
-    return Array.from(document.querySelectorAll('h1, h2, h3, h4'))
+// यह फंक्शन चेक करता है कि स्क्रीन पर अभी क्या-क्या टेक्स्ट/हेडिंग दिख रही है
+function getCurrentAppState() {
+    return Array.from(document.querySelectorAll('h1, h2, h3, h4, summary'))
         .filter(el => el.offsetParent !== null)
-        .map(el => el.innerText)
-        .join('|');
+        .map(el => el.innerText).join('|');
 }
 
-// 1. App start hote hi pehli history save karein
-window.history.replaceState({ step: 0 }, "");
-currentScreenTitle = getVisibleHeadings();
-
-// 2. Screen par kahin bhi click hone par ye chalega
+// 2. जब भी यूजर स्क्रीन पर कहीं भी क्लिक करे
 document.addEventListener('click', function (e) {
     let btn = e.target.closest('button');
-    let isBackBtn = btn && btn.innerText.toLowerCase().includes('back');
-    let isMenuBtn = btn && btn.innerText.toLowerCase().includes('menu');
+    let isBackButton = btn && btn.innerText.toLowerCase().includes('back');
     
-    // Case A: Agar app ka apna "<- Back" button dabaya gaya hai
-    if (isBackBtn && e.isTrusted) {
-        isAppBackBtnClicked = true;
-        window.history.back(); // Browser ko bhi back karein
-        
-        // Back aane ke thodi der baad naya title save kar lein
-        setTimeout(() => { currentScreenTitle = getVisibleHeadings(); }, 150);
+    // A. अगर यूजर ने अपनी उंगली/माउस से सीधा आपका '<- Back' बटन दबाया है
+    if (isBackButton && e.isTrusted) {
+        ignorePop = true; // ब्राउज़र को बताएं कि वो बैकग्राउंड क्लिक को इग्नोर करे
+        window.history.back(); // ब्राउज़र की हिस्ट्री को भी एक कदम पीछे खिसकाएं (Sync करने के लिए)
         return;
-    } 
-    
-    // Case B: Agar app mein kisi bhi (Class/Subject/Video/Test) par click kiya hai
-    if (!isBackBtn && !isMenuBtn && e.isTrusted) {
-        // 300ms ruk kar check karein ki kya UI badla hai
+    }
+
+    // B. अगर यूजर ने किसी और चीज़ (Class, Subject, Chapter, Card) पर क्लिक किया है
+    let isMenuButton = btn && btn.innerText.toLowerCase().includes('menu');
+    if (!isBackButton && !isMenuButton) {
+        
+        let oldState = getCurrentAppState(); // क्लिक से पहले का स्क्रीन डिज़ाइन
+
+        // 150ms रुक कर चेक करें कि क्या नया पेज/सेक्शन खुला है
         setTimeout(() => {
-            let newScreenTitle = getVisibleHeadings();
-            let backVisible = Array.from(document.querySelectorAll('button')).some(
+            let newState = getCurrentAppState();
+            let backBtnVisible = Array.from(document.querySelectorAll('button')).find(
                 b => b.innerText.toLowerCase().includes('back') && b.offsetParent !== null
             );
-            
-            // Agar heading badal gayi aur Back button dikh raha hai = Naya Page open hua hai
-            if (backVisible && currentScreenTitle !== newScreenTitle) {
-                window.history.pushState({ step: Date.now() }, "");
-                currentScreenTitle = newScreenTitle; // Naye page ka title save kar lein
+
+            // अगर स्क्रीन का डिज़ाइन बदला है और '<- Back' बटन दिखाई दे रहा है, तो हिस्ट्री बढ़ा दें
+            if (backBtnVisible && oldState !== newState) {
+                window.history.pushState({ step: 'inner' }, "", "");
             }
-        }, 300);
+        }, 150);
     }
 });
 
-// 3. Jab mobile ya PC ka asal Back button dabaya jaye
+// 3. जब यूजर मोबाइल या पीसी का असली (Hardware) बैक बटन दबाए
 window.addEventListener('popstate', function (event) {
-    // Agar click hamare code se hua tha, to double back hone se rokein
-    if (isAppBackBtnClicked) {
-        isAppBackBtnClicked = false;
+    // अगर बैक बटन हिस्ट्री को Sync करने के लिए चला था, तो कुछ ना करें
+    if (ignorePop) {
+        ignorePop = false;
         return;
     }
 
-    // Screen par dikh rahe "<- Back" button ko dhundh kar click karwayein
-    let visibleBackBtn = Array.from(document.querySelectorAll('button')).find(
-        b => b.innerText.toLowerCase().includes('back') && b.offsetParent !== null
+    // वर्ना स्क्रीन पर मौजूद '<- Back' बटन को ऑटो-क्लिक करवा दें
+    let backBtn = Array.from(document.querySelectorAll('button')).find(
+        btn => btn.innerText.toLowerCase().includes('back') && btn.offsetParent !== null
     );
 
-    if (visibleBackBtn) {
-        visibleBackBtn.click();
-        setTimeout(() => { currentScreenTitle = getVisibleHeadings(); }, 150);
+    if (backBtn) {
+        backBtn.click(); 
     }
 });
 /* ======================================================= */
+// PDF ko Fullscreen karne ka logic
+function toggleFullScreen() {
+    let container = document.getElementById("pdf-container");
+    
+    if (!document.fullscreenElement) {
+        // Agar fullscreen nahi hai, to fullscreen karo
+        if (container.requestFullscreen) {
+            container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) { /* Safari */
+            container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) { /* IE11 */
+            container.msRequestFullscreen();
+        }
+        document.getElementById("fullscreen-btn").innerText = "✖ Exit Fullscreen";
+    } else {
+        // Agar pehle se fullscreen hai, to bahar aao
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        document.getElementById("fullscreen-btn").innerText = "⛶ Fullscreen";
+    }
+}
+/* =======================================================
+   TEST SERIES LOGIN SECURITY GUARD
+   ======================================================= */
+function checkTestAuth(categoryName) {
+    // Check if the user is logged in
+    let isUserLoggedIn = localStorage.getItem('isLoggedIn'); 
+    
+    if (isUserLoggedIn === 'true') {
+        // Agar login hai, to normal tarike se class selection open karo
+        openClassSelection(categoryName); 
+    } else {
+        // Agar login NAHI hai, to alert dikhao
+        alert("⚠️ Access Denied! Please Login or Register first to access the Test Series.");
+        
+        // Bacche ko directly Login modal par bhej do
+        openExclusiveView('login-modal'); 
+    }
+}
+/* =======================================================
+   CONTINUE LEARNING (AUTO-DETECT LOGIC)
+   ======================================================= */
+
+// 1. Auto-Tracker: Screen par kahin bhi click ho, ye khud detect karega
+document.addEventListener('click', function(e) {
+    // Check karega ki bacche ne list (li) ya kisi button par click kiya hai kya
+    let clickedItem = e.target.closest('li, .chapter-btn, .video-card'); 
+    
+    if (clickedItem) {
+        let topicText = clickedItem.innerText.trim();
+        let textLower = topicText.toLowerCase();
+        
+        // Back, Menu, ya Select Class jaise buttons ko ignore karne ke liye
+        if (!textLower.includes('back') && !textLower.includes('menu') && !textLower.includes('select')) {
+            // Jo bhi text hoga (jaise "Grammer: Tense"), wo auto-save ho jayega!
+            localStorage.setItem('dp_lastStudiedTopic', topicText);
+        }
+    }
+});
+
+// 2. Home Page load hone par Card dikhane ke liye
+function showContinueLearningCard() {
+    let lastTopic = localStorage.getItem('dp_lastStudiedTopic');
+    let section = document.getElementById('continue-learning-section');
+    
+    if (lastTopic && section) {
+        section.innerHTML = `
+            <div class="continue-card" onclick="alert('Is par click karke direct ${lastTopic} open hoga!')">
+                <div class="continue-info">
+                    <h4>📚 Resume Learning</h4>
+                    <p>${lastTopic}</p>
+                </div>
+                <button class="continue-btn">Continue ➔</button>
+            </div>
+        `;
+        section.style.display = 'block';
+    }
+}
+
+// App start hote hi check karo
+window.addEventListener('load', showContinueLearningCard);
