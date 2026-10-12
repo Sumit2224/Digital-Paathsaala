@@ -769,34 +769,36 @@ function checkTestAuth(categoryName) {
     }
 }
 /* =======================================================
-   CONTINUE LEARNING (AUTO-DETECT LOGIC)
+   CONTINUE LEARNING (AUTO-DETECT LOGIC) - FINAL
    ======================================================= */
 
-// 1. Auto-Tracker: Screen par kahin bhi click ho, ye khud detect karega
+// 1. Auto-Tracker: Chapter ka naam aur uska "click action" dono save karega
 document.addEventListener('click', function(e) {
-    // Check karega ki bacche ne list (li) ya kisi button par click kiya hai kya
-    let clickedItem = e.target.closest('li, .chapter-btn, .video-card'); 
+    let clickedItem = e.target.closest('li, .chapter-btn, .video-card, .class-slot'); 
     
     if (clickedItem) {
         let topicText = clickedItem.innerText.trim();
         let textLower = topicText.toLowerCase();
+        let itemAction = clickedItem.getAttribute('onclick'); // Jis function se pdf/video khulta hai, usey bhi save kar liya
         
-        // Back, Menu, ya Select Class jaise buttons ko ignore karne ke liye
-        if (!textLower.includes('back') && !textLower.includes('menu') && !textLower.includes('select')) {
-            // Jo bhi text hoga (jaise "Grammer: Tense"), wo auto-save ho jayega!
+        // Back, Menu ya kharab clicks ko ignore karne ke liye
+        if (!textLower.includes('back') && !textLower.includes('menu') && !textLower.includes('select') && itemAction) {
             localStorage.setItem('dp_lastStudiedTopic', topicText);
+            localStorage.setItem('dp_lastAction', itemAction); 
         }
     }
 });
 
-// 2. Home Page load hone par Card dikhane ke liye
+// 2. Home Page load hone par Card dikhana aur Direct Open karna
 function showContinueLearningCard() {
     let lastTopic = localStorage.getItem('dp_lastStudiedTopic');
+    let lastAction = localStorage.getItem('dp_lastAction'); 
     let section = document.getElementById('continue-learning-section');
     
-    if (lastTopic && section) {
+    if (lastTopic && lastAction && section) {
+        // Alert hata diya gaya hai, ab seedha card banega
         section.innerHTML = `
-            <div class="continue-card" onclick="alert('Is par click karke direct ${lastTopic} open hoga!')">
+            <div class="continue-card" id="resume-card-btn">
                 <div class="continue-info">
                     <h4>📚 Resume Learning</h4>
                     <p>${lastTopic}</p>
@@ -805,6 +807,12 @@ function showContinueLearningCard() {
             </div>
         `;
         section.style.display = 'block';
+        
+        // Card par click karte hi purana wala same action (PDF ya Video) open ho jayega
+        document.getElementById('resume-card-btn').onclick = function() {
+            let runAction = new Function(lastAction);
+            runAction();
+        };
     }
 }
 
