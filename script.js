@@ -769,34 +769,43 @@ function checkTestAuth(categoryName) {
     }
 }
 /* =======================================================
-   CONTINUE LEARNING (AUTO-DETECT LOGIC) - FINAL
+   CONTINUE LEARNING (SMART AUTO-DETECT LOGIC)
    ======================================================= */
 
-// 1. Auto-Tracker: Chapter ka naam aur uska "click action" dono save karega
+// 1. Smart Tracker: Jo sirf asli Chapter/PDF/Video ko save karega
 document.addEventListener('click', function(e) {
-    let clickedItem = e.target.closest('li, .chapter-btn, .video-card, .class-slot'); 
+    let clickedItem = e.target.closest('li, .chapter-btn, .video-card, button, .class-slot'); 
     
     if (clickedItem) {
         let topicText = clickedItem.innerText.trim();
-        let textLower = topicText.toLowerCase();
-        let itemAction = clickedItem.getAttribute('onclick'); // Jis function se pdf/video khulta hai, usey bhi save kar liya
+        let itemAction = clickedItem.getAttribute('onclick'); 
         
-        // Back, Menu ya kharab clicks ko ignore karne ke liye
-        if (!textLower.includes('back') && !textLower.includes('menu') && !textLower.includes('select') && itemAction) {
-            localStorage.setItem('dp_lastStudiedTopic', topicText);
-            localStorage.setItem('dp_lastAction', itemAction); 
+        if (itemAction) {
+            // Un functions ki list jinhe tracker IGNORE karega (Classes, Subjects, UI Buttons)
+            let isIgnoredAction = itemAction.includes('openClassSelection') || 
+                                  itemAction.includes('handleSubjectSelection') || 
+                                  itemAction.includes('selectClass') ||
+                                  itemAction.includes('goBack') ||
+                                  itemAction.includes('toggle') ||
+                                  itemAction.includes('checkTestAuth') ||
+                                  itemAction.includes('openExclusiveView');
+            
+            // Agar click kiya gaya button ignore list mein NAHI hai, tabhi save karo
+            if (!isIgnoredAction && topicText !== "") {
+                localStorage.setItem('dp_lastStudiedTopic', topicText);
+                localStorage.setItem('dp_lastAction', itemAction); 
+            }
         }
     }
 });
 
-// 2. Home Page load hone par Card dikhana aur Direct Open karna
+// 2. Home Page par Card dikhana aur Direct Open karna
 function showContinueLearningCard() {
     let lastTopic = localStorage.getItem('dp_lastStudiedTopic');
     let lastAction = localStorage.getItem('dp_lastAction'); 
     let section = document.getElementById('continue-learning-section');
     
     if (lastTopic && lastAction && section) {
-        // Alert hata diya gaya hai, ab seedha card banega
         section.innerHTML = `
             <div class="continue-card" id="resume-card-btn">
                 <div class="continue-info">
@@ -808,10 +817,14 @@ function showContinueLearningCard() {
         `;
         section.style.display = 'block';
         
-        // Card par click karte hi purana wala same action (PDF ya Video) open ho jayega
+        // Card par click karte hi direct PDF ya Video khulega
         document.getElementById('resume-card-btn').onclick = function() {
-            let runAction = new Function(lastAction);
-            runAction();
+            try {
+                let runAction = new Function(lastAction);
+                runAction();
+            } catch(error) {
+                console.log("Error opening chapter:", error);
+            }
         };
     }
 }
