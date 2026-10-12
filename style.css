@@ -274,28 +274,41 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
     max-width: 1200px !important; /* Prevents boxes from stretching too much on PC screens */
     margin: 0 auto !important;
 }
-
 /* === MOBILE VIEW FIX === */
 @media screen and (max-width: 768px) {
     .homepage-grid {
         grid-template-columns: repeat(2, 1fr) !important; /* 2 boxes per row on Mobile */
-        gap: 12px !important; /* Reduced gap on mobile for better box visibility */
+        gap: 10px !important; /* Gap further adjusted to fit boxes perfectly */
         padding: 10px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important; /* Extra scroll ya overlap rokne ke liye */
     }
     
-    /* Adjusting font and button sizes for smaller boxes on mobile */
+    /* Box overlapping issue fixed */
     .homepage-grid .category-box {
-        padding: 15px 10px !important; /* Adjusted inner spacing of the box */
+        width: 100% !important;
+        min-width: 0 !important; /* Overrides any old fixed width */
+        margin: 0 !important; 
+        box-sizing: border-box !important;
+        padding: 12px 8px !important; /* Adjusted inner spacing */
+    }
+
+    /* Ensuring images don't stretch the box */
+    .homepage-grid .category-box img {
+        max-width: 100% !important;
+        height: auto !important;
     }
     
     .homepage-grid .category-box h3 {
-        font-size: 15px !important; /* Optimized heading size for mobile */
-        margin: 10px 0 !important;
+        font-size: 14px !important; 
+        margin: 8px 0 !important;
+        white-space: normal !important; /* Text ko wrap karne ke liye */
     }
     
     .homepage-grid .category-box button {
-        font-size: 13px !important; /* Adjusted button text size */
-        padding: 8px 12px !important;
+        font-size: 12px !important; 
+        padding: 8px 10px !important;
         width: 100% !important;
+        box-sizing: border-box !important;
     }
 }
