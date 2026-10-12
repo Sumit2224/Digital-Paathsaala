@@ -216,7 +216,7 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
 /* === VIDEO CHAPTER BUTTON (YouTube Style) === */
 .video-chapter-btn {
     display: flex;
-    justify-content: space-between; /* टेक्स्ट लेफ्ट में, लोगो राइट में */
+    justify-content: space-between; /* Text left side,video logo right side  */
     align-items: center;
     background-color: #ffffff;
     color: #333333;
@@ -320,5 +320,90 @@ body.dark-mode .option-label:hover { background-color: #444; border-color: #555;
         padding: 8px 10px !important;
         width: 100% !important;
         box-sizing: border-box !important;
+    }
+}
+/* PDF Fullscreen Button Styling */
+#fullscreen-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+#fullscreen-btn:hover {
+    background-color: #003d82;
+}
+/* === CONTINUE LEARNING CARD === */
+#continue-learning-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto 20px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.continue-card {
+    background: linear-gradient(135deg, #f0f7ff, #e0efff); /* Premium light blue gradient */
+    border: 1px solid #cce0ff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 50, 150, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.continue-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 50, 150, 0.1);
+}
+
+.continue-info h4 {
+    margin: 0 0 5px 0;
+    color: #0056b3;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.continue-info p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+.continue-btn {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Mobile View Adjustments */
+@media screen and (max-width: 768px) {
+    .continue-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .continue-btn {
+        width: 100%;
+        text-align: center;
     }
 }
