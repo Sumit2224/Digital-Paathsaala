@@ -85,12 +85,14 @@
     </div>
 
     <!-- Beautiful Grid Layout for All Homepage Boxes -->
+     <!-- Continue Learning Section -->
+<div id="continue-learning-section" style="display: none;"></div>
     <div class="homepage-grid">
         
         <div class="category-box">
             <img src="test-series.png" alt="Test Series" class="category-img">
             <h3 data-key="Test Series">Test Series</h3>
-            <button class="top-nav-btn" onclick="openClassSelection('Test Series')">Select Class</button>
+            <button class="top-nav-btn" onclick="checkTestAuth('Test Series')">Select Class</button>
         </div>
 
         <div class="category-box">
@@ -306,10 +308,15 @@
 <div id="pdf-viewer-modal" class="view-section hidden">
     <h2 id="pdf-title" style="color: #007bff; text-align: center; margin-bottom: 15px;">PDF Document</h2>
     
-    <div class="pdf-container">
-        <!-- Google Drive iframe -->
-        <iframe id="pdf-iframe" src="" width="100%" height="100%" frameborder="0" allow="autoplay" loading="lazy"></iframe>
-    </div>
+   <div id="pdf-container" class="pdf-container" style="position: relative;">
+            <!-- Google Drive iframe -->
+            <iframe id="pdf-iframe" src="" width="100%" height="100%" frameborder="0" allow="autoplay" loading="lazy"></iframe>
+            
+            <!-- Ye naya Fullscreen Button add kiya hai -->
+            <button id="fullscreen-btn" onclick="toggleFullScreen()" title="Fullscreen">
+                ⛶ Fullscreen
+            </button>
+        </div>
     <!-- === 320x50 BANNER (PDF KE NICHE) === -->
     <div style="text-align: center; margin-top: 15px; width: 100%;">
         <script>
