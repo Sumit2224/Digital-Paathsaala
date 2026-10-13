@@ -22,7 +22,10 @@ const pdfDatabase = {
              "English": [{name: "Grammer: Tense", link:"https://drive.google.com/file/d/1dvfUZiI1xNfBfyeSahZq1C9cMpYVwbZy/preview"}]       
         },
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
-            ]
+            ],
+       "SST": [{name: "Geography(Part 1)Chapter 1:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
+
+     ],        
         }
     },
 "Books": 
