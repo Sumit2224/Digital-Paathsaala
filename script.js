@@ -35,7 +35,7 @@ const pdfDatabase = {
                  "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                          ],
                  "Hindi":[{ name:"Chapter 1: पद(kshitiz)" },], 
-                 "English":[{}],       
+                 "English":[{name:"Chapter 1"}],       
         },
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
             ]
