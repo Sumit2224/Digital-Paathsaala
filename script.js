@@ -34,7 +34,7 @@ const pdfDatabase = {
                            ],
                  "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                          ],
-                 "Hindi":[{  },], 
+                 "Hindi":[{ name:"Chapter 1: पद(kshitiz)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },], 
                  "English":[{name:"Chapter 1: "}],       
         },
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
@@ -43,8 +43,11 @@ const pdfDatabase = {
         },
 
 "Solutions": 
-    { "Hindi":[{ name:"Chapter 1: पद(kshitiz)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },],
-    }
+      {"Class 10": {"Hindi": [ { name:"Chapter 1: पद(kshitiz)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
+
+      ],
+      },
+    }   
 };
 
 let timerInterval;
