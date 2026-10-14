@@ -186,36 +186,122 @@
     <!-- ============================================ -->
 </div>
 
-<!-- Login Modal -->
-<div id="login-modal" class="modal view-section hidden">
-    <h3 data-key="Log In" style="color: #007bff; margin-bottom: 5px;">Log In</h3>
-    <p style="font-size: 13px; color: gray; margin-bottom: 15px;">Welcome back! Please enter your details.</p>
-    <input type="email" id="login-email" placeholder="Registered Email Address" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <input type="password" id="login-password" placeholder="8-Digit Password" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <button onclick="handleLogin()" data-key="Log In" style="background-color: #007bff; width: 90%; padding: 12px; margin-top: 10px; border: none; color: white; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">Secure Log In</button>
-    <p style="font-size: 13px; cursor: pointer; color: #dc3545; text-decoration: underline; margin-top: 15px;" onclick="openExclusiveView('reset-modal')">Forgot Password?</p>
-    <p style="font-size: 14px; margin-top: 15px;">New student? <span style="color: #28a745; cursor: pointer; font-weight: bold; text-decoration: underline;" onclick="openExclusiveView('signup-modal')">Sign Up Here</span></p>
-</div>
+<!-- NAYA MULTI-STEP AUTH MODAL -->
+<div id="auth-modal" class="modal view-section hidden" style="max-width: 450px; padding: 0;">
+    <div class="auth-header">
+        <button class="back-icon hidden" id="auth-back-btn" onclick="goBackAuth()">←</button>
+        <img src="logo.png" alt="Logo" class="auth-logo">
+        <button class="close-icon" onclick="openExclusiveView('main-dashboard')">✕</button>
+    </div>
 
-<!-- Signup Modal -->
-<div id="signup-modal" class="modal view-section hidden">
-    <h3 data-key="Create Account" style="color: #28a745; margin-bottom: 5px;">Create Account</h3>
-    <p style="font-size: 13px; color: gray; margin-bottom: 15px;">Join Digital Paathsaala today!</p>
-    <input type="text" id="signup-name" placeholder="Full Name" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <input type="email" id="signup-email" placeholder="Active Email Address" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <input type="password" id="signup-password" placeholder="Create 8-Digit Password" style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc;">
-    <button onclick="handleSignUp()" data-key="Sign Up" style="background-color: #28a745; width: 90%; padding: 12px; margin-top: 10px; border: none; color: white; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer;">Sign Up Now</button>
-    <p style="font-size: 14px; margin-top: 15px;">Already have an account? <span style="color: #007bff; cursor: pointer; font-weight: bold; text-decoration: underline;" onclick="openExclusiveView('login-modal')">Log In Here</span></p>
+    <!-- Step 1: Welcome (Image 1) -->
+    <div id="step-welcome" class="auth-step">
+        <h2>Welcome</h2>
+        <p class="auth-sub">Enter your email or phone number to get started.</p>
+        <div class="input-group">
+            <label>Phone number/Email</label>
+            <input type="text" id="auth-identifier" placeholder="Enter your email or phone number">
+            <span class="input-hint">Please enter a valid email address</span>
+        </div>
+        <button class="auth-btn" onclick="processWelcomeStep()">Next</button>
+        <!-- GOOGLE LOGIN BUTTON -->
+<div style="text-align: center; margin-top: 20px;">
+    <span style="color: #888; font-size: 14px;">--- OR ---</span>
+    <button onclick="loginWithGoogle()" type="button" style="width: 100%; padding: 12px; margin-top: 15px; background: white; color: #444; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width: 20px;">
+        Continue with Google
+    </button>
 </div>
+        <p class="auth-switch">New student? <span onclick="showAuthStep('step-signup')">Sign Up Here</span></p>
+    </div>
 
-<!-- Forgot Password Reset View -->
-<div id="reset-modal" class="modal view-section hidden">
-    <h3 data-key="Reset Password">Reset Password</h3>
-    <p style="font-size: 14px; margin-bottom: 15px;">Verify your identity by entering your registered Email and Full Name.</p>
-    <input type="email" id="reset-email" placeholder="Registered Email Address">
-    <input type="text" id="reset-name" placeholder="Registered Full Name">
-    <input type="password" id="new-password" placeholder="New 8-Digit Alpha-Numeric Password">
-    <button onclick="handlePasswordReset()" style="background-color: #17a2b8;">Reset Password</button>
+    <!-- Step 2: Choose Login Method (Image 3) -->
+    <div id="step-choose-method" class="auth-step hidden">
+        <h2>Welcome back</h2>
+        <p class="auth-sub">Choose how you'd like to login.</p>
+        
+        <div class="method-box" onclick="showAuthStep('step-login-pass')">
+            <span class="icon">🔑</span>
+            <div class="method-text">
+                <strong>Login with Password</strong>
+                <span>Use the password for your account</span>
+            </div>
+            <span class="arrow">›</span>
+        </div>
+        
+        <p class="auth-forgot" onclick="showAuthStep('step-reset')">Forgot Password</p>
+    </div>
+
+    <!-- Step 3: Login with Password (Image 7) -->
+    <div id="step-login-pass" class="auth-step hidden">
+        <h2>Welcome back</h2>
+        <p class="auth-sub">Enter your password to continue.</p>
+        <div class="input-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+                <input type="password" id="auth-login-pass" placeholder="Enter your password">
+                <span class="eye-icon" onclick="togglePassword('auth-login-pass')">👁️</span>
+            </div>
+        </div>
+        <p class="auth-forgot" onclick="showAuthStep('step-reset')" style="text-align: right; margin-top: -10px;">Forgot Password</p>
+        <button class="auth-btn" onclick="loginWithFirebase()">Login</button>
+    </div>
+
+    <!-- Step 4: Full Signup Form (Image 2) -->
+    <div id="step-signup" class="auth-step hidden">
+        <h2>Create your account</h2>
+        <p class="auth-sub">Just a few details and you're in.</p>
+        
+        <div class="signup-grid">
+            <div class="input-group">
+                <label>Full name <span style="color:red">*</span></label>
+                <input type="text" id="reg-name" placeholder="Enter your name">
+            </div>
+            <div class="input-group">
+                <label>Username <span style="color:red">*</span></label>
+                <input type="text" id="reg-username" placeholder="Enter your username">
+            </div>
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Email Address <span style="color:red">*</span></label>
+                <input type="email" id="reg-email" placeholder="Enter valid email">
+            </div>
+            <div class="input-group">
+                <label>Create Password <span style="color:red">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="reg-pass" placeholder="Enter password">
+                    <span class="eye-icon" onclick="togglePassword('reg-pass')">👁️</span>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Confirm Password <span style="color:red">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="reg-confirm-pass" placeholder="Re-enter password">
+                    <span class="eye-icon" onclick="togglePassword('reg-confirm-pass')">👁️</span>
+                </div>
+            </div>
+            <div class="input-group" style="grid-column: span 2;">
+                <label>Class/State <span style="color:red">*</span></label>
+                <select id="reg-class" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc;">
+                    <option value="">Select Class</option>
+                    <option value="Class 10">Class 10</option>
+                    <option value="Class 9">Class 9</option>
+                </select>
+            </div>
+        </div>
+        <button class="auth-btn" onclick="registerWithFirebase()">Signup</button>
+        <p class="auth-switch">Already have an account? <span onclick="showAuthStep('step-welcome')">Login Here</span></p>
+    </div>
+
+    <!-- Step 5: Password Reset (Image 4 & 5) -->
+    <div id="step-reset" class="auth-step hidden">
+        <h2>Reset your password</h2>
+        <p class="auth-sub">We'll send you a verification link to reset it.</p>
+        <div class="input-group">
+            <label>Phone number/Email</label>
+            <input type="text" id="reset-email" placeholder="Enter your email">
+        </div>
+        <button class="auth-btn" onclick="resetPasswordFirebase()">Reset Password</button>
+    </div>
 </div>
 
 <!-- User History View -->
@@ -378,6 +464,9 @@
         ⬅ Back to Chapters
     </button>
 </div>
+<!-- FIREBASE SDK LINKS -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="script.js?v=2"></script>
 <script>
   if ('serviceWorker' in navigator) {

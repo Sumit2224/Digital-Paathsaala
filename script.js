@@ -213,102 +213,196 @@ function changeLanguage(lang) {
 // Apna NAYA Web App URL yahan daalein
 const WEB_APP_URL="https://script.google.com/macros/s/AKfycbyeTKOl2634OfTh0ZQmoQU5ePaZZZkJe-gEjWgbkZ0V-DqpcMxxWGHL3es2UNZJBcJY/exec";
 
-// --- 100% CLOUD AUTHENTICATION ---
-async function handleLogin() {
-    const email = document.getElementById('login-email').value.trim();
-    const pass = document.getElementById('login-password').value;
+// --- MULTI-STEP AUTH LOGIC ---
+let authHistory = [];
+
+function showAuthStep(stepId) {
+    // Hide all steps
+    document.querySelectorAll('.auth-step').forEach(el => el.classList.add('hidden'));
+    // Show required step
+    document.getElementById(stepId).classList.remove('hidden');
     
-    if (!email) { alert("Please enter your registered email address."); return; }
-    if (!pass) { alert("Please enter your password."); return; }
-    
-    const encryptedPass = btoa(pass); 
-    alert("Logging in securely from cloud, please wait...");
-    
-    try {
-        let response = await fetch(WEB_APP_URL + "?email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(encryptedPass));
-        let result = await response.json();
-        
-        if (result.success) {
-            if (result.status === "Pending") {
-                alert("Wait For Authentication. Your account is still under review.");
-            } else if (result.status === "Pay") {
-                alert("Premium Account Required. Please subscribe to continue.");
-            } else if (result.status === "Free" || result.status === "Approved") {
-                alert("Authentication Successful!");
-                localStorage.setItem('userName', result.name); 
-                localStorage.setItem('userEmail', email);
-                closeToHome();
-                checkLoginPopup();
-                location.reload(); 
-            }
-        } else {
-            alert(result.message); 
+    // Manage Back Button
+    const backBtn = document.getElementById('auth-back-btn');
+    if (stepId === 'step-welcome') {
+        backBtn.classList.add('hidden');
+        authHistory = ['step-welcome'];
+    } else {
+        backBtn.classList.remove('hidden');
+        if(authHistory[authHistory.length - 1] !== stepId) {
+            authHistory.push(stepId);
         }
-    } catch (error) {
-        alert("Network error! Please check your internet connection.");
     }
 }
 
-async function handleSignUp() {
-    const name = document.getElementById('signup-name').value.trim();
-    const email = document.getElementById('signup-email').value.trim();
-    const pass = document.getElementById('signup-password').value;
-    
-    if (!name) { alert("Please enter your Full Name."); return; }
-    if (!email) { alert("Please enter a valid email address."); return; }
-    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/.test(pass)) { alert("Password must be exactly 8 alphanumeric characters."); return; }
-    
-    const encryptedPass = btoa(pass); 
-    alert("Creating secure cloud account, please wait...");
-    
-    try {
-        let response = await fetch(WEB_APP_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "signup", name: name, email: email, password: encryptedPass })
-        });
-        let result = await response.json();
+function goBackAuth() {
+    if(authHistory.length > 1) {
+        authHistory.pop();
+        let prevStep = authHistory[authHistory.length - 1];
+        document.querySelectorAll('.auth-step').forEach(el => el.classList.add('hidden'));
+        document.getElementById(prevStep).classList.remove('hidden');
         
-        if(result.result === "success") {
-            alert("Account created successfully! Wait For Authentication by admin.");
+        if (prevStep === 'step-welcome') {
+            document.getElementById('auth-back-btn').classList.add('hidden');
+        }
+    }
+}
+
+function processWelcomeStep() {
+    const input = document.getElementById('auth-identifier').value.trim();
+    
+    // Email Validation Regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (input === "") {
+        alert("Please enter your email.");
+        return;
+    }
+    
+    if (emailRegex.test(input)) {
+        // Agar email sahi hai toh next step par bhejo
+        showAuthStep('step-choose-method');
+    } else {
+        alert("Please enter a VALID email address (e.g., student@gmail.com).");
+    }
+}
+
+// Password dekhne/chhupane ka logic (Eye Icon)
+function togglePassword(inputId) {
+    const passInput = document.getElementById(inputId);
+    if (passInput.type === "password") {
+        passInput.type = "text";
+    } else {
+        passInput.type = "password";
+    }
+}
+
+// Menu ke Login button ko naye modal par redirect karna
+document.getElementById('nav-login-btn').onclick = function() {
+    openExclusiveView('auth-modal');
+    showAuthStep('step-welcome');
+};
+document.getElementById('nav-signup-btn').onclick = function() {
+    openExclusiveView('auth-modal');
+    showAuthStep('step-signup');
+};
+
+// ==========================================
+// --- FIREBASE SETUP & AUTHENTICATION ---
+// ==========================================
+
+const firebaseConfig = {
+  apiKey: "AIzaSyArhU80g92Lx9N27E5lFsPdtRPQDefZC3Q",
+  authDomain: "digital-paathsaala.firebaseapp.com",
+  projectId: "digital-paathsaala",
+  storageBucket: "digital-paathsaala.firebasestorage.app",
+  messagingSenderId: "137172310340",
+  appId: "1:137172310340:web:9e2a8d51d2be41e4311f11"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// 1. Asli Login Function
+function loginWithFirebase() {
+    const email = document.getElementById('auth-identifier').value.trim();
+    const pass = document.getElementById('auth-login-pass').value;
+
+    if(!email || !pass) { alert("Please enter both email and password!"); return; }
+
+    auth.signInWithEmailAndPassword(email, pass)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userName', user.displayName || "Student");
+        alert("Login Successful! Welcome to Digital Paathsaala.");
+        closeToHome();
+        location.reload();
+    })
+    .catch((error) => {
+        alert("Login Failed: Incorrect Password or Email.");
+    });
+}
+
+// 2. Asli Signup / Register Function
+function registerWithFirebase() {
+    const name = document.getElementById('reg-name').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const pass = document.getElementById('reg-pass').value;
+    const confirmPass = document.getElementById('reg-confirm-pass').value;
+    const userClass = document.getElementById('reg-class').value;
+
+    if(!name || !email || !pass || !userClass) { alert("Please fill all the details!"); return; }
+    if(pass !== confirmPass) { alert("Passwords do not match!"); return; }
+    if(pass.length < 6) { alert("Password must be at least 6 characters long."); return; }
+
+    auth.createUserWithEmailAndPassword(email, pass)
+    .then((userCredential) => {
+        const user = userCredential.user;
+        return user.updateProfile({
+            displayName: name
+        }).then(() => {
+            localStorage.setItem('userEmail', user.email);
+            localStorage.setItem('userName', name);
+            alert("Account Created Successfully! You are now logged in.");
             closeToHome();
-            checkLoginPopup();
-        }
-    } catch (error) {
-        alert("Network error! Could not create account.");
-    }
-}
-
-function logout() { 
-    localStorage.removeItem('userName'); 
-    localStorage.removeItem('userEmail'); 
-    location.reload(); 
-}
-
-async function handlePasswordReset() {
-    const email = document.getElementById('reset-email').value.trim();
-    const name = document.getElementById('reset-name').value.trim();
-    const newPass = document.getElementById('new-password').value;
-    
-    if (!email || !name) { alert("Please enter both your registered Email and Full Name."); return; }
-    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8}$/.test(newPass)) { alert("Your new password must be exactly 8 alphanumeric characters."); return; }
-    
-    alert("Resetting password securely on server...");
-    try {
-        let response = await fetch(WEB_APP_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "reset", name: name, email: email, newPassword: btoa(newPass) })
+            location.reload();
         });
-        let result = await response.json();
+    })
+    .catch((error) => {
+        alert("Error: " + error.message);
+    });
+}
+
+// 3. Asli Password Reset Function
+function resetPasswordFirebase() {
+    const email = document.getElementById('reset-email').value.trim();
+    if(!email) { alert("Please enter your registered email address."); return; }
+
+    auth.sendPasswordResetEmail(email)
+    .then(() => {
+        alert("Password reset link has been sent to your email! Please check your inbox/spam folder.");
+        goBackAuth();
+    })
+    .catch((error) => {
+        alert("Error: Could not find this email. Are you sure you are registered?");
+    });
+}
+// 4. Asli Google Login Function
+function loginWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    
+    // Popup window open hogi Google accounts select karne ke liye
+    auth.signInWithPopup(provider)
+    .then((result) => {
+        const user = result.user;
         
-        if (result.result === "success") {
-            alert("Success! Your password has been reset in the cloud database.");
-            goBack(); 
-        } else {
-            alert("Error: Details do not match any cloud record.");
-        }
-    } catch (error) {
-        alert("Network error! Could not reset password.");
-    }
+        // Data save aur login
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userName', user.displayName || "Student");
+        
+        alert("Google Login Successful! Welcome " + (user.displayName || ""));
+        closeToHome();
+        location.reload();
+    })
+    .catch((error) => {
+        alert("Google Login Cancelled or Failed!");
+        console.error(error);
+    });
+}
+// 5. Logout Function
+function logout() {
+    auth.signOut().then(() => {
+        // Local storage se user ka data hata rahe hain
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        
+        // Page refresh karke wapas normal state mein la rahe hain
+        location.reload();
+    }).catch((error) => {
+        alert("Logout fail ho gaya: " + error.message);
+    });
 }
 
 function renderHistory() {
@@ -728,7 +822,7 @@ document.addEventListener('click', function(e) {
         let itemAction = clickedItem.getAttribute('onclick'); 
         
         if (itemAction) {
-            // Yahan par humne saare UI, Menu, aur Login/Signup ke functions ko ignore list mein daal diya hai
+            // Yahan par humne saare naye Firebase aur Google functions ignore list mein add kar diye hain
             let isIgnoredAction = itemAction.includes('openClassSelection') || 
                                   itemAction.includes('handleSubjectSelection') || 
                                   itemAction.includes('selectClass') ||
@@ -736,13 +830,19 @@ document.addEventListener('click', function(e) {
                                   itemAction.includes('toggle') ||
                                   itemAction.includes('checkTestAuth') ||
                                   itemAction.includes('openExclusiveView') ||
-                                  itemAction.includes('handleLogin') ||
-                                  itemAction.includes('handleSignUp') ||
-                                  itemAction.includes('handlePasswordReset') ||
+                                  itemAction.includes('loginWithFirebase') ||
+                                  itemAction.includes('registerWithFirebase') ||
+                                  itemAction.includes('resetPasswordFirebase') ||
+                                  itemAction.includes('loginWithGoogle') ||
                                   itemAction.includes('logout');
             
-            // Text ke basis par bhi check karega ki koi auth button to nahi hai
-            let isAuthText = textLower.includes('log in') || textLower.includes('sign up') || textLower.includes('password') || textLower.includes('menu');
+            // Text ke basis par bhi Google aur Signup text ko ignore list mein daal diya
+            let isAuthText = textLower.includes('log in') || 
+                             textLower.includes('sign up') || 
+                             textLower.includes('password') || 
+                             textLower.includes('menu') || 
+                             textLower.includes('continue with google') || 
+                             textLower.includes('signup');
             
             if (!isIgnoredAction && !isAuthText && topicText !== "") {
                 // "▶ Video" text ko clean karne ke liye
