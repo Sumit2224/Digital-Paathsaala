@@ -74,7 +74,18 @@ function formatTime(seconds) {
 
 // --- POPUP LOGIC ---
 function checkInitialPopup() {
-    document.getElementById('promo-popup').classList.remove('hidden');
+    // Aaj ki date nikalega (jaise: "Wed Oct 14 2026")
+    let today = new Date().toDateString(); 
+    // Browser memory se check karega ki aakhiri baar popup kab dekha tha
+    let lastPopupDate = localStorage.getItem('promo_popup_date'); 
+
+    // Agar date aaj ki nahi hai (yani aaj pehli baar open kiya hai)
+    if (lastPopupDate !== today) {
+        // Popup ko show kar do
+        document.getElementById('promo-popup').classList.remove('hidden');
+        // Phir aaj ki date save kar do taaki din bhar dobara na dikhe
+        localStorage.setItem('promo_popup_date', today);
+    }
 }
 function checkLoginPopup() { document.getElementById('promo-popup').classList.remove('hidden'); }
 function closePopup() { document.getElementById('promo-popup').classList.add('hidden'); }
