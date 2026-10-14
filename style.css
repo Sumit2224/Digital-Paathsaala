@@ -1,0 +1,409 @@
+:root { 
+    --bg: #f4f4f4; 
+    --text: #333; 
+    --box-bg: #fff; 
+}
+body.dark-mode { 
+    --bg: #121212; 
+    --text: #f4f4f4; 
+    --box-bg: #2a2a2a; 
+}
+
+body { 
+    background-color: var(--bg); 
+    color: var(--text); 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    font-size: 16px; 
+    margin: 0; 
+    padding: 0; 
+    transition: 0.3s; 
+}
+
+/* Splash Screen */
+#splash-screen {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: var(--bg); color: var(--text);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    z-index: 9999; transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+#splash-screen.hidden-splash { opacity: 0; visibility: hidden; }
+#splash-logo { width: 150px; height: auto; margin-bottom: 20px; animation: pulse 2s infinite; }
+#splash-text { font-size: 2.5em; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; margin-bottom: 5px; animation: fadeInOut 2s ease-in-out; }
+#splash-tagline { font-size: 1.2em; letter-spacing: 3px; font-weight: 400; color: #ff9800; margin-top: 0; animation: fadeInOut 2.5s ease-in-out; }
+
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+@keyframes fadeInOut { 0% { opacity: 0; transform: translateY(20px); } 50% { opacity: 1; transform: translateY(0); } 100% { opacity: 1; transform: translateY(0); } }
+
+/* Popup Overlay */
+#promo-popup {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(122, 108, 108, 0.7); display: flex; justify-content: center; align-items: center; z-index: 10000;
+}
+.popup-content { position: relative; width: 80%; max-width: 500px; background: var(--box-bg); padding: 20px; border-radius: 10px; text-align: center; }
+.popup-close-btn { position: absolute; top: -10px; right: -10px; background: #dc3545; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold; }
+
+/* Menus and Modals */
+.menu-container { position: absolute; top: 15px; left: 15px; z-index: 100; }
+.menu-btn { background: #333; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px; }
+.dropdown-content { display: none; background-color: var(--box-bg); box-shadow: 0px 8px 16px rgba(0,0,0,0.2); padding: 15px; border-radius: 5px; min-width: 220px; margin-top: 5px; }
+.menu-container:hover .dropdown-content { display: block; }
+.setting-item { cursor: pointer; margin: 10px 0; font-size: 0.9em; }
+
+.dashboard { padding-top: 80px; text-align: center; }
+
+/* NEW: Homepage Banner and Title Styles */
+.banner-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto 40px auto; 
+    text-align: center;
+}
+#homepage-banner {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+#homepage-title {
+    font-size: 2.2em;
+    color: #007bff;
+    margin-top: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+body.dark-mode #homepage-title { color: #4dabf7; }
+
+/* Homepage Grid Layout */
+.homepage-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-box { 
+    padding: 25px; 
+    border-radius: 12px; 
+    background-color: #f2f3ef; 
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 4px 15px rgba(192, 30, 30, 0.945);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s;
+}
+.category-box:hover { transform: translateY(-5px); }
+
+/* Image settings for the cards */
+.category-img {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.top-nav-btn { background-color: #ff9800; color: white; border: none; padding: 12px 20px; margin-top: 15px; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 80%; }
+.top-nav-btn:hover { filter: brightness(1.1); }
+.vertical-slot { display: block; width: 60%; margin: 10px auto; font-size: 1.1em; }
+
+.class-slot { display: inline-block; padding: 10px 20px; margin: 8px; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+.class-slot:hover { background-color: #0056b3; }
+
+.hidden { display: none !important; }
+.modal { background: var(--box-bg); padding: 30px; border-radius: 12px; margin: 80px auto; width: 60%; box-shadow: 0 8px 25px rgba(0,0,0,0.15); text-align: center; }
+input:not([type="radio"]) { display: block; width: 90%; margin: 12px auto; padding: 12px; border: 1px solid #ccc; border-radius: 6px; }
+button { padding: 10px 15px; cursor: pointer; color: white; border: none; border-radius: 4px; font-weight: bold; transition: 0.2s; }
+button:hover { filter: brightness(1.1); }
+.close-btn { background: #dc3545; margin-top: 10px; }
+.timer-text { color: #dc3545; font-weight: bold; font-size: 1.4em; background: rgba(220, 53, 69, 0.1); display: inline-block; padding: 5px 15px; border-radius: 20px; margin-bottom: 20px; }
+.owner-box { text-align: left; background: #eee; padding: 10px; border-radius: 5px; color: #000; }
+
+/* Horizontal Slider Classes */
+.slider-track { display: flex; transition: transform 0.4s ease-in-out; width: 100%; }
+.question-card {
+    min-width: 100%; box-sizing: border-box;
+    background: var(--box-bg); border: 1px solid #e0e0e0; border-radius: 12px; padding: 20px;
+    text-align: left; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+body.dark-mode .question-card { border-color: #444; background: #333; }
+.question-text { font-size: 1.15em; font-weight: 600; margin-top: 0; margin-bottom: 15px; color: var(--text); line-height: 1.4; }
+.option-label { display: block; padding: 12px 15px; margin: 8px 0; border-radius: 8px; border: 1px solid #d1d5db; cursor: pointer; transition: all 0.2s; font-size: 1em; }
+.option-label:hover { background-color: #f0f7ff; border-color: #007bff; }
+body.dark-mode .option-label:hover { background-color: #444; border-color: #555; }
+.option-label input { margin-right: 10px; transform: scale(1.2); }
+
+.result-summary { font-size: 1.2em; margin-bottom: 20px; }
+.review-box { margin: 15px auto; width: 90%; text-align: left; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: var(--box-bg); }
+.correct-box summary { color: #28a745; font-weight: bold; cursor: pointer; }
+.wrong-box summary { color: #dc3545; font-weight: bold; cursor: pointer; }
+.review-box ul { padding-left: 20px; font-size: 0.9em; margin: 10px 0; line-height: 1.6; }
+.history-item { border-bottom: 1px solid #ccc; padding: 10px 0; margin-bottom: 10px; }
+
+/* --- CHAPTER SELECTION BUTTONS (Mobile & PC Friendly) --- */
+.chapter-btn {
+    background-color: #ffffff; /* White background jisse text clear dikhe */
+    color: #333333; /* Dark grey text for high contrast */
+    border: 2px solid #007bff; /* Blue outline */
+    border-radius: 8px; /* Gol kinare */
+    padding: 16px 20px; /* Mobile par touch karne ke liye bada size */
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%; /* Mobile screen ke hisaab se khud adjust hoga */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Halki si shadow 3D look ke liye */
+    transition: all 0.3s ease; /* Hover karne par smooth effect */
+    text-align: left; /* Text left me rahega padhne me aasan */
+}
+
+/* Jab PC par mouse upar aayega ya mobile par touch karenge */
+.chapter-btn:hover, .chapter-btn:active {
+    background-color: #007bff; /* Background blue ho jayega */
+    color: #ffffff; /* Text white ho jayega */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* --- PDF VIEWER STYLES (Mobile & PC Friendly) --- */
+.pdf-container {
+    width: 100%;
+    height: 75vh; /* PC aur Laptop ke liye height */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background-color: #f4f6f9; /* Jab tak PDF load na ho, ek light color dikhe */
+}
+
+/* Mobile screens ke liye special settings */
+@media (max-width: 600px) {
+    .pdf-container {
+        height: 85vh; /* Mobile par PDF ko aur zyada height milegi */
+        border-radius: 4px; /* Mobile par kinare thode kam gol honge */
+    }
+    #pdf-title {
+        font-size: 1.2rem; /* Mobile par title ka size adjust ho jayega */
+        margin-bottom: 10px;
+    }
+}
+/* === RESPONSIVE VIDEO VIEWER === */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* यह वीडियो को हर स्क्रीन पर परफेक्ट YouTube साइज़ में रखेगा */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-top: 15px;
+    background-color: #000;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* === VIDEO CHAPTER BUTTON (YouTube Style) === */
+.video-chapter-btn {
+    display: flex;
+    justify-content: space-between; /* Text left side,video logo right side  */
+    align-items: center;
+    background-color: #ffffff;
+    color: #333333;
+    border: 2px solid #ff0000; /* YouTube Red Border */
+    border-radius: 8px;
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.video-chapter-btn:hover {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+.yt-badge {
+    color: #ff0000;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.video-chapter-btn:hover .yt-badge {
+    color: #ffffff;
+}
+/* === MOBILE FIX: TITLE OVERLAP ISSUE === */
+@media screen and (max-width: 768px) {
+    /* Ye sirf Mobile (768px se kam width) par chalega */
+    .view-section {
+        /* Menu aur Back button ki height ke barabar ka gap de rahe hain */
+        padding-top: 70px !important; 
+    }
+    
+    /* Titles ko aur clear dikhane ke liye thoda extra margin */
+    .view-section h2, 
+    #video-title, 
+    #playing-video-title {
+        margin-top: 15px !important;
+        line-height: 1.4; /* Line ke beech thoda gap taaki text mix na ho */
+    }
+}
+/* === 100% RESPONSIVE GRID (PC & MOBILE OVERLAP FIX) === */
+
+.homepage-grid { 
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* PC: 3 boxes per row */
+    gap: 25px !important; /* Box ke beech ka gap thoda badhaya taaki wo chipke nahi */
+    width: 100% !important;
+    max-width: 1000px !important; /* Container ko 1200px se 1000px kiya jisse box ka size thoda kam ho gaya */
+    margin: 0 auto !important;
+    padding: 20px !important; /* Kinaron se jagah chhodne ke liye */
+    box-sizing: border-box !important;
+}
+
+/* Box ko flexible banane ka asli logic */
+.homepage-grid .category-box {
+    width: 100% !important;
+    min-width: 0 !important; /* Ye line overlap ko 100% rokegi */
+    max-width: 300px !important; /* Box isse zyada bada nahi hoga */
+    margin: 0 auto !important; 
+    box-sizing: border-box !important; /* Padding ko bahar nahi nikalne dega */
+    overflow: hidden !important;
+}
+
+/* Image ko box ke andar fix rakhne ke liye */
+.homepage-grid .category-box img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
+}
+
+/* === MOBILE VIEW FIX === */
+@media screen and (max-width: 768px) {
+    .homepage-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* Mobile: 2 boxes per row */
+        gap: 12px !important; 
+        padding: 10px !important;
+    }
+    
+    .homepage-grid .category-box {
+        padding: 12px 8px !important; 
+        max-width: 100% !important; /* Mobile par width adjust karne ke liye */
+    }
+    
+    .homepage-grid .category-box h3 {
+        font-size: 14px !important; 
+        margin: 8px 0 !important;
+        white-space: normal !important; /* Text ko agli line mein bhejne ke liye */
+        word-wrap: break-word !important;
+    }
+    
+    .homepage-grid .category-box button {
+        font-size: 12px !important; 
+        padding: 8px 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+/* PDF Fullscreen Button Styling */
+#fullscreen-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+#fullscreen-btn:hover {
+    background-color: #003d82;
+}
+/* === CONTINUE LEARNING CARD === */
+#continue-learning-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto 20px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.continue-card {
+    background: linear-gradient(135deg, #f0f7ff, #e0efff); /* Premium light blue gradient */
+    border: 1px solid #cce0ff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 50, 150, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.continue-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 50, 150, 0.1);
+}
+
+.continue-info h4 {
+    margin: 0 0 5px 0;
+    color: #0056b3;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.continue-info p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+.continue-btn {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Mobile View Adjustments */
+@media screen and (max-width: 768px) {
+    .continue-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .continue-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
