@@ -555,15 +555,25 @@ function confirmStartTest() {
     
     let qHTML = "";
     activeQuizData.forEach((item, index) => {
-        qHTML += `<div class="question-card">`;
-        qHTML += `<p class="question-text">Q${index+1}. ${item.q}</p>`;
-        // Agar sawal mein image hai toh dikhao
-        if (item.image) {
-            qHTML += `<img src="${item.image}" alt="Diagram" style="max-width: 100%; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ddd;">`;
-        }
+        // Agar image hai toh 'has-image' class add karenge
+        let imageClass = item.image ? "has-image" : "";
+        
+        qHTML += `<div class="question-card ${imageClass}">`;
+        
+        // Wrapper for left side (Question + Options)
+        qHTML += `<div class="question-content">`;
+        qHTML += `<p class="question-text" style="font-size: 1.2em; font-weight: bold; margin-bottom: 15px;">Q${index+1}. ${item.q}</p>`;
+        
         item.options.forEach((opt, i) => {
             qHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${i}"> ${opt}</label>`;
         });
+        qHTML += `</div>`; // Wrapper closed
+        
+        // Right side (Image) - Sirf tabhi aayegi jab link hoga
+        if (item.image) {
+            qHTML += `<img src="${item.image}" alt="Diagram" class="test-image">`;
+        }
+        
         qHTML += `</div>`;
     });
     document.getElementById('question-container').innerHTML = qHTML;
