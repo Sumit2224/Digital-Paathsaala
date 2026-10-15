@@ -210,7 +210,7 @@ function changeLanguage(lang) {
 }
 
 // Apna NAYA Web App URL yahan daalein
-const WEB_APP_URL="https://script.google.com/macros/s/AKfycbyeTKOl2634OfTh0ZQmoQU5ePaZZZkJe-gEjWgbkZ0V-DqpcMxxWGHL3es2UNZJBcJY/exec";
+const WEB_APP_URL="https://script.google.com/macros/s/AKfycbz46EyspzkneMWNfVqDtHTnbqdmA6Qj8s8EMkN6jI0wNG98oWqR76UCGs10q5Bhpz2d/exec";
 
 // --- MULTI-STEP AUTH LOGIC ---
 let authHistory = [];
@@ -883,3 +883,30 @@ function showContinueLearningCard() {
 }
 
 window.addEventListener('load', showContinueLearningCard);
+// sheets se direct firebase mai question add
+async function syncSheetsToFirebase() {
+    if (prompt("Master Password to Sync:") !== "owner123") {
+        alert("Access Denied.");
+        return;
+    }
+    
+    alert("Fetching data from Google Sheets... Please wait and do not close this window.");
+    try {
+        let response = await fetch(WEB_APP_URL + "?action=get_all_quizzes");
+        let result = await response.json();
+        
+        if (result.success && result.quizzes) {
+            for (let docId in result.quizzes) {
+                await db.collection("quizzes").doc(docId).set({
+                    questions: result.quizzes[docId]
+                });
+            }
+            alert("Success! All questions synced to Firebase. Tests are now live.");
+        } else {
+            alert("No data found in Google Sheets.");
+        }
+    } catch (error) {
+        console.error("Sync error: ", error);
+        alert("Network error while syncing.");
+    }
+}
