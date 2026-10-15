@@ -302,6 +302,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+const db = firebase.firestore();
 
 // 1. Asli Login Function
 function loginWithFirebase() {
@@ -509,11 +510,12 @@ async function startTest(subject) {
     openExclusiveView('confirmation-modal');
     
     try {
-        let response = await fetch(WEB_APP_URL + "?action=get_quiz&class=" + encodeURIComponent(currentClass) + "&subject=" + encodeURIComponent(subject));
-        let result = await response.json();
+        // Firebase se direct class aur subject ka data laana
+        const docId = currentClass + "_" + subject; 
+        const doc = await db.collection("quizzes").doc(docId).get();
         
-        if (result.success && result.quiz.length > 0) {
-            activeQuizData = result.quiz; 
+        if (doc.exists && doc.data().questions && doc.data().questions.length > 0) {
+            activeQuizData = doc.data().questions; 
             
             let secondsPerQuestion = 60; 
             if (subject === 'Math') secondsPerQuestion = 240; 
@@ -528,6 +530,7 @@ async function startTest(subject) {
             goBack();
         }
     } catch (error) {
+        console.error("Firebase load error: ", error);
         alert("Network error while loading test.");
         goBack();
     }
@@ -553,6 +556,10 @@ function confirmStartTest() {
     activeQuizData.forEach((item, index) => {
         qHTML += `<div class="question-card">`;
         qHTML += `<p class="question-text">Q${index+1}. ${item.q}</p>`;
+        // Agar sawal mein image hai toh dikhao
+        if (item.image) {
+            qHTML += `<img src="${item.image}" alt="Diagram" style="max-width: 100%; border-radius: 8px; margin-bottom: 15px; border: 1px solid #ddd;">`;
+        }
         item.options.forEach((opt, i) => {
             qHTML += `<label class="option-label"><input type="radio" name="q${index}" value="${i}"> ${opt}</label>`;
         });
