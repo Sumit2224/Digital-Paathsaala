@@ -301,6 +301,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
 const auth = firebase.auth();
 const db = firebase.firestore();
 
