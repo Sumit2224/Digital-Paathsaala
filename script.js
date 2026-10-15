@@ -816,13 +816,11 @@ function checkTestAuth(categoryName) {
 }
 
 /* =======================================================
-   CONTINUE LEARNING (SMART AUTO-DETECT LOGIC)
-   ======================================================= */
-/* =======================================================
-   CONTINUE LEARNING (SMART FILTERED TRACKER)
+   CONTINUE LEARNING (SMART FILTERED TRACKER - 100% USER SPECIFIC)
    ======================================================= */
 document.addEventListener('click', function(e) {
-    let clickedItem = e.target.closest('li, .chapter-btn, .video-card, button, .class-slot'); 
+    // Sirf inhi classes wale buttons ko track karega (Chapters, Videos, Subjects)
+    let clickedItem = e.target.closest('.chapter-btn, .video-chapter-btn, .class-slot'); 
     
     if (clickedItem) {
         let topicText = clickedItem.innerText.trim();
@@ -830,46 +828,38 @@ document.addEventListener('click', function(e) {
         let itemAction = clickedItem.getAttribute('onclick'); 
         
         if (itemAction) {
-            // Yahan par humne saare naye Firebase aur Google functions ignore list mein add kar diye hain
-            let isIgnoredAction = itemAction.includes('openClassSelection') || 
-                                  itemAction.includes('handleSubjectSelection') || 
-                                  itemAction.includes('selectClass') ||
-                                  itemAction.includes('goBack') ||
-                                  itemAction.includes('toggle') ||
-                                  itemAction.includes('checkTestAuth') ||
-                                  itemAction.includes('openExclusiveView') ||
-                                  itemAction.includes('loginWithFirebase') ||
-                                  itemAction.includes('registerWithFirebase') ||
-                                  itemAction.includes('resetPasswordFirebase') ||
-                                  itemAction.includes('loginWithGoogle') ||
+            // YAHAN HAI MAIN BLOCKLIST: In actions ko kabhi track nahi karega
+            let isIgnoredAction = itemAction.includes('selectClass') || 
+                                  itemAction.includes('openClassSelection') ||
+                                  itemAction.includes('syncSheetsToFirebase') || // Sync button blocked
+                                  itemAction.includes('ownerAccess') ||          // Admin button blocked
                                   itemAction.includes('logout');
             
-            // Text ke basis par bhi Google aur Signup text ko ignore list mein daal diya
-            let isAuthText = textLower.includes('log in') || 
-                             textLower.includes('sign up') || 
-                             textLower.includes('password') || 
-                             textLower.includes('menu') || 
-                             textLower.includes('continue with google') || 
-                             textLower.includes('signup');
+            // Faltu text filter
+            let isFaltuText = textLower === 'next' || textLower === 'submit' || textLower === 'clear' || textLower.includes('log in');
             
-            if (!isIgnoredAction && !isAuthText && topicText !== "") {
-                // "▶ Video" text ko clean karne ke liye
+            if (!isIgnoredAction && !isFaltuText && topicText !== "") {
                 topicText = topicText.replace('▶ Video', '').trim();
                 
-                localStorage.setItem('dp_lastStudiedTopic', topicText);
-                localStorage.setItem('dp_lastAction', itemAction); 
+                let userEmail = localStorage.getItem('userEmail') || 'guest';
+                
+                localStorage.setItem('dp_lastTopic_' + userEmail, topicText);
+                localStorage.setItem('dp_lastAction_' + userEmail, itemAction); 
             }
         }
     }
 });
+
 function showContinueLearningCard() {
-    let lastTopic = localStorage.getItem('dp_lastStudiedTopic');
-    let lastAction = localStorage.getItem('dp_lastAction'); 
+    let userEmail = localStorage.getItem('userEmail') || 'guest';
+    
+    let lastTopic = localStorage.getItem('dp_lastTopic_' + userEmail);
+    let lastAction = localStorage.getItem('dp_lastAction_' + userEmail); 
     let section = document.getElementById('continue-learning-section');
     
     if (lastTopic && lastAction && section) {
         section.innerHTML = `
-            <div class="continue-card" id="resume-card-btn">
+            <div class="continue-card" id="resume-card-btn" style="cursor: pointer;">
                 <div class="continue-info">
                     <h4>📚 Resume Learning</h4>
                     <p>${lastTopic}</p>
@@ -878,12 +868,16 @@ function showContinueLearningCard() {
             </div>
         `;
         section.style.display = 'block';
-        
         document.getElementById('resume-card-btn').setAttribute('onclick', lastAction);
+    } else if (section) {
+        section.style.display = 'none'; 
     }
 }
 
 window.addEventListener('load', showContinueLearningCard);
+window.addEventListener('popstate', function() {
+    setTimeout(showContinueLearningCard, 150);
+});
 // sheets se direct firebase mai question add
 async function syncSheetsToFirebase() {
     if (prompt("Master Password to Sync:") !== "owner123") {
