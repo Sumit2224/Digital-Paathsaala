@@ -19,7 +19,9 @@ const pdfDatabase = {
              "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
                       ],
              "SST": [ {name: "History|Chapter 1: Nationalism", link: "" }],
-             "English": [{name: "Grammer: Tense", link:"https://drive.google.com/file/d/1dvfUZiI1xNfBfyeSahZq1C9cMpYVwbZy/preview"}]       
+             "English": [{name: "Grammer: Tense", link:"https://drive.google.com/file/d/1dvfUZiI1xNfBfyeSahZq1C9cMpYVwbZy/preview"},
+                     {name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1nwEXRmxT6mbXwEU_QuXtFSNr_Ne7P84Y/preview"},
+             ],       
         },
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
             ],
@@ -36,7 +38,7 @@ const pdfDatabase = {
                          ],
                  "Hindi":[{ },
                  ], 
-                 "English":[{name:"Chapter 1: "}],       
+                       
         },
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
             ]
@@ -49,6 +51,9 @@ const pdfDatabase = {
                     {name:"Chapter 10: (क्षितिज)नेताजी का चश्मा",link:"https://drive.google.com/file/d/1uzfldG3VBzJRszqMbu3s4WAmOy6M966X/preview"},
                     {name:"Chapter 11: (क्षितिज)बालगोबिन भगत",link:"https://drive.google.com/file/d/12X-NJQctPGD0if-aBD3e-IR4W6SqIbYG/preview"},
                               ],
+            "English":[{name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1C8Ko7ZAMvf0mBqcsxdTQyrJ-JjXF8PxT/preview"},
+                {name:"Chapter 1 First Flight: Dust Of Snow & Fire and Ice ", link: "https://drive.google.com/file/d/1rmLHFob-Z3pBzlValaxcjURKxVlU-dzs/preview"},
+            ],
       },
     }   
 };
