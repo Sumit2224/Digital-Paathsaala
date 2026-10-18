@@ -399,6 +399,19 @@
     <!-- Chapters ke buttons yahan automatically aayenge -->
     <div id="chapter-list" style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
     </div>
+     <!-- ====================================== -->
+    <div style="text-align: center; margin-bottom: 20px; width: 100%;">
+      <script>
+  atOptions = {
+    'key' : '063670ef581aa1aa2cb95e43cdeb0364',
+    'format' : 'iframe',
+    'height' : 60,
+    'width' : 468,
+    'params' : {}
+  };
+</script>
+<script src="https://mausoleumpoetrywrench.com/063670ef581aa1aa2cb95e43cdeb0364/invoke.js"></script>
+<!-- ============================================ -->
 </div>
 
 <!-- === PDF VIEWER MODAL === -->
@@ -497,7 +510,7 @@
         socialScript.async = true;
         document.body.appendChild(socialScript);
 
-        // 2. Popunder Ad (Max 3 times/day logic)
+        // 2. Popunder Ad (Max 1 times/day logic)
         let today = new Date().toDateString();
         let popData = JSON.parse(localStorage.getItem('student_popunder_status')) || { count: 0, date: today };
 
@@ -505,7 +518,7 @@
             popData = { count: 0, date: today };
         }
 
-        if (popData.count < 3) {
+        if (popData.count <1 ) {
             let popScript = document.createElement('script');
             popScript.src = "https://mausoleumpoetrywrench.com/19/fd/f4/19fdf403c186f245f4fa6d265d924318.js";
             popScript.async = true;
