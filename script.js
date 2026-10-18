@@ -720,11 +720,11 @@ const videoDatabase = {
     "Class 10": {
         "Science": [
             { name: "Chapter 1: Chemical Reactions and Equations", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID_1" },
-            { name: "Chapter 3: Metals and Non-Metals", link: "https://www.youtube.com/embed/pQkEaH_msbs" },
+            { name: "Chapter 3: Metals and Non-Metals", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID_2" },
             { name: "Chapter 11: Electricity", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID_3" }
         ],
         "Maths": [
-            { name: "Chapter 1: Real Numbers", link: "https://www.dailymotion.com/embed/video/xb3206m" }
+            { name: "Chapter 1: Real Numbers", link: "https://www.youtube.com/embed/YOUR_VIDEO_ID" }
         ]
     },
     "Class 9": {
