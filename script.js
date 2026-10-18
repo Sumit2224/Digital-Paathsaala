@@ -26,7 +26,7 @@ const pdfDatabase = {
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
             ],
      "SST": [{name: "Geography(Part 1)Chapter 1:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
-
+          {name: "Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/1XMUph4SVGKBT9xZkalN56LURdYCtNAgN/preview"},
      ],       
         }
     },
@@ -46,15 +46,18 @@ const pdfDatabase = {
         },
 
 "Solutions": 
-      {"Class 10": {"Hindi": [ { name:"Chapter 1: पद(kshitiz)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
-                    {name:"Chapter 3: (क्षितिज)सवैया और कवित्त",link:"https://drive.google.com/file/d/1wkxIdv-IvNsRBYSHxl5iYaJKljXXnYZl/preview"},
-                    {name:"Chapter 10: (क्षितिज)नेताजी का चश्मा",link:"https://drive.google.com/file/d/1uzfldG3VBzJRszqMbu3s4WAmOy6M966X/preview"},
-                    {name:"Chapter 11: (क्षितिज)बालगोबिन भगत",link:"https://drive.google.com/file/d/12X-NJQctPGD0if-aBD3e-IR4W6SqIbYG/preview"},
+{"Class 10": {"Hindi": [ { name:"Chapter 1: पद(kshitiz)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
+      {name:"Chapter 2: (क्षितिज)राम-लक्ष्मण-परशुराम संवाद",link:"https://drive.google.com/file/d/1o1ZrxsVL_e-cuwBvckoY3TEl8LBpOjs4/preview"},
+      {name:"Chapter 10: (क्षितिज)नेताजी का चश्मा",link:"https://drive.google.com/file/d/1uzfldG3VBzJRszqMbu3s4WAmOy6M966X/preview"},
+     {name:"Chapter 11: (क्षितिज)बालगोबिन भगत",link:"https://drive.google.com/file/d/12X-NJQctPGD0if-aBD3e-IR4W6SqIbYG/preview"},
                               ],
-            "English":[{name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1C8Ko7ZAMvf0mBqcsxdTQyrJ-JjXF8PxT/preview"},
-                {name:"Chapter 1 First Flight: Dust Of Snow & Fire and Ice ", link: "https://drive.google.com/file/d/1rmLHFob-Z3pBzlValaxcjURKxVlU-dzs/preview"},
+    "English":[{name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1C8Ko7ZAMvf0mBqcsxdTQyrJ-JjXF8PxT/preview"},
+       {name:"Chapter 1 First Flight: Dust Of Snow & Fire and Ice ", link: "https://drive.google.com/file/d/1rmLHFob-Z3pBzlValaxcjURKxVlU-dzs/preview"},
             ],
       },
+    "Class 9": { "SST": [  { name:"Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/11Xxzl53hFjzJro33Be1IOhu7_S3iygSw/preview"  }
+            ]
+        }, 
     }   
 };
 
