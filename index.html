@@ -537,40 +537,8 @@
         let socialScript = document.createElement('script');
         socialScript.src = "https://mausoleumpoetrywrench.com/2d/a9/d0/2da9d0e22f30b349f794c63a6b1bae7f.js";
         socialScript.async = true;
-        document.body.appendChild(socialScript);
-
-        // 2. Popunder Ad (Strictly 2 times/day with minimum 4-hour gap)
-        let today = new Date().toDateString();
-        let currentTime = new Date().getTime(); // Milliseconds mein current time
+        document.body.appendChild(socialScript);}
         
-        // LocalStorage se data nikalo, agar nahi hai toh default data banao
-        let popData = JSON.parse(localStorage.getItem('student_popunder_strict_v1')) || { count: 0, date: today, lastShownTime: 0 };
-
-        // Agar date badal gayi hai, toh counter reset kar do
-        if (popData.date !== today) {
-            popData = { count: 0, date: today, lastShownTime: 0 };
-        }
-
-        // 4 ki jagah 1  ghante (milliseconds mein: 4 * 60 * 60 * 1000 = 14400000 ms to ab gap 3600000) ka gap
-        let minimumGapMs = 3600000; 
-
-        // Logic check: (Max 2 baar) AND (Pehle aur doosre ke beech 4 ab/1 ghante ka gap ho)
-        if (popData.count < 2 && (currentTime - popData.lastShownTime > minimumGapMs)) {
-            
-            let popScript = document.createElement('script');
-            popScript.src = "https://mausoleumpoetrywrench.com/19/fd/f4/19fdf403c186f245f4fa6d265d924318.js";
-            popScript.async = true;
-            document.body.appendChild(popScript);
-
-            // Counter badhao aur time update karo
-            popData.count += 1;
-            popData.lastShownTime = currentTime;
-            
-            // Naya data LocalStorage mein save karo
-            localStorage.setItem('student_popunder_strict_v1', JSON.stringify(popData));
-        }
-    }
-
     // Website poori tarah open hone ke 2 second baad ads aaram se load honge
     window.addEventListener('load', () => {
         setTimeout(loadSafeAds, 2000);
