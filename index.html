@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Paathsaala</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1">
     <link rel="manifest" href="manifest.json">
     <!-- SEO Meta Tags -->
 <meta name="description" content="Digital Paathsaala - Class 9 aur 10 ke liye free online test, study notes aur video lectures.">
@@ -466,10 +466,19 @@
     <h2 id="video-title" style="text-align:center; color: #007bff;">Video Explanations</h2>
     <div class="category-box" style="margin: 0 auto; width: 90%; max-width: 800px; padding: 20px;">
         <p style="text-align: left; margin-bottom: 15px; font-weight: bold;">Select a lesson to watch:</p>
-        
+        <div style="text-align: center; margin-bottom: 20px; width: 100%;"> <script>
+  atOptions = {
+    'key' : 'd1c0533830dc0fbc68d786a6f12afcce',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://mausoleumpoetrywrench.com/d1c0533830dc0fbc68d786a6f12afcce/invoke.js"></script>
         <!-- Yahan iframes ki jagah JavaScript naye YouTube style Buttons daalega -->
         <div id="video-container" style="display: flex; flex-direction: column; gap: 10px;">
-        </div>
+        </div></div>
     </div>
 </div>
 
@@ -482,6 +491,17 @@
         <div class="video-wrapper">
             <iframe id="video-iframe" src="" allowfullscreen loading="lazy"></iframe>
         </div>
+        </div>
+      <div style="text-align: center; margin-bottom: 20px; width: 100%;"> <script>
+  atOptions = {
+    'key' : 'd1c0533830dc0fbc68d786a6f12afcce',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://mausoleumpoetrywrench.com/d1c0533830dc0fbc68d786a6f12afcce/invoke.js"></script>
     </div>
     
     <!-- Video dekhne ke baad wapas chapters par jane ka button -->
@@ -494,7 +514,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
-<script src="script.js?v=2"></script>
+<script src="script.js?v=3"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
@@ -502,7 +522,7 @@
   }
 </script>
 
-<!-- === SAFE ADSTERRA ADS LOADER (Non-Blocking) === -->
+<!-- === SAFE ADSTERRA ADS LOADER (Strict & Fullproof) === -->
 <script>
     function loadSafeAds() {
         // 1. Social Bar Ad (Safe Asynchronous Load)
@@ -511,22 +531,35 @@
         socialScript.async = true;
         document.body.appendChild(socialScript);
 
-        // 2. Popunder Ad (Max 1 times/day logic)
+        // 2. Popunder Ad (Strictly 2 times/day with minimum 4-hour gap)
         let today = new Date().toDateString();
-        let popData = JSON.parse(localStorage.getItem('student_popunder_status')) || { count: 0, date: today };
+        let currentTime = new Date().getTime(); // Milliseconds mein current time
+        
+        // LocalStorage se data nikalo, agar nahi hai toh default data banao
+        let popData = JSON.parse(localStorage.getItem('student_popunder_strict_v1')) || { count: 0, date: today, lastShownTime: 0 };
 
+        // Agar date badal gayi hai, toh counter reset kar do
         if (popData.date !== today) {
-            popData = { count: 0, date: today };
+            popData = { count: 0, date: today, lastShownTime: 0 };
         }
 
-        if (popData.count <1 ) {
+        // 4 ki jagah 1  ghante (milliseconds mein: 4 * 60 * 60 * 1000 = 14400000 ms to ab gap 3600000) ka gap
+        let minimumGapMs = 3600000; 
+
+        // Logic check: (Max 2 baar) AND (Pehle aur doosre ke beech 4 ab/1 ghante ka gap ho)
+        if (popData.count < 2 && (currentTime - popData.lastShownTime > minimumGapMs)) {
+            
             let popScript = document.createElement('script');
             popScript.src = "https://mausoleumpoetrywrench.com/19/fd/f4/19fdf403c186f245f4fa6d265d924318.js";
             popScript.async = true;
             document.body.appendChild(popScript);
 
+            // Counter badhao aur time update karo
             popData.count += 1;
-            localStorage.setItem('student_popunder_status', JSON.stringify(popData));
+            popData.lastShownTime = currentTime;
+            
+            // Naya data LocalStorage mein save karo
+            localStorage.setItem('student_popunder_strict_v1', JSON.stringify(popData));
         }
     }
 
