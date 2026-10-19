@@ -27,6 +27,7 @@ const pdfDatabase = {
             ],
      "SST": [{name: "Geography(Part 1)Chapter 1:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
           {name: "Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/1XMUph4SVGKBT9xZkalN56LURdYCtNAgN/preview"},
+        {name: "Geography(Part 2)Chapter 2:Life on Earth", link: "https://drive.google.com/file/d/1RThs8KcMHkDdh9Rs1QNeeQrAv-02N3WU/preview"},  
      ],       
         }
     },
@@ -312,6 +313,28 @@ firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics();
 const auth = firebase.auth();
 const db = firebase.firestore();
+const messaging = firebase.messaging();
+
+function requestNotificationPermission() {
+    Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+            console.log('Notification permission granted.');
+            
+            // YAHAN APNI VAPID KEY DAALEIN
+messaging.getToken({ vapidKey: 'BFQpBfMSM3xG2bQzThSbcGB2HUxS54_p1wfJxsubT8zHu3ECNT_hkctA43-fZHNagD5YJy7R6SDBRwqOinmX4Fo' }).then((currentToken) => {
+                if (currentToken) {
+                    console.log('FCM User Token:', currentToken);
+                    alert("✅ Notifications successfully enabled!");
+                }
+            }).catch((err) => {
+                console.log('Token nikalne mein error aaya: ', err);
+            });
+        } else {
+            console.log('User ne notification block kar diya.');
+            alert("❌ Notifications disabled.");
+        }
+    });
+}
 
 // 1. Asli Login Function
 function loginWithFirebase() {

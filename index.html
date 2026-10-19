@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Paathsaala</title>
-    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="stylesheet" href="style.css?v=3">
     <link rel="manifest" href="manifest.json">
     <!-- === CACHE BUSTING META TAGS  === -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -62,6 +62,9 @@
         <button id="nav-hist-btn" class="hidden" onclick="openExclusiveView('history-container')" style="background-color: #17a2b8; margin-top: 5px;" data-key="My History">My History</button>
         <button id="nav-logout-btn" class="hidden" onclick="logout()" data-key="Log Out" style="background-color: #dc3545; margin-top: 5px;">Log Out</button>
         <hr>
+        <button onclick="requestNotificationPermission()" style="background-color: #ffc107; width: 100%; padding: 10px; margin-bottom: 8px; border: none; color: black; border-radius: 5px; cursor: pointer; font-weight: bold;">
+   🔔 Enable Notifications
+</button>
         <h4 data-key="Settings">Settings</h4>
         <p class="setting-item" onclick="toggleTheme()" data-key="Toggle Dark/Light Mode">🌓 Toggle Dark/Light Mode</p>
         <p class="setting-item">
@@ -518,7 +521,8 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
-<script src="script.js?v=3.1"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js"></script>
+<script src="script.js?v=3.2"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
