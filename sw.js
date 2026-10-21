@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paathsaala-cache-v6';
+const CACHE_NAME = 'paathsaala-cache-v8';
 const urlsToCache = [
   '/',
   '/index.html',
