@@ -16,50 +16,213 @@ const pdfDatabase = {
   "Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                            { name: "Chapter 2: Acids, Bases and Salts", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
                            ],
-             "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
+    "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
                       ],
-             "SST": [ {name: "History|Chapter 1: Nationalism", link: "" }],
-             "English": [{name: "Grammer: Tense", link:"https://drive.google.com/file/d/1dvfUZiI1xNfBfyeSahZq1C9cMpYVwbZy/preview"},
-                     {name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1nwEXRmxT6mbXwEU_QuXtFSNr_Ne7P84Y/preview"},
-             ],       
+    "SST": [ {name: "History|Chapter 1: Nationalism", link: "" }],
+    "English": [{name: "Grammer: Tense", link:"https://drive.google.com/file/d/1dvfUZiI1xNfBfyeSahZq1C9cMpYVwbZy/preview"},
+    {name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1nwEXRmxT6mbXwEU_QuXtFSNr_Ne7P84Y/preview"},
+    {name: "Chapter 2(First Flight):Nelson Mandela:Long walk to Freedom", link: ""},
+    {name: "Chapter 3(First Flight):Two Stories about Flying", link: ""},
+    {name: "Chapter 4(First Flight):From the diary of Anne Frank", link: ""},
+    {name: "Chapter 5(First Flight):Glimpses Of India", link: ""},
+    {name: "Chapter 6(First Flight):Mijbil the Otter", link: ""},
+    {name: "Chapter 7(First Flight):Madam Rides The Bus", link: ""},
+    {name: "Chapter 8(First Flight):The Sermon at Benares", link: ""},
+    {name: "Chapter 9(First Flight):The Proposal", link: ""},
+    {name: "Chapter 1 Poem(First Flight):Dust Of Snow And Fire & Ice", link: ""},
+    {name: "Chapter 2 Poem(First Flight):Tiger In the Zoo", link: ""},
+    {name: "Chapter 3 Poem(First Flight):How to tell Wild Animals & Ball Poem", link: ""},
+    {name: "Chapter 4 Poem(First Flight): Amanda", link: ""},
+    {name: "Chapter 5 Poem(First Flight):the Trees", link: ""},
+    {name: "Chapter 6 Poem(First Flight):Fog", link: ""},
+    {name: "Chapter 7 Poem(First Flight):Tale of Custard the Dragon", link: ""},
+    {name: "Chapter 8 Poem(First Flight):for anne gregory", link: ""},
+    {name: "Chapter 1(Footprints Without Feet): Triumph Of Surgery", link: ""},
+    {name: "Chapter 2(Footprints Without Feet): The Thief's Story", link: ""},
+    {name: "Chapter 3(Footprints Without Feet): Midnight Visitor", link: ""},
+    {name: "Chapter 4(Footprints Without Feet): A Question of Trust", link: ""},
+    {name: "Chapter 5(Footprints Without Feet): Footprints Without Feet", link: ""},
+    {name: "Chapter 6(Footprints Without Feet): The Making of a Scientist", link: ""},
+    {name: "Chapter 7(Footprints Without Feet): The Necklace", link: ""},
+    {name: "Chapter 8(Footprints Without Feet): Bholi", link: ""},
+    {name: "Chapter 9(Footprints Without Feet): Book that Saved the Earth", link: ""},
+      ],
+      "Hindi": [ { name:"Chapter 1: पद(क्षितिज)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
+      {name:"Chapter 2: (क्षितिज)राम-लक्ष्मण-परशुराम संवाद",link:"https://drive.google.com/file/d/1o1ZrxsVL_e-cuwBvckoY3TEl8LBpOjs4/preview"},
+      {name:"Chapter 10: (क्षितिज)नेताजी का चश्मा",link:"https://drive.google.com/file/d/1uzfldG3VBzJRszqMbu3s4WAmOy6M966X/preview"},
+     {name:"Chapter 11: (क्षितिज)बालगोबिन भगत",link:"https://drive.google.com/file/d/12X-NJQctPGD0if-aBD3e-IR4W6SqIbYG/preview"},
+    {name:"Chapter 3:(क्षितिज)आत्मकथ्य", link: ""},
+    {name:"Chapter 4:(क्षितिज)उत्साह", link: ""}, 
+    {name:"Chapter 4:(क्षितिज)अट नहीं रही", link: ""}, 
+    {name:"Chapter 5:(क्षितिज)फसल", link: ""}, 
+    {name:"Chapter 5:(क्षितिज)यह दंतुरहित मुस्कान", link: ""}, 
+    {name:"Chapter 6:(क्षितिज)संगतकार", link: ""}, 
+    {name:"Chapter 9:(क्षितिज)लखनवी अंदाज़", link: ""}, 
+    {name:"Chapter 10:(क्षितिज)एक कहानी यह भी", link: ""}, 
+    {name:"Chapter 11:(क्षितिज)नौबतखाने में इबादत", link: ""}, 
+    {name:"Chapter 12:(क्षितिज)संस्कृति", link: ""},
+    {name:"Chapter 1:(कृतिका)माता का आँचल", link: ""},
+    {name:"Chapter 2:(कृतिका)साना-साना हाथ जोड़ि", link: ""},
+    {name:"Chapter 3:(कृतिका)मैं क्यों लिखता हूँ?", link: ""}, 
+    ],       
         },
   "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
             ],
-     "SST": [{name: "Geography(Part 1)Chapter 1:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
-          {name: "Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/1XMUph4SVGKBT9xZkalN56LURdYCtNAgN/preview"},
+     "SST": [{name: "Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/1XMUph4SVGKBT9xZkalN56LURdYCtNAgN/preview"},
         {name: "Geography(Part 2)Chapter 2:Life on Earth", link: "https://drive.google.com/file/d/1RThs8KcMHkDdh9Rs1QNeeQrAv-02N3WU/preview"},  
-     ],       
-        }
+    {name: "History(Part 2)Chapter 3:Resistance and Resilience", link:""}, 
+ {name: "Polity(Part 2)Chapter 4: Governace and Public Policy", link:""},
+ {name: "Economics(Part 2)Chapter 5: Managing Your Personal Finances", link:""},
+ {name: "Economics(Part 2)Chapter 6: From Ideas to Startups", link:""},
+ {name: "Geography(Part 1)Chapter 2:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
+ {name: "Geography(Part 1)Chapter 3:Atmosphere and Climate", link:""},
+ {name: "History(Part 1)Chapter 4:Early Humans and Beginning of Civilisation", link: ""},
+ {name: "History(Part 1)Chapter 5: State and Society uo to 1000CE", link: ""},
+ {name: "Polity(Part 1)Chapter 6: Democracy", link: ""},
+ {name: "Polity(Part 1)Chapter 7: Elections", link: ""},
+ {name: "Economics(Part 1)Chapter 8:Building Blocks In Economics", link: ""},
+ {name: "Economics(Part 1)Chapter 9: the Prize Puzzle", link: ""}
+],
+
+        },
     },
 "Books": 
    {"Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                            { name: "Chapter 2: Acids, Bases and Salts", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                            ],
-                 "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
+    "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
                          ],
-                 "Hindi":[{ },
-                 ], 
-                       
-        },
-  "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
-            ]
-        }
-        },
-
-"Solutions": 
-{"Class 10": {"Hindi": [ { name:"Chapter 1: पद(kshitiz)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
+    "Hindi":[{ name:"Chapter 1: पद(क्षितिज)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
       {name:"Chapter 2: (क्षितिज)राम-लक्ष्मण-परशुराम संवाद",link:"https://drive.google.com/file/d/1o1ZrxsVL_e-cuwBvckoY3TEl8LBpOjs4/preview"},
       {name:"Chapter 10: (क्षितिज)नेताजी का चश्मा",link:"https://drive.google.com/file/d/1uzfldG3VBzJRszqMbu3s4WAmOy6M966X/preview"},
      {name:"Chapter 11: (क्षितिज)बालगोबिन भगत",link:"https://drive.google.com/file/d/12X-NJQctPGD0if-aBD3e-IR4W6SqIbYG/preview"},
-                              ],
-    "English":[{name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1C8Ko7ZAMvf0mBqcsxdTQyrJ-JjXF8PxT/preview"},
-       {name:"Chapter 1 First Flight: Dust Of Snow & Fire and Ice ", link: "https://drive.google.com/file/d/1rmLHFob-Z3pBzlValaxcjURKxVlU-dzs/preview"},
+    {name:"Chapter 3:(क्षितिज)आत्मकथ्य", link: ""},
+    {name:"Chapter 4:(क्षितिज)उत्साह", link: ""}, 
+    {name:"Chapter 4:(क्षितिज)अट नहीं रही", link: ""}, 
+    {name:"Chapter 5:(क्षितिज)फसल", link: ""}, 
+    {name:"Chapter 5:(क्षितिज)यह दंतुरहित मुस्कान", link: ""}, 
+    {name:"Chapter 6:(क्षितिज)संगतकार", link: ""}, 
+    {name:"Chapter 9:(क्षितिज)लखनवी अंदाज़", link: ""}, 
+    {name:"Chapter 10:(क्षितिज)एक कहानी यह भी", link: ""}, 
+    {name:"Chapter 11:(क्षितिज)नौबतखाने में इबादत", link: ""}, 
+    {name:"Chapter 12:(क्षितिज)संस्कृति", link: ""},
+    {name:"Chapter 1:(कृतिका)माता का आँचल", link: ""},
+    {name:"Chapter 2:(कृतिका)साना-साना हाथ जोड़ि", link: ""},
+    {name:"Chapter 3:(कृतिका)मैं क्यों लिखता हूँ?", link: ""}, 
+         ], 
+     "English":[{name: "Chapter 1(First Flight):A letter to God", link: ""},
+    {name: "Chapter 2(First Flight):Nelson Mandela:Long walk to Freedom", link: ""},
+    {name: "Chapter 3(First Flight):Two Stories about Flying", link: ""},
+    {name: "Chapter 4(First Flight):From the diary of Anne Frank", link: ""},
+    {name: "Chapter 5(First Flight):Glimpses Of India", link: ""},
+    {name: "Chapter 6(First Flight):Mijbil the Otter", link: ""},
+    {name: "Chapter 7(First Flight):Madam Rides The Bus", link: ""},
+    {name: "Chapter 8(First Flight):The Sermon at Benares", link: ""},
+    {name: "Chapter 9(First Flight):The Proposal", link: ""},
+    {name: "Chapter 1 Poem(First Flight):Dust Of Snow And Fire & Ice", link: ""},
+    {name: "Chapter 2 Poem(First Flight):Tiger In the Zoo", link: ""},
+    {name: "Chapter 3 Poem(First Flight):How to tell Wild Animals & Ball Poem", link: ""},
+    {name: "Chapter 4 Poem(First Flight): Amanda", link: ""},
+    {name: "Chapter 5 Poem(First Flight):the Trees", link: ""},
+    {name: "Chapter 6 Poem(First Flight):Fog", link: ""},
+    {name: "Chapter 7 Poem(First Flight):Tale of Custard the Dragon", link: ""},
+    {name: "Chapter 8 Poem(First Flight):for anne gregory", link: ""},
+    {name: "Chapter 1(Footprints Without Feet): Triumph Of Surgery", link: ""},
+    {name: "Chapter 2(Footprints Without Feet): The Thief's Story", link: ""},
+    {name: "Chapter 3(Footprints Without Feet): Midnight Visitor", link: ""},
+    {name: "Chapter 4(Footprints Without Feet): A Question of Trust", link: ""},
+    {name: "Chapter 5(Footprints Without Feet): Footprints Without Feet", link: ""},
+    {name: "Chapter 6(Footprints Without Feet): The Making of a Scientist", link: ""},
+    {name: "Chapter 7(Footprints Without Feet): The Necklace", link: ""},
+    {name: "Chapter 8(Footprints Without Feet): Bholi", link: ""},
+    {name: "Chapter 9(Footprints Without Feet): Book that Saved the Earth", link: ""},
+      ],                  
+        },
+  "Class 9": { "Science": [  { name: "Chapter 1: Matter in Our Surroundings", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
             ],
-      },
-    "Class 9": { "SST": [  { name:"Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/11Xxzl53hFjzJro33Be1IOhu7_S3iygSw/preview"  }
-            ]
-        }, 
-    }   
+   "SST": [{name: "Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/1XMUph4SVGKBT9xZkalN56LURdYCtNAgN/preview"},
+        {name: "Geography(Part 2)Chapter 2:Life on Earth", link: "https://drive.google.com/file/d/1RThs8KcMHkDdh9Rs1QNeeQrAv-02N3WU/preview"},  
+    {name: "History(Part 2)Chapter 3:Resistance and Resilience", link:""}, 
+ {name: "Polity(Part 2)Chapter 4: Governace and Public Policy", link:""},
+ {name: "Economics(Part 2)Chapter 5: Managing Your Personal Finances", link:""},
+ {name: "Economics(Part 2)Chapter 6: From Ideas to Startups", link:""},
+ {name: "Geography(Part 1)Chapter 2:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
+ {name: "Geography(Part 1)Chapter 3:Atmosphere and Climate", link:""},
+ {name: "History(Part 1)Chapter 4:Early Humans and Beginning of Civilisation", link: ""},
+ {name: "History(Part 1)Chapter 5: State and Society uo to 1000CE", link: ""},
+ {name: "Polity(Part 1)Chapter 6: Democracy", link: ""},
+ {name: "Polity(Part 1)Chapter 7: Elections", link: ""},
+ {name: "Economics(Part 1)Chapter 8:Building Blocks In Economics", link: ""},
+ {name: "Economics(Part 1)Chapter 9: the Prize Puzzle", link: ""}
+],  },       
+        
+        },
+
+"Solutions": 
+{"Class 10": {"Hindi": [ { name:"Chapter 1: पद(क्षितिज)", link:"https://drive.google.com/file/d/1O-wr_asJ_SiMralT_B7igRV5C8gSacje/preview" },
+      {name:"Chapter 2: (क्षितिज)राम-लक्ष्मण-परशुराम संवाद",link:"https://drive.google.com/file/d/1o1ZrxsVL_e-cuwBvckoY3TEl8LBpOjs4/preview"},
+      {name:"Chapter 10: (क्षितिज)नेताजी का चश्मा",link:"https://drive.google.com/file/d/1uzfldG3VBzJRszqMbu3s4WAmOy6M966X/preview"},
+     {name:"Chapter 11: (क्षितिज)बालगोबिन भगत",link:"https://drive.google.com/file/d/12X-NJQctPGD0if-aBD3e-IR4W6SqIbYG/preview"},
+    {name:"Chapter 3:(क्षितिज)आत्मकथ्य", link: ""},
+    {name:"Chapter 4:(क्षितिज)उत्साह", link: ""}, 
+    {name:"Chapter 4:(क्षितिज)अट नहीं रही", link: ""}, 
+    {name:"Chapter 5:(क्षितिज)फसल", link: ""}, 
+    {name:"Chapter 5:(क्षितिज)यह दंतुरहित मुस्कान", link: ""}, 
+    {name:"Chapter 6:(क्षितिज)संगतकार", link: ""}, 
+    {name:"Chapter 9:(क्षितिज)लखनवी अंदाज़", link: ""}, 
+    {name:"Chapter 10:(क्षितिज)एक कहानी यह भी", link: ""}, 
+    {name:"Chapter 11:(क्षितिज)नौबतखाने में इबादत", link: ""}, 
+    {name:"Chapter 12:(क्षितिज)संस्कृति", link: ""},
+    {name:"Chapter 1:(कृतिका)माता का आँचल", link: ""},
+    {name:"Chapter 2:(कृतिका)साना-साना हाथ जोड़ि", link: ""},
+    {name:"Chapter 3:(कृतिका)मैं क्यों लिखता हूँ?", link: ""},                            
+    ],
+ "English":[{name:"Chapter 1 First Flight: A letter to God", link: "https://drive.google.com/file/d/1C8Ko7ZAMvf0mBqcsxdTQyrJ-JjXF8PxT/preview"},
+       {name:"Chapter 1 First Flight: Dust Of Snow & Fire and Ice ", link: "https://drive.google.com/file/d/1rmLHFob-Z3pBzlValaxcjURKxVlU-dzs/preview"},
+    {name: "Chapter 2(First Flight):Nelson Mandela:Long walk to Freedom", link: ""},
+    {name: "Chapter 3(First Flight):Two Stories about Flying", link: ""},
+    {name: "Chapter 4(First Flight):From the diary of Anne Frank", link: ""},
+    {name: "Chapter 5(First Flight):Glimpses Of India", link: ""},
+    {name: "Chapter 6(First Flight):Mijbil the Otter", link: ""},
+    {name: "Chapter 7(First Flight):Madam Rides The Bus", link: ""},
+    {name: "Chapter 8(First Flight):The Sermon at Benares", link: ""},
+    {name: "Chapter 9(First Flight):The Proposal", link: ""},
+    {name: "Chapter 2 Poem(First Flight):Tiger In the Zoo", link: ""},
+    {name: "Chapter 3 Poem(First Flight):How to tell Wild Animals & Ball Poem", link: ""},
+    {name: "Chapter 4 Poem(First Flight): Amanda", link: ""},
+    {name: "Chapter 5 Poem(First Flight):the Trees", link: ""},
+    {name: "Chapter 6 Poem(First Flight):Fog", link: ""},
+    {name: "Chapter 7 Poem(First Flight):Tale of Custard the Dragon", link: ""},
+    {name: "Chapter 8 Poem(First Flight):for anne gregory", link: ""},
+    {name: "Chapter 1(Footprints Without Feet): Triumph Of Surgery", link: ""},  
+    {name: "Chapter 2(Footprints Without Feet): The Thief's Story", link: ""},
+    {name: "Chapter 3(Footprints Without Feet): Midnight Visitor", link: ""},
+    {name: "Chapter 4(Footprints Without Feet): A Question of Trust", link: ""},
+    {name: "Chapter 5(Footprints Without Feet): Footprints Without Feet", link: ""},
+    {name: "Chapter 6(Footprints Without Feet): The Making of a Scientist", link: ""},
+    {name: "Chapter 7(Footprints Without Feet): The Necklace", link: ""},
+    {name: "Chapter 8(Footprints Without Feet): Bholi", link: ""},
+    {name: "Chapter 9(Footprints Without Feet): Book that Saved the Earth", link: ""},
+      ],     
+    
+    },
+    "Class 9": { "SST": [  { name:"Geography(Part 2)Chapter 1: Oceans and Life", link: "https://drive.google.com/file/d/11Xxzl53hFjzJro33Be1IOhu7_S3iygSw/preview"  },
+    {name: "Geography(Part 2)Chapter 2:Life on Earth", link: "https://drive.google.com/file/d/1RThs8KcMHkDdh9Rs1QNeeQrAv-02N3WU/preview"},  
+    {name: "History(Part 2)Chapter 3:Resistance and Resilience", link:""}, 
+ {name: "Polity(Part 2)Chapter 4: Governace and Public Policy", link:""},
+ {name: "Economics(Part 2)Chapter 5: Managing Your Personal Finances", link:""},
+ {name: "Economics(Part 2)Chapter 6: From Ideas to Startups", link:""},
+ {name: "Geography(Part 1)Chapter 2:Shaping of the Earths Surface", link: "https://drive.google.com/file/d/1rEo97sAT--WI6IrT0nRTHc_vDdAVfMBM/preview"},
+ {name: "Geography(Part 1)Chapter 3:Atmosphere and Climate", link:""},
+ {name: "History(Part 1)Chapter 4:Early Humans and Beginning of Civilisation", link: ""},
+ {name: "History(Part 1)Chapter 5: State and Society uo to 1000CE", link: ""},
+ {name: "Polity(Part 1)Chapter 6: Democracy", link: ""},
+ {name: "Polity(Part 1)Chapter 7: Elections", link: ""},
+ {name: "Economics(Part 1)Chapter 8:Building Blocks In Economics", link: ""},
+ {name: "Economics(Part 1)Chapter 9: the Prize Puzzle", link: ""}
+], },     
+        
+  }   
 };
 
 let timerInterval;
@@ -803,10 +966,30 @@ function showVideoChapters(className, subjectName) {
     });
 }
 
-// 3. वीडियो प्ले करना (Modal ओपन करना) - NEW
+// 3. वीडियो प्ले करना (Smart Universal Player) - NEW
 function playVideo(chapterName, videoUrl) {
+    let embedUrl = "";
+
+    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+        let videoId = "";
+        if (videoUrl.includes("v=")) videoId = videoUrl.split("v=")[1].split("&")[0];
+        else if (videoUrl.includes("youtu.be/")) videoId = videoUrl.split("youtu.be/")[1].split("?")[0];
+        else if (videoUrl.includes("embed/")) videoId = videoUrl.split("embed/")[1].split("?")[0];
+        embedUrl = "https://www.youtube.com/embed/" + videoId;
+    } 
+    else if (videoUrl.includes("dailymotion.com") || videoUrl.includes("dai.ly")) {
+        let videoId = "";
+        if (videoUrl.includes("video/")) videoId = videoUrl.split("video/")[1].split("?")[0];
+        else if (videoUrl.includes("dai.ly/")) videoId = videoUrl.split("dai.ly/")[1].split("?")[0];
+        else if (videoUrl.includes("embed/video/")) videoId = videoUrl.split("embed/video/")[1].split("?")[0];
+        embedUrl = "https://www.dailymotion.com/embed/video/" + videoId + "?autoplay=0";
+    } 
+    else {
+        embedUrl = videoUrl; 
+    }
+
     document.getElementById('playing-video-title').innerText = chapterName;
-    document.getElementById('video-iframe').src = videoUrl;
+    document.getElementById('video-iframe').src = embedUrl;
     openExclusiveView('video-viewer-modal');
 }
 
