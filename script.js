@@ -13,7 +13,7 @@ const hindiTranslations = {
 // --- PDF DATABASE ---
 const pdfDatabase = {
 "Quick Revision": {
-  "Class 10": {"Science": [ { name: "Chapter 1: Chemical Reactions", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" },
+  "Class 10": {"Science": [ { name: "Chapter 6: Control and Coordination", link: "https://drive.google.com/file/d/1P8v1B_obvwuG5efP-PIPtf74A6hSKuKt/preview" },
                            { name: "Chapter 2: Acids, Bases and Salts", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
                            ],
     "Math": [ { name: "Chapter 1: Real Numbers", link: "https://drive.google.com/file/d/YOUR_FILE_ID/preview" }
